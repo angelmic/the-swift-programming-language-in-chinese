@@ -1,65 +1,65 @@
-# 构造过程
+# 構造過程
 -----------------
 
 > 1.0
-> 翻译：[lifedim](https://github.com/lifedim)
-> 校对：[lifedim](https://github.com/lifedim)
+> 翻譯：[lifedim](https://github.com/lifedim)
+> 校對：[lifedim](https://github.com/lifedim)
 
 > 2.0
-> 翻译+校对：[chenmingbiao](https://github.com/chenmingbiao)
+> 翻譯+校對：[chenmingbiao](https://github.com/chenmingbiao)
 
 > 2.1
-> 翻译：[Channe](https://github.com/Channe)，[Realank](https://github.com/Realank) 
-> 校对：[shanks](http://codebuild.me)，2016-1-23
+> 翻譯：[Channe](https://github.com/Channe)，[Realank](https://github.com/Realank) 
+> 校對：[shanks](http://codebuild.me)，2016-1-23
 
 > 2.2
-> 翻译：[pmst](https://github.com/colourful987)
-> 翻译+校对：[SketchK](https://github.com/SketchK) 2016-05-14   
+> 翻譯：[pmst](https://github.com/colourful987)
+> 翻譯+校對：[SketchK](https://github.com/SketchK) 2016-05-14   
 > 3.0.1，shanks，2016-11-13
 
 > 3.1
-> 翻译：[qhd](https://github.com/qhd) 2017-04-18  
+> 翻譯：[qhd](https://github.com/qhd) 2017-04-18  
 
-本页包含内容：
+本頁包含內容：
 
-- [存储属性的初始赋值](#setting_initial_values_for_stored_properties)
-- [自定义构造过程](#customizing_initialization)
-- [默认构造器](#default_initializers)
-- [值类型的构造器代理](#initializer_delegation_for_value_types)
-- [类的继承和构造过程](#class_inheritance_and_initialization)
-- [可失败构造器](#failable_initializers)
-- [必要构造器](#required_initializers)
-- [通过闭包或函数设置属性的默认值](#setting_a_default_property_value_with_a_closure_or_function)
+- [存儲屬性的初始賦值](#setting_initial_values_for_stored_properties)
+- [自定義構造過程](#customizing_initialization)
+- [默認構造器](#default_initializers)
+- [值類型的構造器代理](#initializer_delegation_for_value_types)
+- [類的繼承和構造過程](#class_inheritance_and_initialization)
+- [可失敗構造器](#failable_initializers)
+- [必要構造器](#required_initializers)
+- [通過閉包或函數設置屬性的默認值](#setting_a_default_property_value_with_a_closure_or_function)
 
 
-*构造过程*是使用类、结构体或枚举类型的实例之前的准备过程。在新实例可用前必须执行这个过程，具体操作包括设置实例中每个存储型属性的初始值和执行其他必须的设置或初始化工作。
+*構造過程*是使用類、結構體或枚舉類型的實例之前的准備過程。在新實例可用前必須執行這個過程，具體操作包括設置實例中每個存儲型屬性的初始值和執行其他必須的設置或初始化工作。
 
-通过定义*构造器*来实现构造过程，这些构造器可以看做是用来创建特定类型新实例的特殊方法。与 Objective-C 中的构造器不同，Swift 的构造器无需返回值，它们的主要任务是保证新实例在第一次使用前完成正确的初始化。
+通過定義*構造器*來實現構造過程，這些構造器可以看做是用來創建特定類型新實例的特殊方法。與 Objective-C 中的構造器不同，Swift 的構造器無需返回值，它們的主要任務是保證新實例在第一次使用前完成正確的初始化。
 
-类的实例也可以通过定义*析构器*在实例释放之前执行特定的清除工作。想了解更多关于析构器的内容，请参考[析构过程](./15_Deinitialization.html)。
+類的實例也可以通過定義*析構器*在實例釋放之前執行特定的清除工作。想了解更多關於析構器的內容，請參考[析構過程](./15_Deinitialization.html)。
 
 <a name="setting_initial_values_for_stored_properties"></a>
-## 存储属性的初始赋值
+## 存儲屬性的初始賦值
 
-类和结构体在创建实例时，必须为所有存储型属性设置合适的初始值。存储型属性的值不能处于一个未知的状态。
+類和結構體在創建實例時，必須為所有存儲型屬性設置合適的初始值。存儲型屬性的值不能處於一個未知的狀態。
 
-你可以在构造器中为存储型属性赋初值，也可以在定义属性时为其设置默认值。以下小节将详细介绍这两种方法。
+你可以在構造器中為存儲型屬性賦初值，也可以在定義屬性時為其設置默認值。以下小節將詳細介紹這兩種方法。
 
 > 注意  
-当你为存储型属性设置默认值或者在构造器中为其赋值时，它们的值是被直接设置的，不会触发任何属性观察者。
+當你為存儲型屬性設置默認值或者在構造器中為其賦值時，它們的值是被直接設置的，不會觸發任何屬性觀察者。
 
 <a name="initializers"></a>
-### 构造器
+### 構造器
 
-构造器在创建某个特定类型的新实例时被调用。它的最简形式类似于一个不带任何参数的实例方法，以关键字`init`命名：
+構造器在創建某個特定類型的新實例時被調用。它的最簡形式類似於一個不帶任何參數的實例方法，以關鍵字`init`命名：
 
 ```swift
 init() {
-    // 在此处执行构造过程
+    // 在此處執行構造過程
 }
 ```
 
-下面例子中定义了一个用来保存华氏温度的结构体`Fahrenheit`，它拥有一个`Double`类型的存储型属性`temperature`：
+下面例子中定義了一個用來保存華氏溫度的結構體`Fahrenheit`，它擁有一個`Double`類型的存儲型屬性`temperature`：
 
 ```swift
 struct Fahrenheit {
@@ -73,17 +73,17 @@ print("The default temperature is \(f.temperature)° Fahrenheit")
 // 打印 "The default temperature is 32.0° Fahrenheit"
 ```
 
-这个结构体定义了一个不带参数的构造器`init`，并在里面将存储型属性`temperature`的值初始化为`32.0`（华氏温度下水的冰点）。
+這個結構體定義了一個不帶參數的構造器`init`，並在裡面將存儲型屬性`temperature`的值初始化為`32.0`（華氏溫度下水的冰點）。
 
 <a name="default_property_values"></a>
-### 默认属性值
+### 默認屬性值
 
-如前所述，你可以在构造器中为存储型属性设置初始值。同样，你也可以在属性声明时为其设置默认值。
+如前所述，你可以在構造器中為存儲型屬性設置初始值。同樣，你也可以在屬性聲明時為其設置默認值。
 
 > 注意  
-如果一个属性总是使用相同的初始值，那么为其设置一个默认值比每次都在构造器中赋值要好。两种方法的效果是一样的，只不过使用默认值让属性的初始化和声明结合得更紧密。使用默认值能让你的构造器更简洁、更清晰，且能通过默认值自动推导出属性的类型；同时，它也能让你充分利用默认构造器、构造器继承等特性，后续章节将讲到。
+如果一個屬性總是使用相同的初始值，那麼為其設置一個默認值比每次都在構造器中賦值要好。兩種方法的效果是一樣的，只不過使用默認值讓屬性的初始化和聲明結合得更緊密。使用默認值能讓你的構造器更簡潔、更清晰，且能通過默認值自動推導出屬性的類型；同時，它也能讓你充分利用默認構造器、構造器繼承等特性，後續章節將講到。
 
-你可以使用更简单的方式在定义结构体`Fahrenheit`时为属性`temperature`设置默认值：
+你可以使用更簡單的方式在定義結構體`Fahrenheit`時為屬性`temperature`設置默認值：
 
 ```swift
 struct Fahrenheit {
@@ -92,16 +92,16 @@ struct Fahrenheit {
 ```
 
 <a name="customizing_initialization"></a>
-## 自定义构造过程
+## 自定義構造過程
 
-你可以通过输入参数和可选类型的属性来自定义构造过程，也可以在构造过程中修改常量属性。这些都将在后面章节中提到。
+你可以通過輸入參數和可選類型的屬性來自定義構造過程，也可以在構造過程中修改常量屬性。這些都將在後面章節中提到。
 
 <a name="initialization_parameters"></a>
-### 构造参数
+### 構造參數
 
-自定义`构造过程`时，可以在定义中提供构造参数，指定所需值的类型和名字。构造参数的功能和语法跟函数和方法的参数相同。
+自定義`構造過程`時，可以在定義中提供構造參數，指定所需值的類型和名字。構造參數的功能和語法跟函數和方法的參數相同。
 
-下面例子中定义了一个包含摄氏度温度的结构体`Celsius`。它定义了两个不同的构造器：`init(fromFahrenheit:)`和`init(fromKelvin:)`，二者分别通过接受不同温标下的温度值来创建新的实例：
+下面例子中定義了一個包含攝氏度溫度的結構體`Celsius`。它定義了兩個不同的構造器：`init(fromFahrenheit:)`和`init(fromKelvin:)`，二者分別通過接受不同溫標下的溫度值來創建新的實例：
 
 ```swift
 struct Celsius {
@@ -119,18 +119,18 @@ let freezingPointOfWater = Celsius(fromKelvin: 273.15)
 // freezingPointOfWater.temperatureInCelsius 是 0.0
 ```
 
-第一个构造器拥有一个构造参数，其外部名字为`fromFahrenheit`，内部名字为`fahrenheit`；第二个构造器也拥有一个构造参数，其外部名字为`fromKelvin`，内部名字为`kelvin`。这两个构造器都将唯一的参数值转换成摄氏温度值，并保存在属性`temperatureInCelsius`中。
+第一個構造器擁有一個構造參數，其外部名字為`fromFahrenheit`，內部名字為`fahrenheit`；第二個構造器也擁有一個構造參數，其外部名字為`fromKelvin`，內部名字為`kelvin`。這兩個構造器都將唯一的參數值轉換成攝氏溫度值，並保存在屬性`temperatureInCelsius`中。
 
 <a name="local_and_external_parameter_names"></a>
-### 参数的内部名称和外部名称
+### 參數的內部名稱和外部名稱
 
-跟函数和方法参数相同，构造参数也拥有一个在构造器内部使用的参数名字和一个在调用构造器时使用的外部参数名字。
+跟函數和方法參數相同，構造參數也擁有一個在構造器內部使用的參數名字和一個在調用構造器時使用的外部參數名字。
 
-然而，构造器并不像函数和方法那样在括号前有一个可辨别的名字。因此在调用构造器时，主要通过构造器中的参数名和类型来确定应该被调用的构造器。正因为参数如此重要，如果你在定义构造器时没有提供参数的外部名字，Swift 会为构造器的每个参数自动生成一个跟内部名字相同的外部名。
+然而，構造器並不像函數和方法那樣在括號前有一個可辨別的名字。因此在調用構造器時，主要通過構造器中的參數名和類型來確定應該被調用的構造器。正因為參數如此重要，如果你在定義構造器時沒有提供參數的外部名字，Swift 會為構造器的每個參數自動生成一個跟內部名字相同的外部名。
 
-以下例子中定义了一个结构体`Color`，它包含了三个常量：`red`、`green`和`blue`。这些属性可以存储`0.0`到`1.0`之间的值，用来指示颜色中红、绿、蓝成分的含量。
+以下例子中定義了一個結構體`Color`，它包含了三個常量：`red`、`green`和`blue`。這些屬性可以存儲`0.0`到`1.0`之間的值，用來指示顏色中紅、綠、藍成分的含量。
 
-`Color`提供了一个构造器，其中包含三个`Double`类型的构造参数。`Color`也可以提供第二个构造器，它只包含名为`white`的`Double`类型的参数，它被用于给上述三个构造参数赋予同样的值。
+`Color`提供了一個構造器，其中包含三個`Double`類型的構造參數。`Color`也可以提供第二個構造器，它只包含名為`white`的`Double`類型的參數，它被用於給上述三個構造參數賦予同樣的值。
 
 ```swift
 struct Color {
@@ -148,26 +148,26 @@ struct Color {
 }
 ```
 
-两种构造器都能用于创建一个新的`Color`实例，你需要为构造器每个外部参数传值：
+兩種構造器都能用於創建一個新的`Color`實例，你需要為構造器每個外部參數傳值：
 
 ```swift
 let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)
 let halfGray = Color(white: 0.5)
 ```
 
-注意，如果不通过外部参数名字传值，你是没法调用这个构造器的。只要构造器定义了某个外部参数名，你就必须使用它，忽略它将导致编译错误：
+注意，如果不通過外部參數名字傳值，你是沒法調用這個構造器的。只要構造器定義了某個外部參數名，你就必須使用它，忽略它將導致編譯錯誤：
 
 ```swift
 let veryGreen = Color(0.0, 1.0, 0.0)
-// 报编译时错误，需要外部名称
+// 報編譯時錯誤，需要外部名稱
 ```
 
 <a name="initializer_parameters_without_external_names"></a>
-### 不带外部名的构造器参数
+### 不帶外部名的構造器參數
 
-如果你不希望为构造器的某个参数提供外部名字，你可以使用下划线(`_`)来显式描述它的外部名，以此重写上面所说的默认行为。
+如果你不希望為構造器的某個參數提供外部名字，你可以使用下劃線(`_`)來顯式描述它的外部名，以此重寫上面所說的默認行為。
 
-下面是之前`Celsius`例子的扩展，跟之前相比添加了一个带有`Double`类型参数的构造器，其外部名用`_`代替：
+下面是之前`Celsius`例子的擴展，跟之前相比添加了一個帶有`Double`類型參數的構造器，其外部名用`_`代替：
 
 ```swift
 struct Celsius {
@@ -183,17 +183,17 @@ struct Celsius {
     }
 }
 let bodyTemperature = Celsius(37.0)
-// bodyTemperature.temperatureInCelsius 为 37.0
+// bodyTemperature.temperatureInCelsius 為 37.0
 ```
 
-调用`Celsius(37.0)`意图明确，不需要外部参数名称。因此适合使用`init(_ celsius: Double)`这样的构造器，从而可以通过提供`Double`类型的参数值调用构造器，而不需要加上外部名。
+調用`Celsius(37.0)`意圖明確，不需要外部參數名稱。因此適合使用`init(_ celsius: Double)`這樣的構造器，從而可以通過提供`Double`類型的參數值調用構造器，而不需要加上外部名。
 
 <a name="optional_property_types"></a>
-### 可选属性类型
+### 可選屬性類型
 
-如果你定制的类型包含一个逻辑上允许取值为空的存储型属性——无论是因为它无法在初始化时赋值，还是因为它在之后某个时间点可以赋值为空——你都需要将它定义为`可选类型`。可选类型的属性将自动初始化为`nil`，表示这个属性是有意在初始化时设置为空的。
+如果你定制的類型包含一個邏輯上允許取值為空的存儲型屬性——無論是因為它無法在初始化時賦值，還是因為它在之後某個時間點可以賦值為空——你都需要將它定義為`可選類型`。可選類型的屬性將自動初始化為`nil`，表示這個屬性是有意在初始化時設置為空的。
 
-下面例子中定义了类`SurveyQuestion`，它包含一个可选字符串属性`response`：
+下面例子中定義了類`SurveyQuestion`，它包含一個可選字符串屬性`response`：
 
 ```swift
 class SurveyQuestion {
@@ -212,17 +212,17 @@ cheeseQuestion.ask()
 cheeseQuestion.response = "Yes, I do like cheese."
 ```
 
-调查问题的答案在回答前是无法确定的，因此我们将属性`response`声明为`String?`类型，或者说是`可选字符串类型`。当`SurveyQuestion`实例化时，它将自动赋值为`nil`，表明此字符串暂时还没有值。
+調查問題的答案在回答前是無法確定的，因此我們將屬性`response`聲明為`String?`類型，或者說是`可選字符串類型`。當`SurveyQuestion`實例化時，它將自動賦值為`nil`，表明此字符串暫時還沒有值。
 
 <a name="assigning_constant_properties_during_initialization"></a>
-### 构造过程中常量属性的修改
+### 構造過程中常量屬性的修改
 
-你可以在构造过程中的任意时间点给常量属性指定一个值，只要在构造过程结束时是一个确定的值。一旦常量属性被赋值，它将永远不可更改。
+你可以在構造過程中的任意時間點給常量屬性指定一個值，只要在構造過程結束時是一個確定的值。一旦常量屬性被賦值，它將永遠不可更改。
 
 > 注意  
-对于类的实例来说，它的常量属性只能在定义它的类的构造过程中修改；不能在子类中修改。
+對於類的實例來說，它的常量屬性只能在定義它的類的構造過程中修改；不能在子類中修改。
 
-你可以修改上面的`SurveyQuestion`示例，用常量属性替代变量属性`text`，表示问题内容`text`在`SurveyQuestion`的实例被创建之后不会再被修改。尽管`text`属性现在是常量，我们仍然可以在类的构造器中设置它的值：
+你可以修改上面的`SurveyQuestion`示例，用常量屬性替代變量屬性`text`，表示問題內容`text`在`SurveyQuestion`的實例被創建之後不會再被修改。盡管`text`屬性現在是常量，我們仍然可以在類的構造器中設置它的值：
 
 ```swift
 class SurveyQuestion {
@@ -242,11 +242,11 @@ beetsQuestion.response = "I also like beets. (But not with cheese.)"
 ```
 
 <a name="default_initializers"></a>
-## 默认构造器
+## 默認構造器
 
-如果结构体或类的所有属性都有默认值，同时没有自定义的构造器，那么 Swift 会给这些结构体或类提供一个默认构造器（default initializers）。这个默认构造器将简单地创建一个所有属性值都设置为默认值的实例。
+如果結構體或類的所有屬性都有默認值，同時沒有自定義的構造器，那麼 Swift 會給這些結構體或類提供一個默認構造器（default initializers）。這個默認構造器將簡單地創建一個所有屬性值都設置為默認值的實例。
 
-下面例子中创建了一个类`ShoppingListItem`，它封装了购物清单中的某一物品的属性：名字（`name`）、数量（`quantity`）和购买状态 `purchase state`：
+下面例子中創建了一個類`ShoppingListItem`，它封裝了購物清單中的某一物品的屬性：名字（`name`）、數量（`quantity`）和購買狀態 `purchase state`：
 
 ```swift
 class ShoppingListItem {
@@ -257,18 +257,18 @@ class ShoppingListItem {
 var item = ShoppingListItem()
 ```
 
-由于`ShoppingListItem`类中的所有属性都有默认值，且它是没有父类的基类，它将自动获得一个可以为所有属性设置默认值的默认构造器（尽管代码中没有显式为`name`属性设置默认值，但由于`name`是可选字符串类型，它将默认设置为`nil`）。上面例子中使用默认构造器创造了一个`ShoppingListItem`类的实例（使用`ShoppingListItem()`形式的构造器语法），并将其赋值给变量`item`。
+由於`ShoppingListItem`類中的所有屬性都有默認值，且它是沒有父類的基類，它將自動獲得一個可以為所有屬性設置默認值的默認構造器（盡管代碼中沒有顯式為`name`屬性設置默認值，但由於`name`是可選字符串類型，它將默認設置為`nil`）。上面例子中使用默認構造器創造了一個`ShoppingListItem`類的實例（使用`ShoppingListItem()`形式的構造器語法），並將其賦值給變量`item`。
 
 <a name="memberwise_initializers_for_structure_types"></a>
-### 结构体的逐一成员构造器
+### 結構體的逐一成員構造器
 
-除了上面提到的默认构造器，如果结构体没有提供自定义的构造器，它们将自动获得一个逐一成员构造器，即使结构体的存储型属性没有默认值。
+除了上面提到的默認構造器，如果結構體沒有提供自定義的構造器，它們將自動獲得一個逐一成員構造器，即使結構體的存儲型屬性沒有默認值。
 
-逐一成员构造器是用来初始化结构体新实例里成员属性的快捷方法。我们在调用逐一成员构造器时，通过与成员属性名相同的参数名进行传值来完成对成员属性的初始赋值。
+逐一成員構造器是用來初始化結構體新實例裡成員屬性的快捷方法。我們在調用逐一成員構造器時，通過與成員屬性名相同的參數名進行傳值來完成對成員屬性的初始賦值。
 
-下面例子中定义了一个结构体`Size`，它包含两个属性`width`和`height`。Swift 可以根据这两个属性的初始赋值`0.0`自动推导出它们的类型为`Double`。
+下面例子中定義了一個結構體`Size`，它包含兩個屬性`width`和`height`。Swift 可以根據這兩個屬性的初始賦值`0.0`自動推導出它們的類型為`Double`。
 
-结构体`Size`自动获得了一个逐一成员构造器`init(width:height:)`。你可以用它来为`Size`创建新的实例：
+結構體`Size`自動獲得了一個逐一成員構造器`init(width:height:)`。你可以用它來為`Size`創建新的實例：
 
 ```swift
 struct Size {
@@ -279,20 +279,20 @@ let twoByTwo = Size(width: 2.0, height: 2.0)
 
 <a name="initializer_delegation_for_value_types"></a>
 
-## 值类型的构造器代理
+## 值類型的構造器代理
 
-构造器可以通过调用其它构造器来完成实例的部分构造过程。这一过程称为构造器代理，它能减少多个构造器间的代码重复。
+構造器可以通過調用其它構造器來完成實例的部分構造過程。這一過程稱為構造器代理，它能減少多個構造器間的代碼重復。
 
-构造器代理的实现规则和形式在值类型和类类型中有所不同。值类型（结构体和枚举类型）不支持继承，所以构造器代理的过程相对简单，因为它们只能代理给自己的其它构造器。类则不同，它可以继承自其它类（请参考[继承](./13_Inheritance.html)），这意味着类有责任保证其所有继承的存储型属性在构造时也能正确的初始化。这些责任将在后续章节[类的继承和构造过程](#class_inheritance_and_initialization)中介绍。
+構造器代理的實現規則和形式在值類型和類類型中有所不同。值類型（結構體和枚舉類型）不支持繼承，所以構造器代理的過程相對簡單，因為它們只能代理給自己的其它構造器。類則不同，它可以繼承自其它類（請參考[繼承](./13_Inheritance.html)），這意味著類有責任保證其所有繼承的存儲型屬性在構造時也能正確的初始化。這些責任將在後續章節[類的繼承和構造過程](#class_inheritance_and_initialization)中介紹。
 
-对于值类型，你可以使用`self.init`在自定义的构造器中引用相同类型中的其它构造器。并且你只能在构造器内部调用`self.init`。
+對於值類型，你可以使用`self.init`在自定義的構造器中引用相同類型中的其它構造器。並且你只能在構造器內部調用`self.init`。
 
-如果你为某个值类型定义了一个自定义的构造器，你将无法访问到默认构造器（如果是结构体，还将无法访问逐一成员构造器）。这种限制可以防止你为值类型增加了一个额外的且十分复杂的构造器之后,仍然有人错误的使用自动生成的构造器
+如果你為某個值類型定義了一個自定義的構造器，你將無法訪問到默認構造器（如果是結構體，還將無法訪問逐一成員構造器）。這種限制可以防止你為值類型增加了一個額外的且十分復雜的構造器之後,仍然有人錯誤的使用自動生成的構造器
 
 > 注意  
-假如你希望默认构造器、逐一成员构造器以及你自己的自定义构造器都能用来创建实例，可以将自定义的构造器写到扩展（`extension`）中，而不是写在值类型的原始定义中。想查看更多内容，请查看[扩展](./21_Extensions.html)章节。
+假如你希望默認構造器、逐一成員構造器以及你自己的自定義構造器都能用來創建實例，可以將自定義的構造器寫到擴展（`extension`）中，而不是寫在值類型的原始定義中。想查看更多內容，請查看[擴展](./21_Extensions.html)章節。
 
-下面例子将定义一个结构体`Rect`，用来代表几何矩形。这个例子需要两个辅助的结构体`Size`和`Point`，它们各自为其所有的属性提供了初始值`0.0`。
+下面例子將定義一個結構體`Rect`，用來代表幾何矩形。這個例子需要兩個輔助的結構體`Size`和`Point`，它們各自為其所有的屬性提供了初始值`0.0`。
 
 ```swift
 struct Size {
@@ -303,7 +303,7 @@ struct Point {
 }
 ```
 
-你可以通过以下三种方式为`Rect`创建实例——使用被初始化为默认值的`origin`和`size`属性来初始化；提供指定的`origin`和`size`实例来初始化；提供指定的`center`和`size`来初始化。在下面`Rect`结构体定义中，我们为这三种方式提供了三个自定义的构造器：
+你可以通過以下三種方式為`Rect`創建實例——使用被初始化為默認值的`origin`和`size`屬性來初始化；提供指定的`origin`和`size`實例來初始化；提供指定的`center`和`size`來初始化。在下面`Rect`結構體定義中，我們為這三種方式提供了三個自定義的構造器：
 
 ```swift
 struct Rect {
@@ -322,14 +322,14 @@ struct Rect {
 }
 ```
 
-第一个`Rect`构造器`init()`，在功能上跟没有自定义构造器时自动获得的默认构造器是一样的。这个构造器是一个空函数，使用一对大括号`{}`来表示，它没有执行任何构造过程。调用这个构造器将返回一个`Rect`实例，它的`origin`和`size`属性都使用定义时的默认值`Point(x: 0.0, y: 0.0)`和`Size(width: 0.0, height: 0.0)`：
+第一個`Rect`構造器`init()`，在功能上跟沒有自定義構造器時自動獲得的默認構造器是一樣的。這個構造器是一個空函數，使用一對大括號`{}`來表示，它沒有執行任何構造過程。調用這個構造器將返回一個`Rect`實例，它的`origin`和`size`屬性都使用定義時的默認值`Point(x: 0.0, y: 0.0)`和`Size(width: 0.0, height: 0.0)`：
 
 ```swift
 let basicRect = Rect()
 // basicRect 的 origin 是 (0.0, 0.0)，size 是 (0.0, 0.0)
 ```
 
-第二个`Rect`构造器`init(origin:size:)`，在功能上跟结构体在没有自定义构造器时获得的逐一成员构造器是一样的。这个构造器只是简单地将`origin`和`size`的参数值赋给对应的存储型属性：
+第二個`Rect`構造器`init(origin:size:)`，在功能上跟結構體在沒有自定義構造器時獲得的逐一成員構造器是一樣的。這個構造器只是簡單地將`origin`和`size`的參數值賦給對應的存儲型屬性：
 
 ```swift
 let originRect = Rect(origin: Point(x: 2.0, y: 2.0),
@@ -337,7 +337,7 @@ let originRect = Rect(origin: Point(x: 2.0, y: 2.0),
 // originRect 的 origin 是 (2.0, 2.0)，size 是 (5.0, 5.0)
 ```
 
-第三个`Rect`构造器`init(center:size:)`稍微复杂一点。它先通过`center`和`size`的值计算出`origin`的坐标，然后再调用（或者说代理给）`init(origin:size:)`构造器来将新的`origin`和`size`值赋值到对应的属性中：
+第三個`Rect`構造器`init(center:size:)`稍微復雜一點。它先通過`center`和`size`的值計算出`origin`的坐標，然後再調用（或者說代理給）`init(origin:size:)`構造器來將新的`origin`和`size`值賦值到對應的屬性中：
 
 ```swift
 let centerRect = Rect(center: Point(x: 4.0, y: 4.0),
@@ -345,33 +345,33 @@ let centerRect = Rect(center: Point(x: 4.0, y: 4.0),
 // centerRect 的 origin 是 (2.5, 2.5)，size 是 (3.0, 3.0)
 ```
 
-构造器`init(center:size:)`可以直接将`origin`和`size`的新值赋值到对应的属性中。然而，利用恰好提供了相关功能的现有构造器会更为方便，构造器`init(center:size:)`的意图也会更加清晰。
+構造器`init(center:size:)`可以直接將`origin`和`size`的新值賦值到對應的屬性中。然而，利用恰好提供了相關功能的現有構造器會更為方便，構造器`init(center:size:)`的意圖也會更加清晰。
 
 > 注意  
-如果你想用另外一种不需要自己定义`init()`和`init(origin:size:)`的方式来实现这个例子，请参考[扩展](./21_Extensions.html)。
+如果你想用另外一種不需要自己定義`init()`和`init(origin:size:)`的方式來實現這個例子，請參考[擴展](./21_Extensions.html)。
 
 <a name="class_inheritance_and_initialization"></a>
-## 类的继承和构造过程
+## 類的繼承和構造過程
 
-类里面的所有存储型属性——包括所有继承自父类的属性——都必须在构造过程中设置初始值。
+類裡面的所有存儲型屬性——包括所有繼承自父類的屬性——都必須在構造過程中設置初始值。
 
-Swift 为类类型提供了两种构造器来确保实例中所有存储型属性都能获得初始值，它们分别是指定构造器和便利构造器。
+Swift 為類類型提供了兩種構造器來確保實例中所有存儲型屬性都能獲得初始值，它們分別是指定構造器和便利構造器。
 
 <a name="designated_initializers_and_convenience_initializers"></a>
-### 指定构造器和便利构造器
+### 指定構造器和便利構造器
 
-*指定构造器*是类中最主要的构造器。一个指定构造器将初始化类中提供的所有属性，并根据父类链往上调用父类的构造器来实现父类的初始化。
+*指定構造器*是類中最主要的構造器。一個指定構造器將初始化類中提供的所有屬性，並根據父類鏈往上調用父類的構造器來實現父類的初始化。
 
-每一个类都必须拥有至少一个指定构造器。在某些情况下，许多类通过继承了父类中的指定构造器而满足了这个条件。具体内容请参考后续章节[构造器的自动继承](#automatic_initializer_inheritance)。
+每一個類都必須擁有至少一個指定構造器。在某些情況下，許多類通過繼承了父類中的指定構造器而滿足了這個條件。具體內容請參考後續章節[構造器的自動繼承](#automatic_initializer_inheritance)。
 
-*便利构造器*是类中比较次要的、辅助型的构造器。你可以定义便利构造器来调用同一个类中的指定构造器，并为其参数提供默认值。你也可以定义便利构造器来创建一个特殊用途或特定输入值的实例。
+*便利構造器*是類中比較次要的、輔助型的構造器。你可以定義便利構造器來調用同一個類中的指定構造器，並為其參數提供默認值。你也可以定義便利構造器來創建一個特殊用途或特定輸入值的實例。
 
-你应当只在必要的时候为类提供便利构造器，比方说某种情况下通过使用便利构造器来快捷调用某个指定构造器，能够节省更多开发时间并让类的构造过程更清晰明了。
+你應當只在必要的時候為類提供便利構造器，比方說某種情況下通過使用便利構造器來快捷調用某個指定構造器，能夠節省更多開發時間並讓類的構造過程更清晰明了。
 
 <a name="syntax_for_designated_and_convenience_initializers"></a>
-### 指定构造器和便利构造器的语法
+### 指定構造器和便利構造器的語法
 
-类的指定构造器的写法跟值类型简单构造器一样：
+類的指定構造器的寫法跟值類型簡單構造器一樣：
 
 ```swift
 init(parameters) {
@@ -379,7 +379,7 @@ init(parameters) {
 }
 ```
 
-便利构造器也采用相同样式的写法，但需要在`init`关键字之前放置`convenience`关键字，并使用空格将它们俩分开：
+便利構造器也采用相同樣式的寫法，但需要在`init`關鍵字之前放置`convenience`關鍵字，並使用空格將它們倆分開：
 
 ```swift
 convenience init(parameters) {
@@ -388,129 +388,129 @@ convenience init(parameters) {
 ```
 
 <a name="initializer_delegation_for_class_types"></a>
-### 类的构造器代理规则
+### 類的構造器代理規則
 
-为了简化指定构造器和便利构造器之间的调用关系，Swift 采用以下三条规则来限制构造器之间的代理调用：
+為了簡化指定構造器和便利構造器之間的調用關系，Swift 采用以下三條規則來限制構造器之間的代理調用：
 
-##### 规则 1
-指定构造器必须调用其直接父类的的指定构造器。
+##### 規則 1
+指定構造器必須調用其直接父類的的指定構造器。
 
-##### 规则 2
-便利构造器必须调用*同*类中定义的其它构造器。
+##### 規則 2
+便利構造器必須調用*同*類中定義的其它構造器。
 
-##### 规则 3
-便利构造器必须最终导致一个指定构造器被调用。
+##### 規則 3
+便利構造器必須最終導致一個指定構造器被調用。
 
-一个更方便记忆的方法是：
+一個更方便記憶的方法是：
 
-- 指定构造器必须总是*向上*代理
-- 便利构造器必须总是*横向*代理
+- 指定構造器必須總是*向上*代理
+- 便利構造器必須總是*橫向*代理
 
-这些规则可以通过下面图例来说明：
+這些規則可以通過下面圖例來說明：
 
-![构造器代理图](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializerDelegation01_2x.png)
+![構造器代理圖](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializerDelegation01_2x.png)
 
-如图所示，父类中包含一个指定构造器和两个便利构造器。其中一个便利构造器调用了另外一个便利构造器，而后者又调用了唯一的指定构造器。这满足了上面提到的规则 2 和 3。这个父类没有自己的父类，所以规则 1 没有用到。
+如圖所示，父類中包含一個指定構造器和兩個便利構造器。其中一個便利構造器調用了另外一個便利構造器，而後者又調用了唯一的指定構造器。這滿足了上面提到的規則 2 和 3。這個父類沒有自己的父類，所以規則 1 沒有用到。
 
-子类中包含两个指定构造器和一个便利构造器。便利构造器必须调用两个指定构造器中的任意一个，因为它只能调用同一个类里的其他构造器。这满足了上面提到的规则 2 和 3。而两个指定构造器必须调用父类中唯一的指定构造器，这满足了规则 1。
+子類中包含兩個指定構造器和一個便利構造器。便利構造器必須調用兩個指定構造器中的任意一個，因為它只能調用同一個類裡的其他構造器。這滿足了上面提到的規則 2 和 3。而兩個指定構造器必須調用父類中唯一的指定構造器，這滿足了規則 1。
 
 > 注意  
-这些规则不会影响类的实例如何创建。任何上图中展示的构造器都可以用来创建完全初始化的实例。这些规则只影响类定义如何实现。
+這些規則不會影響類的實例如何創建。任何上圖中展示的構造器都可以用來創建完全初始化的實例。這些規則只影響類定義如何實現。
 
-下面图例中展示了一种涉及四个类的更复杂的类层级结构。它演示了指定构造器是如何在类层级中充当“管道”的作用，在类的构造器链上简化了类之间的相互关系。
+下面圖例中展示了一種涉及四個類的更復雜的類層級結構。它演示了指定構造器是如何在類層級中充當「管道」的作用，在類的構造器鏈上簡化了類之間的相互關系。
 
-![复杂构造器代理图](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializerDelegation02_2x.png)
+![復雜構造器代理圖](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializerDelegation02_2x.png)
 
 <a name="two_phase_initialization"></a>
-### 两段式构造过程
+### 兩段式構造過程
 
-Swift 中类的构造过程包含两个阶段。第一个阶段，每个存储型属性被引入它们的类指定一个初始值。当每个存储型属性的初始值被确定后，第二阶段开始，它给每个类一次机会，在新实例准备使用之前进一步定制它们的存储型属性。
+Swift 中類的構造過程包含兩個階段。第一個階段，每個存儲型屬性被引入它們的類指定一個初始值。當每個存儲型屬性的初始值被確定後，第二階段開始，它給每個類一次機會，在新實例准備使用之前進一步定制它們的存儲型屬性。
 
-两段式构造过程的使用让构造过程更安全，同时在整个类层级结构中给予了每个类完全的灵活性。两段式构造过程可以防止属性值在初始化之前被访问，也可以防止属性被另外一个构造器意外地赋予不同的值。
+兩段式構造過程的使用讓構造過程更安全，同時在整個類層級結構中給予了每個類完全的靈活性。兩段式構造過程可以防止屬性值在初始化之前被訪問，也可以防止屬性被另外一個構造器意外地賦予不同的值。
 
 > 注意  
-Swift 的两段式构造过程跟 Objective-C 中的构造过程类似。最主要的区别在于阶段 1，Objective-C 给每一个属性赋值`0`或空值（比如说`0`或`nil`）。Swift  的构造流程则更加灵活，它允许你设置定制的初始值，并自如应对某些属性不能以`0`或`nil`作为合法默认值的情况。
+Swift 的兩段式構造過程跟 Objective-C 中的構造過程類似。最主要的區別在於階段 1，Objective-C 給每一個屬性賦值`0`或空值（比如說`0`或`nil`）。Swift  的構造流程則更加靈活，它允許你設置定制的初始值，並自如應對某些屬性不能以`0`或`nil`作為合法默認值的情況。
 
-Swift 编译器将执行 4 种有效的安全检查，以确保两段式构造过程能不出错地完成：
+Swift 編譯器將執行 4 種有效的安全檢查，以確保兩段式構造過程能不出錯地完成：
 
-##### 安全检查 1
+##### 安全檢查 1
 
-指定构造器必须保证它所在类引入的所有属性都必须先初始化完成，之后才能将其它构造任务向上代理给父类中的构造器。
+指定構造器必須保證它所在類引入的所有屬性都必須先初始化完成，之後才能將其它構造任務向上代理給父類中的構造器。
 
-如上所述，一个对象的内存只有在其所有存储型属性确定之后才能完全初始化。为了满足这一规则，指定构造器必须保证它所在类引入的属性在它往上代理之前先完成初始化。
+如上所述，一個對象的內存只有在其所有存儲型屬性確定之後才能完全初始化。為了滿足這一規則，指定構造器必須保證它所在類引入的屬性在它往上代理之前先完成初始化。
 
-##### 安全检查 2
+##### 安全檢查 2
 
-指定构造器必须先向上代理调用父类构造器，然后再为继承的属性设置新值。如果没这么做，指定构造器赋予的新值将被父类中的构造器所覆盖。
+指定構造器必須先向上代理調用父類構造器，然後再為繼承的屬性設置新值。如果沒這麼做，指定構造器賦予的新值將被父類中的構造器所覆蓋。
 
-##### 安全检查 3
+##### 安全檢查 3
 
-便利构造器必须先代理调用同一类中的其它构造器，然后再为任意属性赋新值。如果没这么做，便利构造器赋予的新值将被同一类中其它指定构造器所覆盖。
+便利構造器必須先代理調用同一類中的其它構造器，然後再為任意屬性賦新值。如果沒這麼做，便利構造器賦予的新值將被同一類中其它指定構造器所覆蓋。
 
-##### 安全检查 4
+##### 安全檢查 4
 
-构造器在第一阶段构造完成之前，不能调用任何实例方法，不能读取任何实例属性的值，不能引用`self`作为一个值。
+構造器在第一階段構造完成之前，不能調用任何實例方法，不能讀取任何實例屬性的值，不能引用`self`作為一個值。
 
-类实例在第一阶段结束以前并不是完全有效的。只有第一阶段完成后，该实例才会成为有效实例，才能访问属性和调用方法。
+類實例在第一階段結束以前並不是完全有效的。只有第一階段完成後，該實例才會成為有效實例，才能訪問屬性和調用方法。
 
-以下是两段式构造过程中基于上述安全检查的构造流程展示：
+以下是兩段式構造過程中基於上述安全檢查的構造流程展示：
 
-##### 阶段 1
+##### 階段 1
 
-- 某个指定构造器或便利构造器被调用。
-- 完成新实例内存的分配，但此时内存还没有被初始化。
-- 指定构造器确保其所在类引入的所有存储型属性都已赋初值。存储型属性所属的内存完成初始化。
-- 指定构造器将调用父类的构造器，完成父类属性的初始化。
-- 这个调用父类构造器的过程沿着构造器链一直往上执行，直到到达构造器链的最顶部。
-- 当到达了构造器链最顶部，且已确保所有实例包含的存储型属性都已经赋值，这个实例的内存被认为已经完全初始化。此时阶段 1 完成。
+- 某個指定構造器或便利構造器被調用。
+- 完成新實例內存的分配，但此時內存還沒有被初始化。
+- 指定構造器確保其所在類引入的所有存儲型屬性都已賦初值。存儲型屬性所屬的內存完成初始化。
+- 指定構造器將調用父類的構造器，完成父類屬性的初始化。
+- 這個調用父類構造器的過程沿著構造器鏈一直往上執行，直到到達構造器鏈的最頂部。
+- 當到達了構造器鏈最頂部，且已確保所有實例包含的存儲型屬性都已經賦值，這個實例的內存被認為已經完全初始化。此時階段 1 完成。
 
-##### 阶段 2
+##### 階段 2
 
-- 从顶部构造器链一直往下，每个构造器链中类的指定构造器都有机会进一步定制实例。构造器此时可以访问`self`、修改它的属性并调用实例方法等等。
-- 最终，任意构造器链中的便利构造器可以有机会定制实例和使用`self`。
+- 從頂部構造器鏈一直往下，每個構造器鏈中類的指定構造器都有機會進一步定制實例。構造器此時可以訪問`self`、修改它的屬性並調用實例方法等等。
+- 最終，任意構造器鏈中的便利構造器可以有機會定制實例和使用`self`。
 
-下图展示了在假定的子类和父类之间的构造阶段 1：
+下圖展示了在假定的子類和父類之間的構造階段 1：
 
-![构建过程阶段1](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/twoPhaseInitialization01_2x.png)
+![構建過程階段1](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/twoPhaseInitialization01_2x.png)
 
-在这个例子中，构造过程从对子类中一个便利构造器的调用开始。这个便利构造器此时没法修改任何属性，它把构造任务代理给同一类中的指定构造器。
+在這個例子中，構造過程從對子類中一個便利構造器的調用開始。這個便利構造器此時沒法修改任何屬性，它把構造任務代理給同一類中的指定構造器。
 
-如安全检查 1 所示，指定构造器将确保所有子类的属性都有值。然后它将调用父类的指定构造器，并沿着构造器链一直往上完成父类的构造过程。
+如安全檢查 1 所示，指定構造器將確保所有子類的屬性都有值。然後它將調用父類的指定構造器，並沿著構造器鏈一直往上完成父類的構造過程。
 
-父类中的指定构造器确保所有父类的属性都有值。由于没有更多的父类需要初始化，也就无需继续向上代理。
+父類中的指定構造器確保所有父類的屬性都有值。由於沒有更多的父類需要初始化，也就無需繼續向上代理。
 
-一旦父类中所有属性都有了初始值，实例的内存被认为是完全初始化，阶段 1 完成。
+一旦父類中所有屬性都有了初始值，實例的內存被認為是完全初始化，階段 1 完成。
 
-以下展示了相同构造过程的阶段 2：
+以下展示了相同構造過程的階段 2：
 
-![构建过程阶段2](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/twoPhaseInitialization02_2x.png)
+![構建過程階段2](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/twoPhaseInitialization02_2x.png)
 
-父类中的指定构造器现在有机会进一步来定制实例（尽管这不是必须的）。
+父類中的指定構造器現在有機會進一步來定制實例（盡管這不是必須的）。
 
-一旦父类中的指定构造器完成调用，子类中的指定构造器可以执行更多的定制操作（这也不是必须的）。
+一旦父類中的指定構造器完成調用，子類中的指定構造器可以執行更多的定制操作（這也不是必須的）。
 
-最终，一旦子类的指定构造器完成调用，最开始被调用的便利构造器可以执行更多的定制操作。
+最終，一旦子類的指定構造器完成調用，最開始被調用的便利構造器可以執行更多的定制操作。
 
 <a name="initializer_inheritance_and_overriding"></a>
-### 构造器的继承和重写
+### 構造器的繼承和重寫
 
-跟 Objective-C 中的子类不同，Swift 中的子类默认情况下不会继承父类的构造器。Swift 的这种机制可以防止一个父类的简单构造器被一个更精细的子类继承，并被错误地用来创建子类的实例。
-
-> 注意  
-父类的构造器仅会在安全和适当的情况下被继承。具体内容请参考后续章节[构造器的自动继承](#automatic_initializer_inheritance)。
-
-假如你希望自定义的子类中能提供一个或多个跟父类相同的构造器，你可以在子类中提供这些构造器的自定义实现。
-
-当你在编写一个和父类中指定构造器相匹配的子类构造器时，你实际上是在重写父类的这个指定构造器。因此，你必须在定义子类构造器时带上`override`修饰符。即使你重写的是系统自动提供的默认构造器，也需要带上`override`修饰符，具体内容请参考[默认构造器](#default_initializers)。
-
-正如重写属性，方法或者是下标，`override`修饰符会让编译器去检查父类中是否有相匹配的指定构造器，并验证构造器参数是否正确。
+跟 Objective-C 中的子類不同，Swift 中的子類默認情況下不會繼承父類的構造器。Swift 的這種機制可以防止一個父類的簡單構造器被一個更精細的子類繼承，並被錯誤地用來創建子類的實例。
 
 > 注意  
-当你重写一个父类的指定构造器时，你总是需要写`override`修饰符，即使你的子类将父类的指定构造器重写为了便利构造器。
+父類的構造器僅會在安全和適當的情況下被繼承。具體內容請參考後續章節[構造器的自動繼承](#automatic_initializer_inheritance)。
 
-相反，如果你编写了一个和父类便利构造器相匹配的子类构造器，由于子类不能直接调用父类的便利构造器（每个规则都在上文[类的构造器代理规则](#initializer_delegation_for_class_types)有所描述），因此，严格意义上来讲，你的子类并未对一个父类构造器提供重写。最后的结果就是，你在子类中“重写”一个父类便利构造器时，不需要加`override`前缀。
+假如你希望自定義的子類中能提供一個或多個跟父類相同的構造器，你可以在子類中提供這些構造器的自定義實現。
 
-在下面的例子中定义了一个叫`Vehicle`的基类。基类中声明了一个存储型属性`numberOfWheels`，它是值为`0`的`Int`类型的存储型属性。`numberOfWheels`属性用于创建名为`descrpiption`的`String`类型的计算型属性：
+當你在編寫一個和父類中指定構造器相匹配的子類構造器時，你實際上是在重寫父類的這個指定構造器。因此，你必須在定義子類構造器時帶上`override`修飾符。即使你重寫的是系統自動提供的默認構造器，也需要帶上`override`修飾符，具體內容請參考[默認構造器](#default_initializers)。
+
+正如重寫屬性，方法或者是下標，`override`修飾符會讓編譯器去檢查父類中是否有相匹配的指定構造器，並驗證構造器參數是否正確。
+
+> 注意  
+當你重寫一個父類的指定構造器時，你總是需要寫`override`修飾符，即使你的子類將父類的指定構造器重寫為了便利構造器。
+
+相反，如果你編寫了一個和父類便利構造器相匹配的子類構造器，由於子類不能直接調用父類的便利構造器（每個規則都在上文[類的構造器代理規則](#initializer_delegation_for_class_types)有所描述），因此，嚴格意義上來講，你的子類並未對一個父類構造器提供重寫。最後的結果就是，你在子類中「重寫」一個父類便利構造器時，不需要加`override`前綴。
+
+在下面的例子中定義了一個叫`Vehicle`的基類。基類中聲明了一個存儲型屬性`numberOfWheels`，它是值為`0`的`Int`類型的存儲型屬性。`numberOfWheels`屬性用於創建名為`descrpiption`的`String`類型的計算型屬性：
 
 ```swift
 class Vehicle {
@@ -521,7 +521,7 @@ class Vehicle {
 }
 ```
 
-`Vehicle`类只为存储型属性提供默认值，而不自定义构造器。因此，它会自动获得一个默认构造器，具体内容请参考[默认构造器](#default_initializers)。自动获得的默认构造器总会是类中的指定构造器，它可以用于创建`numberOfWheels`为`0`的`Vehicle`实例：
+`Vehicle`類只為存儲型屬性提供默認值，而不自定義構造器。因此，它會自動獲得一個默認構造器，具體內容請參考[默認構造器](#default_initializers)。自動獲得的默認構造器總會是類中的指定構造器，它可以用於創建`numberOfWheels`為`0`的`Vehicle`實例：
 
 ```swift
 let vehicle = Vehicle()
@@ -529,7 +529,7 @@ print("Vehicle: \(vehicle.description)")
 // Vehicle: 0 wheel(s)
 ```
 
-下面例子中定义了一个`Vehicle`的子类`Bicycle`：
+下面例子中定義了一個`Vehicle`的子類`Bicycle`：
 
 ```swift
 class Bicycle: Vehicle {
@@ -540,11 +540,11 @@ class Bicycle: Vehicle {
 }
 ```
 
-子类`Bicycle`定义了一个自定义指定构造器`init()`。这个指定构造器和父类的指定构造器相匹配，所以`Bicycle`中的指定构造器需要带上`override`修饰符。
+子類`Bicycle`定義了一個自定義指定構造器`init()`。這個指定構造器和父類的指定構造器相匹配，所以`Bicycle`中的指定構造器需要帶上`override`修飾符。
 
-`Bicycle`的构造器`init()`以调用`super.init()`方法开始，这个方法的作用是调用`Bicycle`的父类`Vehicle`的默认构造器。这样可以确保`Bicycle`在修改属性之前，它所继承的属性`numberOfWheels`能被`Vehicle`类初始化。在调用`super.init()`之后，属性`numberOfWheels`的原值被新值`2`替换。
+`Bicycle`的構造器`init()`以調用`super.init()`方法開始，這個方法的作用是調用`Bicycle`的父類`Vehicle`的默認構造器。這樣可以確保`Bicycle`在修改屬性之前，它所繼承的屬性`numberOfWheels`能被`Vehicle`類初始化。在調用`super.init()`之後，屬性`numberOfWheels`的原值被新值`2`替換。
 
-如果你创建一个`Bicycle`实例，你可以调用继承的`description`计算型属性去查看属性`numberOfWheels`是否有改变：
+如果你創建一個`Bicycle`實例，你可以調用繼承的`description`計算型屬性去查看屬性`numberOfWheels`是否有改變：
 
 ```swift
 let bicycle = Bicycle()
@@ -553,34 +553,34 @@ print("Bicycle: \(bicycle.description)")
 ```
 
 > 注意  
-子类可以在初始化时修改继承来的变量属性，但是不能修改继承来的常量属性。
+子類可以在初始化時修改繼承來的變量屬性，但是不能修改繼承來的常量屬性。
 
 <a name="automatic_initializer_inheritance"></a>
-### 构造器的自动继承
+### 構造器的自動繼承
 
-如上所述，子类在默认情况下不会继承父类的构造器。但是如果满足特定条件，父类构造器是可以被自动继承的。在实践中，这意味着对于许多常见场景你不必重写父类的构造器，并且可以在安全的情况下以最小的代价继承父类的构造器。
+如上所述，子類在默認情況下不會繼承父類的構造器。但是如果滿足特定條件，父類構造器是可以被自動繼承的。在實踐中，這意味著對於許多常見場景你不必重寫父類的構造器，並且可以在安全的情況下以最小的代價繼承父類的構造器。
 
-假设你为子类中引入的所有新属性都提供了默认值，以下 2 个规则适用：
+假設你為子類中引入的所有新屬性都提供了默認值，以下 2 個規則適用：
 
-##### 规则 1
+##### 規則 1
 
-如果子类没有定义任何指定构造器，它将自动继承所有父类的指定构造器。
+如果子類沒有定義任何指定構造器，它將自動繼承所有父類的指定構造器。
 
-##### 规则 2
+##### 規則 2
 
-如果子类提供了所有父类指定构造器的实现——无论是通过规则 1 继承过来的，还是提供了自定义实现——它将自动继承所有父类的便利构造器。
+如果子類提供了所有父類指定構造器的實現——無論是通過規則 1 繼承過來的，還是提供了自定義實現——它將自動繼承所有父類的便利構造器。
 
-即使你在子类中添加了更多的便利构造器，这两条规则仍然适用。
+即使你在子類中添加了更多的便利構造器，這兩條規則仍然適用。
 
 > 注意  
-对于规则 2，子类可以将父类的指定构造器实现为便利构造器。
+對於規則 2，子類可以將父類的指定構造器實現為便利構造器。
 
 <a name="designated_and_convenience_initializers_in_action"></a>
-### 指定构造器和便利构造器实践
+### 指定構造器和便利構造器實踐
 
-接下来的例子将在实践中展示指定构造器、便利构造器以及构造器的自动继承。这个例子定义了包含三个类`Food`、`RecipeIngredient`以及`ShoppingListItem`的类层次结构，并将演示它们的构造器是如何相互作用的。
+接下來的例子將在實踐中展示指定構造器、便利構造器以及構造器的自動繼承。這個例子定義了包含三個類`Food`、`RecipeIngredient`以及`ShoppingListItem`的類層次結構，並將演示它們的構造器是如何相互作用的。
 
-类层次中的基类是`Food`，它是一个简单的用来封装食物名字的类。`Food`类引入了一个叫做`name`的`String`类型的属性，并且提供了两个构造器来创建`Food`实例：
+類層次中的基類是`Food`，它是一個簡單的用來封裝食物名字的類。`Food`類引入了一個叫做`name`的`String`類型的屬性，並且提供了兩個構造器來創建`Food`實例：
 
 ```swift
 class Food {
@@ -594,27 +594,27 @@ class Food {
 }
 ```
 
-下图中展示了`Food`的构造器链：
+下圖中展示了`Food`的構造器鏈：
 
-![Food构造器链](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializersExample01_2x.png)
+![Food構造器鏈](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializersExample01_2x.png)
 
-类类型没有默认的逐一成员构造器，所以`Food`类提供了一个接受单一参数`name`的指定构造器。这个构造器可以使用一个特定的名字来创建新的`Food`实例：
+類類型沒有默認的逐一成員構造器，所以`Food`類提供了一個接受單一參數`name`的指定構造器。這個構造器可以使用一個特定的名字來創建新的`Food`實例：
 
 ```swift
 let namedMeat = Food(name: "Bacon")
 // namedMeat 的名字是 "Bacon"
 ```
 
-`Food`类中的构造器`init(name: String)`被定义为一个指定构造器，因为它能确保`Food`实例的所有存储型属性都被初始化。`Food`类没有父类，所以`init(name: String)`构造器不需要调用`super.init()`来完成构造过程。
+`Food`類中的構造器`init(name: String)`被定義為一個指定構造器，因為它能確保`Food`實例的所有存儲型屬性都被初始化。`Food`類沒有父類，所以`init(name: String)`構造器不需要調用`super.init()`來完成構造過程。
 
-`Food`类同样提供了一个没有参数的便利构造器`init()`。这个`init()`构造器为新食物提供了一个默认的占位名字，通过横向代理到指定构造器`init(name: String)`并给参数`name`传值`[Unnamed]`来实现：
+`Food`類同樣提供了一個沒有參數的便利構造器`init()`。這個`init()`構造器為新食物提供了一個默認的占位名字，通過橫向代理到指定構造器`init(name: String)`並給參數`name`傳值`[Unnamed]`來實現：
 
 ```swift
 let mysteryMeat = Food()
 // mysteryMeat 的名字是 [Unnamed]
 ```
 
-类层级中的第二个类是`Food`的子类`RecipeIngredient`。`RecipeIngredient`类用来表示食谱中的一项原料。它引入了`Int`类型的属性`quantity`（以及从`Food`继承过来的`name`属性），并且定义了两个构造器来创建`RecipeIngredient`实例：
+類層級中的第二個類是`Food`的子類`RecipeIngredient`。`RecipeIngredient`類用來表示食譜中的一項原料。它引入了`Int`類型的屬性`quantity`（以及從`Food`繼承過來的`name`屬性），並且定義了兩個構造器來創建`RecipeIngredient`實例：
 
 ```swift
 class RecipeIngredient: Food {
@@ -629,21 +629,21 @@ class RecipeIngredient: Food {
 }
 ```
 
-下图中展示了`RecipeIngredient`类的构造器链：
+下圖中展示了`RecipeIngredient`類的構造器鏈：
 
-![RecipeIngredient构造器](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializersExample02_2x.png)
+![RecipeIngredient構造器](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializersExample02_2x.png)
 
-`RecipeIngredient`类拥有一个指定构造器`init(name: String, quantity: Int)`，它可以用来填充`RecipeIngredient`实例的所有属性值。这个构造器一开始先将传入的`quantity`参数赋值给`quantity`属性，这个属性也是唯一在`RecipeIngredient`中新引入的属性。随后，构造器向上代理到父类`Food`的`init(name: String)`。这个过程满足[两段式构造过程](#two_phase_initialization)中的安全检查 1。
+`RecipeIngredient`類擁有一個指定構造器`init(name: String, quantity: Int)`，它可以用來填充`RecipeIngredient`實例的所有屬性值。這個構造器一開始先將傳入的`quantity`參數賦值給`quantity`屬性，這個屬性也是唯一在`RecipeIngredient`中新引入的屬性。隨後，構造器向上代理到父類`Food`的`init(name: String)`。這個過程滿足[兩段式構造過程](#two_phase_initialization)中的安全檢查 1。
 
-`RecipeIngredient`还定义了一个便利构造器`init(name: String)`，它只通过`name`来创建`RecipeIngredient`的实例。这个便利构造器假设任意`RecipeIngredient`实例的`quantity`为`1`，所以不需要显式指明数量即可创建出实例。这个便利构造器的定义可以更加方便和快捷地创建实例，并且避免了创建多个`quantity`为`1`的`RecipeIngredient`实例时的代码重复。这个便利构造器只是简单地横向代理到类中的指定构造器，并为`quantity`参数传递`1`。
+`RecipeIngredient`還定義了一個便利構造器`init(name: String)`，它只通過`name`來創建`RecipeIngredient`的實例。這個便利構造器假設任意`RecipeIngredient`實例的`quantity`為`1`，所以不需要顯式指明數量即可創建出實例。這個便利構造器的定義可以更加方便和快捷地創建實例，並且避免了創建多個`quantity`為`1`的`RecipeIngredient`實例時的代碼重復。這個便利構造器只是簡單地橫向代理到類中的指定構造器，並為`quantity`參數傳遞`1`。
 
-注意，`RecipeIngredient`的便利构造器`init(name: String)`使用了跟`Food`中指定构造器`init(name: String)`相同的参数。由于这个便利构造器重写了父类的指定构造器`init(name: String)`，因此必须在前面使用`override`修饰符（参见[构造器的继承和重写](#initializer_inheritance_and_overriding)）。
+注意，`RecipeIngredient`的便利構造器`init(name: String)`使用了跟`Food`中指定構造器`init(name: String)`相同的參數。由於這個便利構造器重寫了父類的指定構造器`init(name: String)`，因此必須在前面使用`override`修飾符（參見[構造器的繼承和重寫](#initializer_inheritance_and_overriding)）。
 
-尽管`RecipeIngredient`将父类的指定构造器重写为了便利构造器，它依然提供了父类的所有指定构造器的实现。因此，`RecipeIngredient`会自动继承父类的所有便利构造器。
+盡管`RecipeIngredient`將父類的指定構造器重寫為了便利構造器，它依然提供了父類的所有指定構造器的實現。因此，`RecipeIngredient`會自動繼承父類的所有便利構造器。
 
-在这个例子中，`RecipeIngredient`的父类是`Food`，它有一个便利构造器`init()`。这个便利构造器会被`RecipeIngredient`继承。这个继承版本的`init()`在功能上跟`Food`提供的版本是一样的，只是它会代理到`RecipeIngredient`版本的`init(name: String)`而不是`Food`提供的版本。
+在這個例子中，`RecipeIngredient`的父類是`Food`，它有一個便利構造器`init()`。這個便利構造器會被`RecipeIngredient`繼承。這個繼承版本的`init()`在功能上跟`Food`提供的版本是一樣的，只是它會代理到`RecipeIngredient`版本的`init(name: String)`而不是`Food`提供的版本。
 
-所有的这三种构造器都可以用来创建新的`RecipeIngredient`实例：
+所有的這三種構造器都可以用來創建新的`RecipeIngredient`實例：
 
 ```swift
 let oneMysteryItem = RecipeIngredient()
@@ -651,9 +651,9 @@ let oneBacon = RecipeIngredient(name: "Bacon")
 let sixEggs = RecipeIngredient(name: "Eggs", quantity: 6)
 ```
 
-类层级中第三个也是最后一个类是`RecipeIngredient`的子类，叫做`ShoppingListItem`。这个类构建了购物单中出现的某一种食谱原料。
+類層級中第三個也是最後一個類是`RecipeIngredient`的子類，叫做`ShoppingListItem`。這個類構建了購物單中出現的某一種食譜原料。
 
-购物单中的每一项总是从未购买状态开始的。为了呈现这一事实，`ShoppingListItem`引入了一个布尔类型的属性`purchased`，它的默认值是`false`。`ShoppingListItem`还添加了一个计算型属性`description`，它提供了关于`ShoppingListItem`实例的一些文字描述：
+購物單中的每一項總是從未購買狀態開始的。為了呈現這一事實，`ShoppingListItem`引入了一個布爾類型的屬性`purchased`，它的默認值是`false`。`ShoppingListItem`還添加了一個計算型屬性`description`，它提供了關於`ShoppingListItem`實例的一些文字描述：
 
 ```swift
 class ShoppingListItem: RecipeIngredient {
@@ -667,15 +667,15 @@ class ShoppingListItem: RecipeIngredient {
 ```
 
 > 注意  
-`ShoppingListItem`没有定义构造器来为`purchased`提供初始值，因为添加到购物单的物品的初始状态总是未购买。
+`ShoppingListItem`沒有定義構造器來為`purchased`提供初始值，因為添加到購物單的物品的初始狀態總是未購買。
 
-由于它为自己引入的所有属性都提供了默认值，并且自己没有定义任何构造器，`ShoppingListItem`将自动继承所有父类中的指定构造器和便利构造器。
+由於它為自己引入的所有屬性都提供了默認值，並且自己沒有定義任何構造器，`ShoppingListItem`將自動繼承所有父類中的指定構造器和便利構造器。
 
-下图展示了这三个类的构造器链：
+下圖展示了這三個類的構造器鏈：
 
-![三类构造器图](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializersExample03_2x.png)
+![三類構造器圖](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/initializersExample03_2x.png)
 
-你可以使用全部三个继承来的构造器来创建`ShoppingListItem`的新实例：
+你可以使用全部三個繼承來的構造器來創建`ShoppingListItem`的新實例：
 
 ```swift
 var breakfastList = [
@@ -693,24 +693,24 @@ for item in breakfastList {
 // 6 x eggs ✘
 ```
 
-如上所述，例子中通过字面量方式创建了一个数组`breakfastList`，它包含了三个`ShoppingListItem`实例，因此数组的类型也能被自动推导为`[ShoppingListItem]`。在数组创建完之后，数组中第一个`ShoppingListItem`实例的名字从`[Unnamed]`更改为`Orange juice`，并标记为已购买。打印数组中每个元素的描述显示了它们都已按照预期被赋值。
+如上所述，例子中通過字面量方式創建了一個數組`breakfastList`，它包含了三個`ShoppingListItem`實例，因此數組的類型也能被自動推導為`[ShoppingListItem]`。在數組創建完之後，數組中第一個`ShoppingListItem`實例的名字從`[Unnamed]`更改為`Orange juice`，並標記為已購買。打印數組中每個元素的描述顯示了它們都已按照預期被賦值。
 
 <a name="failable_initializers"></a>
-## 可失败构造器
+## 可失敗構造器
 
-如果一个类、结构体或枚举类型的对象，在构造过程中有可能失败，则为其定义一个可失败构造器。这里所指的“失败”是指，如给构造器传入无效的参数值，或缺少某种所需的外部资源，又或是不满足某种必要的条件等。
+如果一個類、結構體或枚舉類型的對象，在構造過程中有可能失敗，則為其定義一個可失敗構造器。這裡所指的「失敗」是指，如給構造器傳入無效的參數值，或缺少某種所需的外部資源，又或是不滿足某種必要的條件等。
 
-为了妥善处理这种构造过程中可能会失败的情况。你可以在一个类，结构体或是枚举类型的定义中，添加一个或多个可失败构造器。其语法为在`init`关键字后面添加问号(`init?`)。
-
-> 注意  
-可失败构造器的参数名和参数类型，不能与其它非可失败构造器的参数名，及其参数类型相同。
-
-可失败构造器会创建一个类型为自身类型的可选类型的对象。你通过`return nil`语句来表明可失败构造器在何种情况下应该“失败”。
+為了妥善處理這種構造過程中可能會失敗的情況。你可以在一個類，結構體或是枚舉類型的定義中，添加一個或多個可失敗構造器。其語法為在`init`關鍵字後面添加問號(`init?`)。
 
 > 注意  
-严格来说，构造器都不支持返回值。因为构造器本身的作用，只是为了确保对象能被正确构造。因此你只是用`return nil`表明可失败构造器构造失败，而不要用关键字`return`来表明构造成功。
+可失敗構造器的參數名和參數類型，不能與其它非可失敗構造器的參數名，及其參數類型相同。
 
-例如，实现针对数字类型转换的可失败构造器。确保数字类型之间的转换能保持精确的值，使用这个 `init(exactly:)` 构造器。如果类型转换不能保持值不变，则这个构造器构造失败。  
+可失敗構造器會創建一個類型為自身類型的可選類型的對象。你通過`return nil`語句來表明可失敗構造器在何種情況下應該「失敗」。
+
+> 注意  
+嚴格來說，構造器都不支持返回值。因為構造器本身的作用，只是為了確保對象能被正確構造。因此你只是用`return nil`表明可失敗構造器構造失敗，而不要用關鍵字`return`來表明構造成功。
+
+例如，實現針對數字類型轉換的可失敗構造器。確保數字類型之間的轉換能保持精確的值，使用這個 `init(exactly:)` 構造器。如果類型轉換不能保持值不變，則這個構造器構造失敗。  
 
 ```
 let wholeNumber: Double = 12345.0
@@ -722,7 +722,7 @@ if let valueMaintained = Int(exactly: wholeNumber) {
 // 打印 "12345.0 conversion to Int maintains value"
  
 let valueChanged = Int(exactly: pi)
-// valueChanged 是 Int? 类型, 不是 Int 类型
+// valueChanged 是 Int? 類型, 不是 Int 類型
  
 if valueChanged == nil {
     print("\(pi) conversion to Int does not maintain value")
@@ -730,7 +730,7 @@ if valueChanged == nil {
 // 打印 "3.14159 conversion to Int does not maintain value"
 ```
 
-下例中，定义了一个名为`Animal`的结构体，其中有一个名为`species`的`String`类型的常量属性。同时该结构体还定义了一个接受一个名为`species`的`String`类型参数的可失败构造器。这个可失败构造器检查传入的参数是否为一个空字符串。如果为空字符串，则构造失败。否则，`species`属性被赋值，构造成功。
+下例中，定義了一個名為`Animal`的結構體，其中有一個名為`species`的`String`類型的常量屬性。同時該結構體還定義了一個接受一個名為`species`的`String`類型參數的可失敗構造器。這個可失敗構造器檢查傳入的參數是否為一個空字符串。如果為空字符串，則構造失敗。否則，`species`屬性被賦值，構造成功。
 
 ```swift
 struct Animal {
@@ -742,11 +742,11 @@ struct Animal {
 }
 ```
 
-你可以通过该可失败构造器来构建一个`Animal`的实例，并检查构造过程是否成功：
+你可以通過該可失敗構造器來構建一個`Animal`的實例，並檢查構造過程是否成功：
 
 ```swift
 let someCreature = Animal(species: "Giraffe")
-// someCreature 的类型是 Animal? 而不是 Animal
+// someCreature 的類型是 Animal? 而不是 Animal
 
 if let giraffe = someCreature {
     print("An animal was initialized with a species of \(giraffe.species)")
@@ -754,11 +754,11 @@ if let giraffe = someCreature {
 // 打印 "An animal was initialized with a species of Giraffe"
 ```
 
-如果你给该可失败构造器传入一个空字符串作为其参数，则会导致构造失败：
+如果你給該可失敗構造器傳入一個空字符串作為其參數，則會導致構造失敗：
 
 ```swift
 let anonymousCreature = Animal(species: "")
-// anonymousCreature 的类型是 Animal?, 而不是 Animal
+// anonymousCreature 的類型是 Animal?, 而不是 Animal
 
 if anonymousCreature == nil {
     print("The anonymous creature could not be initialized")
@@ -767,14 +767,14 @@ if anonymousCreature == nil {
 ```
 
 > 注意  
-空字符串（如`""`，而不是`"Giraffe"`）和一个值为`nil`的可选类型的字符串是两个完全不同的概念。上例中的空字符串（`""`）其实是一个有效的，非可选类型的字符串。这里我们之所以让`Animal`的可失败构造器构造失败，只是因为对于`Animal`这个类的`species`属性来说，它更适合有一个具体的值，而不是空字符串。
+空字符串（如`""`，而不是`"Giraffe"`）和一個值為`nil`的可選類型的字符串是兩個完全不同的概念。上例中的空字符串（`""`）其實是一個有效的，非可選類型的字符串。這裡我們之所以讓`Animal`的可失敗構造器構造失敗，只是因為對於`Animal`這個類的`species`屬性來說，它更適合有一個具體的值，而不是空字符串。
 
 <a name="failable_nitializers_for_enumerations"></a>
-### 枚举类型的可失败构造器
+### 枚舉類型的可失敗構造器
 
-你可以通过一个带一个或多个参数的可失败构造器来获取枚举类型中特定的枚举成员。如果提供的参数无法匹配任何枚举成员，则构造失败。
+你可以通過一個帶一個或多個參數的可失敗構造器來獲取枚舉類型中特定的枚舉成員。如果提供的參數無法匹配任何枚舉成員，則構造失敗。
 
-下例中，定义了一个名为`TemperatureUnit`的枚举类型。其中包含了三个可能的枚举成员(`Kelvin`，`Celsius`，和`Fahrenheit`)，以及一个根据`Character`值找出所对应的枚举成员的可失败构造器：
+下例中，定義了一個名為`TemperatureUnit`的枚舉類型。其中包含了三個可能的枚舉成員(`Kelvin`，`Celsius`，和`Fahrenheit`)，以及一個根據`Character`值找出所對應的枚舉成員的可失敗構造器：
 
 ```swift
 enum TemperatureUnit {
@@ -794,7 +794,7 @@ enum TemperatureUnit {
 }
 ```
 
-你可以利用该可失败构造器在三个枚举成员中获取一个相匹配的枚举成员，当参数的值不能与任何枚举成员相匹配时，则构造失败：
+你可以利用該可失敗構造器在三個枚舉成員中獲取一個相匹配的枚舉成員，當參數的值不能與任何枚舉成員相匹配時，則構造失敗：
 
 ```swift
 let fahrenheitUnit = TemperatureUnit(symbol: "F")
@@ -811,11 +811,11 @@ if unknownUnit == nil {
 ```
 
 <a name="failable_initializers_for_enumerations_with_raw_values"></a>
-### 带原始值的枚举类型的可失败构造器
+### 帶原始值的枚舉類型的可失敗構造器
 
-带原始值的枚举类型会自带一个可失败构造器`init?(rawValue:)`，该可失败构造器有一个名为`rawValue`的参数，其类型和枚举类型的原始值类型一致，如果该参数的值能够和某个枚举成员的原始值匹配，则该构造器会构造相应的枚举成员，否则构造失败。
+帶原始值的枚舉類型會自帶一個可失敗構造器`init?(rawValue:)`，該可失敗構造器有一個名為`rawValue`的參數，其類型和枚舉類型的原始值類型一致，如果該參數的值能夠和某個枚舉成員的原始值匹配，則該構造器會構造相應的枚舉成員，否則構造失敗。
 
-因此上面的`TemperatureUnit`的例子可以重写为：
+因此上面的`TemperatureUnit`的例子可以重寫為：
 
 ```swift
 enum TemperatureUnit: Character {
@@ -836,16 +836,16 @@ if unknownUnit == nil {
 ```
 
 <a name="propagation_of_initialization_failure"></a>
-### 构造失败的传递
+### 構造失敗的傳遞
 
-类，结构体，枚举的可失败构造器可以横向代理到类型中的其他可失败构造器。类似的，子类的可失败构造器也能向上代理到父类的可失败构造器。
+類，結構體，枚舉的可失敗構造器可以橫向代理到類型中的其他可失敗構造器。類似的，子類的可失敗構造器也能向上代理到父類的可失敗構造器。
 
-无论是向上代理还是横向代理，如果你代理到的其他可失败构造器触发构造失败，整个构造过程将立即终止，接下来的任何构造代码不会再被执行。
+無論是向上代理還是橫向代理，如果你代理到的其他可失敗構造器觸發構造失敗，整個構造過程將立即終止，接下來的任何構造代碼不會再被執行。
 
 > 注意  
-可失败构造器也可以代理到其它的非可失败构造器。通过这种方式，你可以增加一个可能的失败状态到现有的构造过程中。
+可失敗構造器也可以代理到其它的非可失敗構造器。通過這種方式，你可以增加一個可能的失敗狀態到現有的構造過程中。
 
-下面这个例子，定义了一个名为`CartItem`的`Product`类的子类。这个类建立了一个在线购物车中的物品的模型，它有一个名为`quantity`的常量存储型属性，并确保该属性的值至少为`1`：
+下面這個例子，定義了一個名為`CartItem`的`Product`類的子類。這個類建立了一個在線購物車中的物品的模型，它有一個名為`quantity`的常量存儲型屬性，並確保該屬性的值至少為`1`：
 
 
 ```swift
@@ -867,9 +867,9 @@ class CartItem: Product {
 }
 ```
 
-`CartItem` 可失败构造器首先验证接收的 `quantity` 值是否大于等于 1 。倘若 `quantity` 值无效，则立即终止整个构造过程，返回失败结果，且不再执行余下代码。同样地，`Product` 的可失败构造器首先检查 `name` 值，假如 `name` 值为空字符串，则构造器立即执行失败。
+`CartItem` 可失敗構造器首先驗證接收的 `quantity` 值是否大於等於 1 。倘若 `quantity` 值無效，則立即終止整個構造過程，返回失敗結果，且不再執行余下代碼。同樣地，`Product` 的可失敗構造器首先檢查 `name` 值，假如 `name` 值為空字符串，則構造器立即執行失敗。
 
-如果你通过传入一个非空字符串 `name` 以及一个值大于等于 1 的 `quantity` 来创建一个 `CartItem` 实例，那么构造方法能够成功被执行：
+如果你通過傳入一個非空字符串 `name` 以及一個值大於等於 1 的 `quantity` 來創建一個 `CartItem` 實例，那麼構造方法能夠成功被執行：
 
 ```swift
 if let twoSocks = CartItem(name: "sock", quantity: 2) {
@@ -878,7 +878,7 @@ if let twoSocks = CartItem(name: "sock", quantity: 2) {
 // 打印 "Item: sock, quantity: 2"
 ```
 
-倘若你以一个值为 0 的 `quantity` 来创建一个 `CartItem` 实例，那么将导致 `CartItem` 构造器失败：
+倘若你以一個值為 0 的 `quantity` 來創建一個 `CartItem` 實例，那麼將導致 `CartItem` 構造器失敗：
 
 ```swift
 if let zeroShirts = CartItem(name: "shirt", quantity: 0) {
@@ -889,7 +889,7 @@ if let zeroShirts = CartItem(name: "shirt", quantity: 0) {
 // 打印 "Unable to initialize zero shirts"
 ```  
 
-同样地，如果你尝试传入一个值为空字符串的 `name`来创建一个 `CartItem` 实例，那么将导致父类 `Product` 的构造过程失败：
+同樣地，如果你嘗試傳入一個值為空字符串的 `name`來創建一個 `CartItem` 實例，那麼將導致父類 `Product` 的構造過程失敗：
 
 ```swift
 if let oneUnnamed = CartItem(name: "", quantity: 1) {
@@ -901,23 +901,23 @@ if let oneUnnamed = CartItem(name: "", quantity: 1) {
 ```
 
 <a name="overriding_a_failable_initializer"></a>
-### 重写一个可失败构造器
+### 重寫一個可失敗構造器
 
-如同其它的构造器，你可以在子类中重写父类的可失败构造器。或者你也可以用子类的非可失败构造器重写一个父类的可失败构造器。这使你可以定义一个不会构造失败的子类，即使父类的构造器允许构造失败。
+如同其它的構造器，你可以在子類中重寫父類的可失敗構造器。或者你也可以用子類的非可失敗構造器重寫一個父類的可失敗構造器。這使你可以定義一個不會構造失敗的子類，即使父類的構造器允許構造失敗。
 
-注意，当你用子类的非可失败构造器重写父类的可失败构造器时，向上代理到父类的可失败构造器的唯一方式是对父类的可失败构造器的返回值进行强制解包。
+注意，當你用子類的非可失敗構造器重寫父類的可失敗構造器時，向上代理到父類的可失敗構造器的唯一方式是對父類的可失敗構造器的返回值進行強制解包。
 
 > 注意  
-你可以用非可失败构造器重写可失败构造器，但反过来却不行。
+你可以用非可失敗構造器重寫可失敗構造器，但反過來卻不行。
 
-下例定义了一个名为`Document`的类，`name`属性的值必须为一个非空字符串或`nil`，但不能是一个空字符串：
+下例定義了一個名為`Document`的類，`name`屬性的值必須為一個非空字符串或`nil`，但不能是一個空字符串：
 
 ```swift
 class Document {
     var name: String?
-    // 该构造器创建了一个 name 属性的值为 nil 的 document 实例
+    // 該構造器創建了一個 name 屬性的值為 nil 的 document 實例
     init() {}
-    // 该构造器创建了一个 name 属性的值为非空字符串的 document 实例
+    // 該構造器創建了一個 name 屬性的值為非空字符串的 document 實例
     init?(name: String) {
         self.name = name
         if name.isEmpty { return nil }
@@ -925,7 +925,7 @@ class Document {
 }
 ```
 
-下面这个例子，定义了一个`Document`类的子类`AutomaticallyNamedDocument`。这个子类重写了父类的两个指定构造器，确保了无论是使用`init()`构造器，还是使用`init(name:)`构造器并为参数传递空字符串，生成的实例中的`name`属性总有初始`"[Untitled]"`：
+下面這個例子，定義了一個`Document`類的子類`AutomaticallyNamedDocument`。這個子類重寫了父類的兩個指定構造器，確保了無論是使用`init()`構造器，還是使用`init(name:)`構造器並為參數傳遞空字符串，生成的實例中的`name`屬性總有初始`"[Untitled]"`：
 
 ```swift
 class AutomaticallyNamedDocument: Document {
@@ -944,9 +944,9 @@ class AutomaticallyNamedDocument: Document {
 }
 ```
 
-`AutomaticallyNamedDocument`用一个非可失败构造器`init(name:)`重写了父类的可失败构造器`init?(name:)`。因为子类用另一种方式处理了空字符串的情况，所以不再需要一个可失败构造器，因此子类用一个非可失败构造器代替了父类的可失败构造器。
+`AutomaticallyNamedDocument`用一個非可失敗構造器`init(name:)`重寫了父類的可失敗構造器`init?(name:)`。因為子類用另一種方式處理了空字符串的情況，所以不再需要一個可失敗構造器，因此子類用一個非可失敗構造器代替了父類的可失敗構造器。
 
-你可以在子类的非可失败构造器中使用强制解包来调用父类的可失败构造器。比如，下面的`UntitledDocument`子类的`name`属性的值总是`"[Untitled]"`，它在构造过程中使用了父类的可失败构造器`init?(name:)`：
+你可以在子類的非可失敗構造器中使用強制解包來調用父類的可失敗構造器。比如，下面的`UntitledDocument`子類的`name`屬性的值總是`"[Untitled]"`，它在構造過程中使用了父類的可失敗構造器`init?(name:)`：
 
 ```swift
 class UntitledDocument: Document {
@@ -956,72 +956,72 @@ class UntitledDocument: Document {
 }
 ```
 
-在这个例子中，如果在调用父类的可失败构造器`init?(name:)`时传入的是空字符串，那么强制解包操作会引发运行时错误。不过，因为这里是通过非空的字符串常量来调用它，所以并不会发生运行时错误。
+在這個例子中，如果在調用父類的可失敗構造器`init?(name:)`時傳入的是空字符串，那麼強制解包操作會引發運行時錯誤。不過，因為這裡是通過非空的字符串常量來調用它，所以並不會發生運行時錯誤。
 
 <a name="the_init!_failable_initializer"></a>
-### 可失败构造器 init!
+### 可失敗構造器 init!
 
-通常来说我们通过在`init`关键字后添加问号的方式（`init?`）来定义一个可失败构造器，但你也可以通过在`init`后面添加惊叹号的方式来定义一个可失败构造器（`init!`），该可失败构造器将会构建一个对应类型的隐式解包可选类型的对象。
+通常來說我們通過在`init`關鍵字後添加問號的方式（`init?`）來定義一個可失敗構造器，但你也可以通過在`init`後面添加驚嘆號的方式來定義一個可失敗構造器（`init!`），該可失敗構造器將會構建一個對應類型的隱式解包可選類型的對象。
 
-你可以在`init?`中代理到`init!`，反之亦然。你也可以用`init?`重写`init!`，反之亦然。你还可以用`init`代理到`init!`，不过，一旦`init!`构造失败，则会触发一个断言。
+你可以在`init?`中代理到`init!`，反之亦然。你也可以用`init?`重寫`init!`，反之亦然。你還可以用`init`代理到`init!`，不過，一旦`init!`構造失敗，則會觸發一個斷言。
 
 <a name="required_initializers"></a>
-## 必要构造器
+## 必要構造器
 
-在类的构造器前添加`required`修饰符表明所有该类的子类都必须实现该构造器：
+在類的構造器前添加`required`修飾符表明所有該類的子類都必須實現該構造器：
 
 ```swift
 class SomeClass {
     required init() {
-        // 构造器的实现代码
+        // 構造器的實現代碼
     }
 }
 ```
 
-在子类重写父类的必要构造器时，必须在子类的构造器前也添加`required`修饰符，表明该构造器要求也应用于继承链后面的子类。在重写父类中必要的指定构造器时，不需要添加`override`修饰符：
+在子類重寫父類的必要構造器時，必須在子類的構造器前也添加`required`修飾符，表明該構造器要求也應用於繼承鏈後面的子類。在重寫父類中必要的指定構造器時，不需要添加`override`修飾符：
 
 ```swift
 class SomeSubclass: SomeClass {
     required init() {
-        // 构造器的实现代码
+        // 構造器的實現代碼
     }
 }
 ```
 
 > 注意  
-如果子类继承的构造器能满足必要构造器的要求，则无须在子类中显式提供必要构造器的实现。
+如果子類繼承的構造器能滿足必要構造器的要求，則無須在子類中顯式提供必要構造器的實現。
 
 <a name="setting_a_default_property_value_with_a_closure_or_function"></a>
-## 通过闭包或函数设置属性的默认值
+## 通過閉包或函數設置屬性的默認值
 
-如果某个存储型属性的默认值需要一些定制或设置，你可以使用闭包或全局函数为其提供定制的默认值。每当某个属性所在类型的新实例被创建时，对应的闭包或函数会被调用，而它们的返回值会当做默认值赋值给这个属性。
+如果某個存儲型屬性的默認值需要一些定制或設置，你可以使用閉包或全局函數為其提供定制的默認值。每當某個屬性所在類型的新實例被創建時，對應的閉包或函數會被調用，而它們的返回值會當做默認值賦值給這個屬性。
 
-这种类型的闭包或函数通常会创建一个跟属性类型相同的临时变量，然后修改它的值以满足预期的初始状态，最后返回这个临时变量，作为属性的默认值。
+這種類型的閉包或函數通常會創建一個跟屬性類型相同的臨時變量，然後修改它的值以滿足預期的初始狀態，最後返回這個臨時變量，作為屬性的默認值。
 
-下面介绍了如何用闭包为属性提供默认值：
+下面介紹了如何用閉包為屬性提供默認值：
 
 ```swift
 class SomeClass {
     let someProperty: SomeType = {
-        // 在这个闭包中给 someProperty 创建一个默认值
-        // someValue 必须和 SomeType 类型相同
+        // 在這個閉包中給 someProperty 創建一個默認值
+        // someValue 必須和 SomeType 類型相同
         return someValue
     }()
 }
 ```
 
-注意闭包结尾的大括号后面接了一对空的小括号。这用来告诉 Swift 立即执行此闭包。如果你忽略了这对括号，相当于将闭包本身作为值赋值给了属性，而不是将闭包的返回值赋值给属性。
+注意閉包結尾的大括號後面接了一對空的小括號。這用來告訴 Swift 立即執行此閉包。如果你忽略了這對括號，相當於將閉包本身作為值賦值給了屬性，而不是將閉包的返回值賦值給屬性。
 
 > 注意  
-如果你使用闭包来初始化属性，请记住在闭包执行时，实例的其它部分都还没有初始化。这意味着你不能在闭包里访问其它属性，即使这些属性有默认值。同样，你也不能使用隐式的`self`属性，或者调用任何实例方法。
+如果你使用閉包來初始化屬性，請記住在閉包執行時，實例的其它部分都還沒有初始化。這意味著你不能在閉包裡訪問其它屬性，即使這些屬性有默認值。同樣，你也不能使用隱式的`self`屬性，或者調用任何實例方法。
 
-下面例子中定义了一个结构体`Checkerboard`，它构建了西洋跳棋游戏的棋盘：
+下面例子中定義了一個結構體`Checkerboard`，它構建了西洋跳棋游戲的棋盤：
 
-![西洋跳棋棋盘](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/chessBoard_2x.png)
+![西洋跳棋棋盤](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Art/chessBoard_2x.png)
 
-西洋跳棋游戏在一副黑白格交替的 8 x 8 的棋盘中进行。为了呈现这副游戏棋盘，`Checkerboard`结构体定义了一个属性`boardColors`，它是一个包含`100`个`Bool`值的数组。在数组中，值为`true`的元素表示一个黑格，值为`false`的元素表示一个白格。数组中第一个元素代表棋盘上左上角的格子，最后一个元素代表棋盘上右下角的格子。
+西洋跳棋游戲在一副黑白格交替的 8 x 8 的棋盤中進行。為了呈現這副游戲棋盤，`Checkerboard`結構體定義了一個屬性`boardColors`，它是一個包含`100`個`Bool`值的數組。在數組中，值為`true`的元素表示一個黑格，值為`false`的元素表示一個白格。數組中第一個元素代表棋盤上左上角的格子，最後一個元素代表棋盤上右下角的格子。
 
-`boardColor`数组是通过一个闭包来初始化并设置颜色值的：
+`boardColor`數組是通過一個閉包來初始化並設置顏色值的：
 
 ```swift
 struct Checkerboard {
@@ -1043,7 +1043,7 @@ struct Checkerboard {
 }
 ```
 
-每当一个新的`Checkerboard`实例被创建时，赋值闭包会被执行，`boardColors`的默认值会被计算出来并返回。上面例子中描述的闭包将计算出棋盘中每个格子对应的颜色，并将这些值保存到一个临时数组`temporaryBoard`中，最后在构建完成时将此数组作为闭包返回值返回。这个返回的数组会保存到`boardColors`中，并可以通过工具函数`squareIsBlackAtRow`来查询：
+每當一個新的`Checkerboard`實例被創建時，賦值閉包會被執行，`boardColors`的默認值會被計算出來並返回。上面例子中描述的閉包將計算出棋盤中每個格子對應的顏色，並將這些值保存到一個臨時數組`temporaryBoard`中，最後在構建完成時將此數組作為閉包返回值返回。這個返回的數組會保存到`boardColors`中，並可以通過工具函數`squareIsBlackAtRow`來查詢：
 
 ```swift
 let board = Checkerboard()

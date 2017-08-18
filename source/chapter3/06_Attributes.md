@@ -2,40 +2,40 @@
 -----------------
 
 > 1.0
-> 翻译：[Hawstein](https://github.com/Hawstein)
-> 校对：[numbbbbb](https://github.com/numbbbbb), [stanzhai](https://github.com/stanzhai)
+> 翻譯：[Hawstein](https://github.com/Hawstein)
+> 校對：[numbbbbb](https://github.com/numbbbbb), [stanzhai](https://github.com/stanzhai)
 
 > 2.0
-> 翻译+校对：[KYawn](https://github.com/KYawn)
+> 翻譯+校對：[KYawn](https://github.com/KYawn)
 
 > 2.1
-> 翻译：[小铁匠Linus](https://github.com/kevin833752)
+> 翻譯：[小鐵匠Linus](https://github.com/kevin833752)
 
-本页内容包括：
+本頁內容包括：
 
-- [声明特性](#declaration_attributes)
-- [Interface Builder 使用的声明特性](#declaration_attributes_used_by_interface_builder)
-- [类型特性](#type_attributes)
+- [聲明特性](#declaration_attributes)
+- [Interface Builder 使用的聲明特性](#declaration_attributes_used_by_interface_builder)
+- [類型特性](#type_attributes)
 
-特性提供了有关声明和类型的更多信息。在Swift中有两种特性，分别用于修饰声明和类型。
+特性提供了有關聲明和類型的更多信息。在Swift中有兩種特性，分別用於修飾聲明和類型。
 
-您可以通过以下方式指定一个特性:符号`@`后跟特性的名称和特性接收的任何参数：
+您可以通過以下方式指定一個特性:符號`@`後跟特性的名稱和特性接收的任何參數：
 
 > @ `特性名`
 
-> @ `特性名`（`特性参数`）
+> @ `特性名`（`特性參數`）
 
-有些声明特性通过接收参数来指定特性的更多信息以及它是如何修饰某个特定的声明的。这些特性的参数写在圆括号内，它们的格式由它们所属的特性来定义。
+有些聲明特性通過接收參數來指定特性的更多信息以及它是如何修飾某個特定的聲明的。這些特性的參數寫在圓括號內，它們的格式由它們所屬的特性來定義。
 
 <a name="declaration_attributes"></a>
-##声明特性
-声明特性只能应用于声明。
+##聲明特性
+聲明特性只能應用於聲明。
 
 `available`
 
-将 `available` 特性用于声明时，表示该声明的生命周期与特定的平台和操作系统版本有关。
+將 `available` 特性用於聲明時，表示該聲明的生命周期與特定的平台和操作系統版本有關。
 
-`available` 特性经常与参数列表一同出现，该参数列表至少有两个特性参数，参数之间由逗号分隔。这些参数由以下这些平台名字中的一个起头：
+`available` 特性經常與參數列表一同出現，該參數列表至少有兩個特性參數，參數之間由逗號分隔。這些參數由以下這些平台名字中的一個起頭：
 
 - iOS
 - iOSApplicationExtension
@@ -46,113 +46,113 @@
 - tvOS
 - tvOSApplicationExtension
 
-当然，你也可以用一个星号（*）来表示上面提到的所有平台。
-其余的参数，可以按照任何顺序出现，并且可以添加关于声明生命周期的附加信息，包括重要事件。
+當然，你也可以用一個星號（*）來表示上面提到的所有平台。
+其余的參數，可以按照任何順序出現，並且可以添加關於聲明生命周期的附加信息，包括重要事件。
 
-- `unavailable`参数表示该声明在指定的平台上是无效的。
-- `introduced` 参数表示指定平台从哪一版本开始引入该声明。格式如下：
+- `unavailable`參數表示該聲明在指定的平台上是無效的。
+- `introduced` 參數表示指定平台從哪一版本開始引入該聲明。格式如下：
 
-`introduced`=`版本号`
+`introduced`=`版本號`
 
-*版本号*由一个或多个正整数构成，由句点分隔的。
+*版本號*由一個或多個正整數構成，由句點分隔的。
 
-- `deprecated`参数表示指定平台从哪一版本开始弃用该声明。格式如下：
+- `deprecated`參數表示指定平台從哪一版本開始棄用該聲明。格式如下：
 
-`deprecated`=`版本号`
+`deprecated`=`版本號`
 
-可选的*版本号*由一个或多个正整数构成，由句点分隔的。省略版本号表示该声明目前已弃用，当弃用出现时无需给出任何有关信息。如果你省略了版本号，冒号（:）也可省略。
+可選的*版本號*由一個或多個正整數構成，由句點分隔的。省略版本號表示該聲明目前已棄用，當棄用出現時無需給出任何有關信息。如果你省略了版本號，冒號（:）也可省略。
 
-- `obsoleted` 参数表示指定平台从哪一版本开始废弃该声明。当一个声明被废弃后，它就从平台中移除，不能再被使用。格式如下：
+- `obsoleted` 參數表示指定平台從哪一版本開始廢棄該聲明。當一個聲明被廢棄後，它就從平台中移除，不能再被使用。格式如下：
 
-`obsoleted`=`版本号`
+`obsoleted`=`版本號`
 
-*版本号*由一个或多个正整数构成，由句点分隔的。
+*版本號*由一個或多個正整數構成，由句點分隔的。
 
-- `message` 参数用来提供文本信息。当使用被弃用或者被废弃的声明时，编译器会抛出警告或错误信息。格式如下：
+- `message` 參數用來提供文本信息。當使用被棄用或者被廢棄的聲明時，編譯器會拋出警告或錯誤信息。格式如下：
 
-`message`=`信息内容`
+`message`=`信息內容`
 
-信息内容由一个字符串构成。
+信息內容由一個字符串構成。
 
-- `renamed` 参数用来提供文本信息，用以表示被重命名的声明的新名字。当使用声明的旧名字时，编译器会报错提示新名字。格式如下：
+- `renamed` 參數用來提供文本信息，用以表示被重命名的聲明的新名字。當使用聲明的舊名字時，編譯器會報錯提示新名字。格式如下：
 
 `renamed`=`新名字`
 
-新名字由一个字符串构成。
+新名字由一個字符串構成。
 
-你可以将`renamed` 参数和 `unavailable` 参数以及类型别名声明组合使用，以此向用户表示某个声明已经被重命名。当某个声明的名字在一个框架或者库的不同发布版本间发生变化时，这会相当有用。
+你可以將`renamed` 參數和 `unavailable` 參數以及類型別名聲明組合使用，以此向用戶表示某個聲明已經被重命名。當某個聲明的名字在一個框架或者庫的不同發布版本間發生變化時，這會相當有用。
 
 ```swift
-// 首发版本
+// 首發版本
 protocol MyProtocol {
-// 这里是协议定义
+// 這裡是協議定義
 }
 ```
 
 ```swift
-// 后续版本重命名了 MyProtocol
+// 後續版本重命名了 MyProtocol
 protocol MyRenamedProtocol {
-// 这里是协议定义
+// 這裡是協議定義
 }
 @available(*, unavailable, renamed:"MyRenamedProtocol")
 typealias MyProtocol = MyRenamedProtocol
 ```
 
-你可以在某个声明上使用多个 `available` 特性，以指定该声明在不同平台上的可用性。编译器只有在当前目标平台和 `available` 特性中指定的平台匹配时，才会使用 `available` 特性。
+你可以在某個聲明上使用多個 `available` 特性，以指定該聲明在不同平台上的可用性。編譯器只有在當前目標平台和 `available` 特性中指定的平台匹配時，才會使用 `available` 特性。
 
-如果 `available` 特性除了平台名称参数外，只指定了一个 `introduced` 参数，那么可以使用以下简写语法代替：
+如果 `available` 特性除了平台名稱參數外，只指定了一個 `introduced` 參數，那麼可以使用以下簡寫語法代替：
 
-@available（平台名称 版本号，*）
+@available（平台名稱 版本號，*）
 
-`available` 特性的简写语法可以简明地表达出声明在多个平台上的可用性。尽管这两种形式在功能上是相同的，但请尽可能地使用简写语法形式。
+`available` 特性的簡寫語法可以簡明地表達出聲明在多個平台上的可用性。盡管這兩種形式在功能上是相同的，但請盡可能地使用簡寫語法形式。
 
 ```swift
 @available(iOS 10.0, macOS 10.12, *)
 class MyClass {
-// 这里是类定义
+// 這裡是類定義
 }
 ```
 
 `discardableResult`
 
-该特性用于的函数或方法声明,以抑制编译器中 函数或方法的返回值被调而没有使用其结果的警告。
+該特性用於的函數或方法聲明,以抑制編譯器中 函數或方法的返回值被調而沒有使用其結果的警告。
 
 `GKInspectable`
 
-应用此属性，暴露一个自定义GameplayKit组件属性给SpriteKit编辑器UI。
+應用此屬性，暴露一個自定義GameplayKit組件屬性給SpriteKit編輯器UI。
 
 `objc`
 
-该特性用于修饰任何可以在 Objective-C 中表示的声明。比如，非嵌套类、协议、非泛型枚举（仅限原始值为整型的枚举）、类和协议中的属性和方法（包括存取方法）、构造器、析构器以及下标运算符。`objc` 特性告诉编译器这个声明可以在 Objective-C 代码中使用。
+該特性用於修飾任何可以在 Objective-C 中表示的聲明。比如，非嵌套類、協議、非泛型枚舉（僅限原始值為整型的枚舉）、類和協議中的屬性和方法（包括存取方法）、構造器、析構器以及下標運算符。`objc` 特性告訴編譯器這個聲明可以在 Objective-C 代碼中使用。
 
-标有 `objc` 特性的类必须继承自 Objective-C 中定义的类。如果你将 `objc` 特性应用于一个类或协议，它也会隐式地应用于类或协议中兼容 Objective-C 的成员。对于标记了 `objc` 特性的类，编译器会隐式地为它的子类添加 `objc` 特性。标记了 `objc` 特性的协议不能继承没有标记 `objc` 的协议。
+標有 `objc` 特性的類必須繼承自 Objective-C 中定義的類。如果你將 `objc` 特性應用於一個類或協議，它也會隱式地應用於類或協議中兼容 Objective-C 的成員。對於標記了 `objc` 特性的類，編譯器會隱式地為它的子類添加 `objc` 特性。標記了 `objc` 特性的協議不能繼承沒有標記 `objc` 的協議。
 
-如果你将 `objc` 特性应用于枚举，每一个枚举用例都会以枚举名称和用例名称组合的方式暴露在 Objective-C 代码中。例如，在 `Planet` 枚举中有一个名为 `Venus` 的用例，该用例暴露在 Objective-C 代码中时叫做 `PlanetVenus`。
+如果你將 `objc` 特性應用於枚舉，每一個枚舉用例都會以枚舉名稱和用例名稱組合的方式暴露在 Objective-C 代碼中。例如，在 `Planet` 枚舉中有一個名為 `Venus` 的用例，該用例暴露在 Objective-C 代碼中時叫做 `PlanetVenus`。
 
-`objc` 特性有一个可选的参数，由标识符构成。当你想把 objc 所修饰的实体以一个不同的名字暴露给 Objective-C 时，你就可以使用这个特性参数。你可以使用这个参数来命名类、枚举类型、枚举用例、协议、方法、存取方法以及构造器。下面的例子把 `ExampleClass` 中的 `enabled` 属性的取值方法暴露给 Objective-C，名字是 `isEnabled`，而不是它原来的属性名。
+`objc` 特性有一個可選的參數，由標識符構成。當你想把 objc 所修飾的實體以一個不同的名字暴露給 Objective-C 時，你就可以使用這個特性參數。你可以使用這個參數來命名類、枚舉類型、枚舉用例、協議、方法、存取方法以及構造器。下面的例子把 `ExampleClass` 中的 `enabled` 屬性的取值方法暴露給 Objective-C，名字是 `isEnabled`，而不是它原來的屬性名。
 
 ```swift
 @objc
 class ExampleClass: NSObject {
 var enabled: Bool {
 @objc(isEnabled) get {
-// 返回适当的值        }
+// 返回適當的值        }
 }
 }
 ```
 `nonobjc`
 
-该特性用于方法、属性、下标、或构造器的声明，这些声明本可以在 Objective-C 代码中使用，而使用 `nonobjc` 特性则告诉编译器这个声明不能在 Objective-C 代码中使用。
+該特性用於方法、屬性、下標、或構造器的聲明，這些聲明本可以在 Objective-C 代碼中使用，而使用 `nonobjc` 特性則告訴編譯器這個聲明不能在 Objective-C 代碼中使用。
 
-可以使用 `nonobjc` 特性解决标有 `objc` 的类中桥接方法的循环问题，该特性还允许对标有 `objc` 的类中的构造器和方法进行重载。
+可以使用 `nonobjc` 特性解決標有 `objc` 的類中橋接方法的循環問題，該特性還允許對標有 `objc` 的類中的構造器和方法進行重載。
 
-标有 `nonobjc` 特性的方法不能重写标有 `objc` 特性的方法。然而，标有 `objc` 特性的方法可以重写标有 `nonobjc` 特性的方法。同样，标有 `nonobjc` 特性的方法不能满足标有 `@objc` 特性的协议中的方法要求。
+標有 `nonobjc` 特性的方法不能重寫標有 `objc` 特性的方法。然而，標有 `objc` 特性的方法可以重寫標有 `nonobjc` 特性的方法。同樣，標有 `nonobjc` 特性的方法不能滿足標有 `@objc` 特性的協議中的方法要求。
 
 `NSApplicationMain`
 
-在类上使用该特性表示该类是应用程序委托类，使用该特性与调用 `NSApplicationMain`(\_:_:) 函数并且把该类的名字作为委托类的名字传递给函数的效果相同。
+在類上使用該特性表示該類是應用程序委托類，使用該特性與調用 `NSApplicationMain`(\_:_:) 函數並且把該類的名字作為委托類的名字傳遞給函數的效果相同。
 
-如果你不想使用这个特性，可以提供一个 main.swift 文件，并在代码**顶层**调用`NSApplicationMain`(\_:_:) 函数,如下所示:
+如果你不想使用這個特性，可以提供一個 main.swift 文件，並在代碼**頂層**調用`NSApplicationMain`(\_:_:) 函數,如下所示:
 
 ```swift
 import AppKit
@@ -160,74 +160,74 @@ NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
 ```
 `NSCopying`
 
-该特性用于修饰一个类的存储型变量属性。该特性将使属性的设值方法使用传入值的副本进行赋值，这个值由传入值的 `copyWithZone`(\_:) 方法返回。该属性的类型必需符合 `NSCopying` 协议。
+該特性用於修飾一個類的存儲型變量屬性。該特性將使屬性的設值方法使用傳入值的副本進行賦值，這個值由傳入值的 `copyWithZone`(\_:) 方法返回。該屬性的類型必需符合 `NSCopying` 協議。
 
-`NSCopying` 特性的行为与 Objective-C 中的 `copy` 特性相似。
+`NSCopying` 特性的行為與 Objective-C 中的 `copy` 特性相似。
 
 `NSManaged`
 
-该特性用于修饰 `NSManagedObject` 子类中的实例方法或存储型变量属性，表明它们的实现由 `Core Data` 在运行时基于相关实体描述动态提供。对于标记了 `NSManaged` 特性的属性，`Core Data` 也会在运行时为其提供存储。应用这个特性也意味着`objc`特性。
+該特性用於修飾 `NSManagedObject` 子類中的實例方法或存儲型變量屬性，表明它們的實現由 `Core Data` 在運行時基於相關實體描述動態提供。對於標記了 `NSManaged` 特性的屬性，`Core Data` 也會在運行時為其提供存儲。應用這個特性也意味著`objc`特性。
 
 `testable`
 
-在导入允许测试的编译模块时，该特性用于修饰 `import` 声明，这样就能访问被导入模块中的任何标有 `internal` 访问级别修饰符的实体，犹如它们被标记了 `public` 访问级别修饰符。测试也可以访问使用`internal`或者`public`访问级别修饰符标记的类和类成员,就像它们是`open`访问修饰符声明的。
+在導入允許測試的編譯模塊時，該特性用於修飾 `import` 聲明，這樣就能訪問被導入模塊中的任何標有 `internal` 訪問級別修飾符的實體，猶如它們被標記了 `public` 訪問級別修飾符。測試也可以訪問使用`internal`或者`public`訪問級別修飾符標記的類和類成員,就像它們是`open`訪問修飾符聲明的。
 
 `UIApplicationMain`
 
-在类上使用该特性表示该类是应用程序委托类，使用该特性与调用 `UIApplicationMain`函数并且把该类的名字作为委托类的名字传递给函数的效果相同。
+在類上使用該特性表示該類是應用程序委托類，使用該特性與調用 `UIApplicationMain`函數並且把該類的名字作為委托類的名字傳遞給函數的效果相同。
 
-如果你不想使用这个特性，可以提供一个 main.swift 文件，并在代码顶层调用 `UIApplicationMain`(\_:\_:\_:) 函数。比如，如果你的应用程序使用一个继承于 UIApplication 的自定义子类作为主要类，你可以调用 `UIApplicationMain`(\_:\_:\_:) 函数而不是使用该特性。
+如果你不想使用這個特性，可以提供一個 main.swift 文件，並在代碼頂層調用 `UIApplicationMain`(\_:\_:\_:) 函數。比如，如果你的應用程序使用一個繼承於 UIApplication 的自定義子類作為主要類，你可以調用 `UIApplicationMain`(\_:\_:\_:) 函數而不是使用該特性。
 
 <a name="declaration_attributes_used_by_interface_builder"></a>
-###Interface Builder 使用的声明特性
-`Interface Builder` 特性是 `Interface Builder` 用来与 Xcode 同步的声明特性。`Swift` 提供了以下的 `Interface Builder` 特性：`IBAction`，`IBOutlet`，`IBDesignable`，以及`IBInspectable` 。这些特性与 Objective-C 中对应的特性在概念上是相同的。
+###Interface Builder 使用的聲明特性
+`Interface Builder` 特性是 `Interface Builder` 用來與 Xcode 同步的聲明特性。`Swift` 提供了以下的 `Interface Builder` 特性：`IBAction`，`IBOutlet`，`IBDesignable`，以及`IBInspectable` 。這些特性與 Objective-C 中對應的特性在概念上是相同的。
 
-`IBOutlet` 和 `IBInspectable` 用于修饰一个类的属性声明，`IBAction` 特性用于修饰一个类的方法声明，`IBDesignable` 用于修饰类的声明。
+`IBOutlet` 和 `IBInspectable` 用於修飾一個類的屬性聲明，`IBAction` 特性用於修飾一個類的方法聲明，`IBDesignable` 用於修飾類的聲明。
 
-`IBAction` 和 `IBOutlet` 特性都意味着`objc`特性。
+`IBAction` 和 `IBOutlet` 特性都意味著`objc`特性。
 
 <a name="type_attributes"></a>
-##类型特性
-类型特性只能用于修饰类型。
+##類型特性
+類型特性只能用於修飾類型。
 
 `autoclosure`
 
-这个特性通过把表达式自动封装成无参数的闭包来延迟表达式的计算。它可以修饰类型为返回表达式结果类型的无参数函数类型的函数参数。关于如何使用 autoclosure 特性的例子，请参阅 [自动闭包](http://wiki.jikexueyuan.com/project/swift/chapter2/07_Closures.html/) 和 [函数类型](http://wiki.jikexueyuan.com/project/swift/chapter3/03_Types.html)。
+這個特性通過把表達式自動封裝成無參數的閉包來延遲表達式的計算。它可以修飾類型為返回表達式結果類型的無參數函數類型的函數參數。關於如何使用 autoclosure 特性的例子，請參閱 [自動閉包](http://wiki.jikexueyuan.com/project/swift/chapter2/07_Closures.html/) 和 [函數類型](http://wiki.jikexueyuan.com/project/swift/chapter3/03_Types.html)。
 
 `convention`
-该特性用于修饰函数类型，它指出了函数调用的约定。
+該特性用於修飾函數類型，它指出了函數調用的約定。
 
-convention 特性总是与下面的参数之一一起出现。
+convention 特性總是與下面的參數之一一起出現。
 
-- `swift` 参数用于表示一个 Swift 函数引用。这是 Swift 中函数值的标准调用约定。
+- `swift` 參數用於表示一個 Swift 函數引用。這是 Swift 中函數值的標准調用約定。
 
-- `block` 参数用于表示一个 Objective-C 兼容的块引用。函数值会作为一个块对象的引用，块是一种 `id` 兼容的 Objective-C 对象，其中嵌入了调用函数。调用函数使用 C 的调用约定。
+- `block` 參數用於表示一個 Objective-C 兼容的塊引用。函數值會作為一個塊對象的引用，塊是一種 `id` 兼容的 Objective-C 對象，其中嵌入了調用函數。調用函數使用 C 的調用約定。
 
-- `c` 参数用于表示一个 C 函数引用。函数值没有上下文，不具备捕获功能，同样使用 C 的调用约定。
+- `c` 參數用於表示一個 C 函數引用。函數值沒有上下文，不具備捕獲功能，同樣使用 C 的調用約定。
 
-使用 C 函数调用约定的函数也可用作使用 Objective-C 块调用约定的函数，同时使用 Objective-C 块调用约定的函数也可用作使用 Swift 函数调用约定的函数。然而，只有非泛型的全局函数、局部函数以及未捕获任何局部变量的闭包，才可以被用作使用 C 函数调用约定的函数。
+使用 C 函數調用約定的函數也可用作使用 Objective-C 塊調用約定的函數，同時使用 Objective-C 塊調用約定的函數也可用作使用 Swift 函數調用約定的函數。然而，只有非泛型的全局函數、局部函數以及未捕獲任何局部變量的閉包，才可以被用作使用 C 函數調用約定的函數。
 
 `escaping`
-在函数或者方法声明上使用该特性，它表示参数将不会被存储以供延迟执行，这将确保参数不会超出函数调用的生命周期。在使用 `escaping` 声明特性的函数类型中访问属性和方法时不需要显式地使用 `self.`。关于如何使用 `escaping` 特性的例子，请参阅 [逃逸闭包](http://wiki.jikexueyuan.com/project/swift/chapter2/07_Closures.html)。
+在函數或者方法聲明上使用該特性，它表示參數將不會被存儲以供延遲執行，這將確保參數不會超出函數調用的生命周期。在使用 `escaping` 聲明特性的函數類型中訪問屬性和方法時不需要顯式地使用 `self.`。關於如何使用 `escaping` 特性的例子，請參閱 [逃逸閉包](http://wiki.jikexueyuan.com/project/swift/chapter2/07_Closures.html)。
 
->特性语法
+>特性語法
 
-> *特性 *→ @ <font color = 0x3386c8>特性名 特性参数子句</font><sub>可选</sub>
+> *特性 *→ @ <font color = 0x3386c8>特性名 特性參數子句</font><sub>可選</sub>
 
-> *特性名* → <font color = 0x3386c8>标识符
+> *特性名* → <font color = 0x3386c8>標識符
 
-> *特性参数子句* → ( <font color = 0x3386c8>均衡令牌列表</font><sub>可选</sub> )
+> *特性參數子句* → ( <font color = 0x3386c8>均衡令牌列表</font><sub>可選</sub> )
 
-> *特性列表* → <font color = 0x3386c8>特性 特性列表</font><sub>可选</sub>
+> *特性列表* → <font color = 0x3386c8>特性 特性列表</font><sub>可選</sub>
 
-> *均衡令牌列表* → <font color = 0x3386c8>均衡令牌 均衡令牌列表</font><sub>可选</sub>
+> *均衡令牌列表* → <font color = 0x3386c8>均衡令牌 均衡令牌列表</font><sub>可選</sub>
 
-> *均衡令牌* → ( <font color = 0x3386c8>均衡令牌列表</font><sub>可选</sub> )
+> *均衡令牌* → ( <font color = 0x3386c8>均衡令牌列表</font><sub>可選</sub> )
 
-> *均衡令牌* → [ <font color = 0x3386c8>均衡令牌列表</font><sub>可选</sub> ]
+> *均衡令牌* → [ <font color = 0x3386c8>均衡令牌列表</font><sub>可選</sub> ]
 
-> *均衡令牌* → { <font color = 0x3386c8>均衡令牌列表</font><sub>可选</sub>}
+> *均衡令牌* → { <font color = 0x3386c8>均衡令牌列表</font><sub>可選</sub>}
 
-> *均衡令牌* → 任意标识符，关键字，字面量或运算符
+> *均衡令牌* → 任意標識符，關鍵字，字面量或運算符
 
-> *均衡令牌* → 任意标点除了 (，)，[，]，{，或 }
+> *均衡令牌* → 任意標點除了 (，)，[，]，{，或 }

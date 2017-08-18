@@ -2,36 +2,36 @@
 -----------------
 
 > 1.0
-> 翻译：[pp-prog](https://github.com/pp-prog)
-> 校对：[zqp](https://github.com/zqp)
+> 翻譯：[pp-prog](https://github.com/pp-prog)
+> 校對：[zqp](https://github.com/zqp)
 
 > 2.0
-> 翻译+校对：[DianQK](https://github.com/DianQK)
+> 翻譯+校對：[DianQK](https://github.com/DianQK)
 
 > 2.1
-> 翻译：[DianQK](https://github.com/DianQK)，[Realank](https://github.com/Realank) 校对：[shanks](http://codebuild.me)，2016-01-18  
+> 翻譯：[DianQK](https://github.com/DianQK)，[Realank](https://github.com/Realank) 校對：[shanks](http://codebuild.me)，2016-01-18  
 > 
 > 2.2
-> 校对：[SketchK](https://github.com/SketchK) 2016-05-13
+> 校對：[SketchK](https://github.com/SketchK) 2016-05-13
 > 3.0.1，shanks，2016-11-13
 
-本页包含内容：
+本頁包含內容：
 
-- [实例方法](#instance_methods)
-- [类型方法](#type_methods)
+- [實例方法](#instance_methods)
+- [類型方法](#type_methods)
 
-*方法*是与某些特定类型相关联的函数。类、结构体、枚举都可以定义实例方法；实例方法为给定类型的实例封装了具体的任务与功能。类、结构体、枚举也可以定义类型方法；类型方法与类型本身相关联。类型方法与 Objective-C 中的类方法（class methods）相似。
+*方法*是與某些特定類型相關聯的函數。類、結構體、枚舉都可以定義實例方法；實例方法為給定類型的實例封裝了具體的任務與功能。類、結構體、枚舉也可以定義類型方法；類型方法與類型本身相關聯。類型方法與 Objective-C 中的類方法（class methods）相似。
 
-结构体和枚举能够定义方法是 Swift 与 C/Objective-C 的主要区别之一。在 Objective-C 中，类是唯一能定义方法的类型。但在 Swift 中，你不仅能选择是否要定义一个类/结构体/枚举，还能灵活地在你创建的类型（类/结构体/枚举）上定义方法。
+結構體和枚舉能夠定義方法是 Swift 與 C/Objective-C 的主要區別之一。在 Objective-C 中，類是唯一能定義方法的類型。但在 Swift 中，你不僅能選擇是否要定義一個類/結構體/枚舉，還能靈活地在你創建的類型（類/結構體/枚舉）上定義方法。
 
 <a name="instance_methods"></a>
-## 实例方法 (Instance Methods)
+## 實例方法 (Instance Methods)
 
-*实例方法*是属于某个特定类、结构体或者枚举类型实例的方法。实例方法提供访问和修改实例属性的方法或提供与实例目的相关的功能，并以此来支撑实例的功能。实例方法的语法与函数完全一致，详情参见[函数](./06_Functions.md)。
+*實例方法*是屬於某個特定類、結構體或者枚舉類型實例的方法。實例方法提供訪問和修改實例屬性的方法或提供與實例目的相關的功能，並以此來支撐實例的功能。實例方法的語法與函數完全一致，詳情參見[函數](./06_Functions.md)。
 
-实例方法要写在它所属的类型的前后大括号之间。实例方法能够隐式访问它所属类型的所有的其他实例方法和属性。实例方法只能被它所属的类的某个特定实例调用。实例方法不能脱离于现存的实例而被调用。
+實例方法要寫在它所屬的類型的前後大括號之間。實例方法能夠隱式訪問它所屬類型的所有的其他實例方法和屬性。實例方法只能被它所屬的類的某個特定實例調用。實例方法不能脫離於現存的實例而被調用。
 
-下面的例子，定义一个很简单的`Counter`类，`Counter`能被用来对一个动作发生的次数进行计数：
+下面的例子，定義一個很簡單的`Counter`類，`Counter`能被用來對一個動作發生的次數進行計數：
 
 ```swift
 class Counter {
@@ -48,35 +48,35 @@ class Counter {
 }
 ```
 
-`Counter`类定义了三个实例方法：
-- `increment`让计数器按一递增；
-- `increment(by: Int)`让计数器按一个指定的整数值递增；
-- `reset`将计数器重置为0。
+`Counter`類定義了三個實例方法：
+- `increment`讓計數器按一遞增；
+- `increment(by: Int)`讓計數器按一個指定的整數值遞增；
+- `reset`將計數器重置為0。
 
-`Counter`这个类还声明了一个可变属性`count`，用它来保持对当前计数器值的追踪。
+`Counter`這個類還聲明了一個可變屬性`count`，用它來保持對當前計數器值的追蹤。
 
-和调用属性一样，用点语法（dot syntax）调用实例方法：
+和調用屬性一樣，用點語法（dot syntax）調用實例方法：
 
 ```swift
 let counter = Counter()
-// 初始计数值是0
+// 初始計數值是0
 counter.increment()
-// 计数值现在是1
+// 計數值現在是1
 counter.increment(by: 5)
-// 计数值现在是6
+// 計數值現在是6
 counter.reset()
-// 计数值现在是0
+// 計數值現在是0
 ```
 
-函数参数可以同时有一个局部名称（在函数体内部使用）和一个外部名称（在调用函数时使用），详情参见[指定外部参数名](./06_Functions.html#specifying_external_parameter_names)。方法参数也一样，因为方法就是函数，只是这个函数与某个类型相关联了。
+函數參數可以同時有一個局部名稱（在函數體內部使用）和一個外部名稱（在調用函數時使用），詳情參見[指定外部參數名](./06_Functions.html#specifying_external_parameter_names)。方法參數也一樣，因為方法就是函數，只是這個函數與某個類型相關聯了。
 
 
 <a name="the_self_property"></a>
-### self 属性
+### self 屬性
 
-类型的每一个实例都有一个隐含属性叫做`self`，`self`完全等同于该实例本身。你可以在一个实例的实例方法中使用这个隐含的`self`属性来引用当前实例。
+類型的每一個實例都有一個隱含屬性叫做`self`，`self`完全等同於該實例本身。你可以在一個實例的實例方法中使用這個隱含的`self`屬性來引用當前實例。
 
-上面例子中的`increment`方法还可以这样写：
+上面例子中的`increment`方法還可以這樣寫：
 
 ```swift
 func increment() {
@@ -84,11 +84,11 @@ func increment() {
 }
 ```
 
-实际上，你不必在你的代码里面经常写`self`。不论何时，只要在一个方法中使用一个已知的属性或者方法名称，如果你没有明确地写`self`，Swift 假定你是指当前实例的属性或者方法。这种假定在上面的`Counter`中已经示范了：`Counter`中的三个实例方法中都使用的是`count`（而不是`self.count`）。
+實際上，你不必在你的代碼裡面經常寫`self`。不論何時，只要在一個方法中使用一個已知的屬性或者方法名稱，如果你沒有明確地寫`self`，Swift 假定你是指當前實例的屬性或者方法。這種假定在上面的`Counter`中已經示范了：`Counter`中的三個實例方法中都使用的是`count`（而不是`self.count`）。
 
-使用这条规则的主要场景是实例方法的某个参数名称与实例的某个属性名称相同的时候。在这种情况下，参数名称享有优先权，并且在引用属性时必须使用一种更严格的方式。这时你可以使用`self`属性来区分参数名称和属性名称。
+使用這條規則的主要場景是實例方法的某個參數名稱與實例的某個屬性名稱相同的時候。在這種情況下，參數名稱享有優先權，並且在引用屬性時必須使用一種更嚴格的方式。這時你可以使用`self`屬性來區分參數名稱和屬性名稱。
 
-下面的例子中，`self`消除方法参数`x`和实例属性`x`之间的歧义：
+下面的例子中，`self`消除方法參數`x`和實例屬性`x`之間的歧義：
 
 ```swift
 struct Point {
@@ -104,16 +104,16 @@ if somePoint.isToTheRightOfX(1.0) {
 // 打印 "This point is to the right of the line where x == 1.0"
 ```
 
-如果不使用`self`前缀，Swift 就认为两次使用的`x`都指的是名称为`x`的函数参数。
+如果不使用`self`前綴，Swift 就認為兩次使用的`x`都指的是名稱為`x`的函數參數。
 
 <a name="modifying_value_types_from_within_instance_methods"></a>
-### 在实例方法中修改值类型
+### 在實例方法中修改值類型
 
-结构体和枚举是*值类型*。默认情况下，值类型的属性不能在它的实例方法中被修改。
+結構體和枚舉是*值類型*。默認情況下，值類型的屬性不能在它的實例方法中被修改。
 
-但是，如果你确实需要在某个特定的方法中修改结构体或者枚举的属性，你可以为这个方法选择`可变(mutating)`行为，然后就可以从其方法内部改变它的属性；并且这个方法做的任何改变都会在方法执行结束时写回到原始结构中。方法还可以给它隐含的`self`属性赋予一个全新的实例，这个新实例在方法结束时会替换现存实例。
+但是，如果你確實需要在某個特定的方法中修改結構體或者枚舉的屬性，你可以為這個方法選擇`可變(mutating)`行為，然後就可以從其方法內部改變它的屬性；並且這個方法做的任何改變都會在方法執行結束時寫回到原始結構中。方法還可以給它隱含的`self`屬性賦予一個全新的實例，這個新實例在方法結束時會替換現存實例。
 
-要使用`可变`方法，将关键字`mutating` 放到方法的`func`关键字之前就可以了：
+要使用`可變`方法，將關鍵字`mutating` 放到方法的`func`關鍵字之前就可以了：
 
 ```swift
 struct Point {
@@ -129,20 +129,20 @@ print("The point is now at (\(somePoint.x), \(somePoint.y))")
 // 打印 "The point is now at (3.0, 4.0)"
 ```
 
-上面的`Point`结构体定义了一个可变方法 `moveByX(_:y:)` 来移动`Point`实例到给定的位置。该方法被调用时修改了这个点，而不是返回一个新的点。方法定义时加上了`mutating`关键字，从而允许修改属性。
+上面的`Point`結構體定義了一個可變方法 `moveByX(_:y:)` 來移動`Point`實例到給定的位置。該方法被調用時修改了這個點，而不是返回一個新的點。方法定義時加上了`mutating`關鍵字，從而允許修改屬性。
 
-注意，不能在结构体类型的常量（a constant of structure type）上调用可变方法，因为其属性不能被改变，即使属性是变量属性，详情参见[常量结构体的存储属性](./10_Properties.html#stored_properties_of_constant_structure_instances)：
+注意，不能在結構體類型的常量（a constant of structure type）上調用可變方法，因為其屬性不能被改變，即使屬性是變量屬性，詳情參見[常量結構體的存儲屬性](./10_Properties.html#stored_properties_of_constant_structure_instances)：
 
 ```swift
 let fixedPoint = Point(x: 3.0, y: 3.0)
 fixedPoint.moveByX(2.0, y: 3.0)
-// 这里将会报告一个错误
+// 這裡將會報告一個錯誤
 ```
 
 <a name="assigning_to_self_within_a_mutating_method"></a>
-### 在可变方法中给 self 赋值
+### 在可變方法中給 self 賦值
 
-可变方法能够赋给隐含属性`self`一个全新的实例。上面`Point`的例子可以用下面的方式改写：
+可變方法能夠賦給隱含屬性`self`一個全新的實例。上面`Point`的例子可以用下面的方式改寫：
 
 ```swift
 struct Point {
@@ -153,9 +153,9 @@ struct Point {
 }
 ```
 
-新版的可变方法` moveBy(x:y:)`创建了一个新的结构体实例，它的 x 和 y 的值都被设定为目标值。调用这个版本的方法和调用上个版本的最终结果是一样的。
+新版的可變方法` moveBy(x:y:)`創建了一個新的結構體實例，它的 x 和 y 的值都被設定為目標值。調用這個版本的方法和調用上個版本的最終結果是一樣的。
 
-枚举的可变方法可以把`self`设置为同一枚举类型中不同的成员：
+枚舉的可變方法可以把`self`設置為同一枚舉類型中不同的成員：
 
 ```swift
 enum TriStateSwitch {
@@ -173,39 +173,39 @@ enum TriStateSwitch {
 }
 var ovenLight = TriStateSwitch.Low
 ovenLight.next()
-// ovenLight 现在等于 .High
+// ovenLight 現在等於 .High
 ovenLight.next()
-// ovenLight 现在等于 .Off
+// ovenLight 現在等於 .Off
 ```
 
-上面的例子中定义了一个三态开关的枚举。每次调用`next()`方法时，开关在不同的电源状态（`Off`，`Low`，`High`）之间循环切换。
+上面的例子中定義了一個三態開關的枚舉。每次調用`next()`方法時，開關在不同的電源狀態（`Off`，`Low`，`High`）之間循環切換。
 
 <a name="type_methods"></a>
-## 类型方法
+## 類型方法
 
-实例方法是被某个类型的实例调用的方法。你也可以定义在类型本身上调用的方法，这种方法就叫做*类型方法*。在方法的`func`关键字之前加上关键字`static`，来指定类型方法。类还可以用关键字`class`来允许子类重写父类的方法实现。
+實例方法是被某個類型的實例調用的方法。你也可以定義在類型本身上調用的方法，這種方法就叫做*類型方法*。在方法的`func`關鍵字之前加上關鍵字`static`，來指定類型方法。類還可以用關鍵字`class`來允許子類重寫父類的方法實現。
 
 > 注意  
-> 在 Objective-C 中，你只能为 Objective-C 的类类型（classes）定义类型方法（type-level methods）。在 Swift 中，你可以为所有的类、结构体和枚举定义类型方法。每一个类型方法都被它所支持的类型显式包含。  
+> 在 Objective-C 中，你只能為 Objective-C 的類類型（classes）定義類型方法（type-level methods）。在 Swift 中，你可以為所有的類、結構體和枚舉定義類型方法。每一個類型方法都被它所支持的類型顯式包含。  
 
-类型方法和实例方法一样用点语法调用。但是，你是在类型上调用这个方法，而不是在实例上调用。下面是如何在`SomeClass`类上调用类型方法的例子：
+類型方法和實例方法一樣用點語法調用。但是，你是在類型上調用這個方法，而不是在實例上調用。下面是如何在`SomeClass`類上調用類型方法的例子：
 
 ```swift
 class SomeClass {
     class func someTypeMethod() {
-        // 在这里实现类型方法
+        // 在這裡實現類型方法
     }
 }
 SomeClass.someTypeMethod()
 ```
 
-在类型方法的方法体（body）中，`self`指向这个类型本身，而不是类型的某个实例。这意味着你可以用`self`来消除类型属性和类型方法参数之间的歧义（类似于我们在前面处理实例属性和实例方法参数时做的那样）。
+在類型方法的方法體（body）中，`self`指向這個類型本身，而不是類型的某個實例。這意味著你可以用`self`來消除類型屬性和類型方法參數之間的歧義（類似於我們在前面處理實例屬性和實例方法參數時做的那樣）。
 
-一般来说，在类型方法的方法体中，任何未限定的方法和属性名称，可以被本类中其他的类型方法和类型属性引用。一个类型方法可以直接通过类型方法的名称调用本类中的其它类型方法，而无需在方法名称前面加上类型名称。类似地，在结构体和枚举中，也能够直接通过类型属性的名称访问本类中的类型属性，而不需要前面加上类型名称。
+一般來說，在類型方法的方法體中，任何未限定的方法和屬性名稱，可以被本類中其他的類型方法和類型屬性引用。一個類型方法可以直接通過類型方法的名稱調用本類中的其它類型方法，而無需在方法名稱前面加上類型名稱。類似地，在結構體和枚舉中，也能夠直接通過類型屬性的名稱訪問本類中的類型屬性，而不需要前面加上類型名稱。
 
-下面的例子定义了一个名为`LevelTracker`结构体。它监测玩家的游戏发展情况（游戏的不同层次或阶段）。这是一个单人游戏，但也可以存储多个玩家在同一设备上的游戏信息。
+下面的例子定義了一個名為`LevelTracker`結構體。它監測玩家的游戲發展情況（游戲的不同層次或階段）。這是一個單人游戲，但也可以存儲多個玩家在同一設備上的游戲信息。
 
-游戏初始时，所有的游戏等级（除了等级 1）都被锁定。每次有玩家完成一个等级，这个等级就对这个设备上的所有玩家解锁。`LevelTracker`结构体用类型属性和方法监测游戏的哪个等级已经被解锁。它还监测每个玩家的当前等级。
+游戲初始時，所有的游戲等級（除了等級 1）都被鎖定。每次有玩家完成一個等級，這個等級就對這個設備上的所有玩家解鎖。`LevelTracker`結構體用類型屬性和方法監測游戲的哪個等級已經被解鎖。它還監測每個玩家的當前等級。
 
 ```swift
 struct LevelTracker {
@@ -232,15 +232,15 @@ struct LevelTracker {
 }
 ```
 
-`LevelTracker`监测玩家已解锁的最高等级。这个值被存储在类型属性`highestUnlockedLevel`中。
+`LevelTracker`監測玩家已解鎖的最高等級。這個值被存儲在類型屬性`highestUnlockedLevel`中。
 
-`LevelTracker`还定义了两个类型方法与`highestUnlockedLevel`配合工作。第一个类型方法是`unlock(_:)`，一旦新等级被解锁，它会更新`highestUnlockedLevel`的值。第二个类型方法是`isUnlocked(_:)`，如果某个给定的等级已经被解锁，它将返回`true`。（注意，尽管我们没有使用类似`LevelTracker.highestUnlockedLevel`的写法，这个类型方法还是能够访问类型属性`highestUnlockedLevel`）
+`LevelTracker`還定義了兩個類型方法與`highestUnlockedLevel`配合工作。第一個類型方法是`unlock(_:)`，一旦新等級被解鎖，它會更新`highestUnlockedLevel`的值。第二個類型方法是`isUnlocked(_:)`，如果某個給定的等級已經被解鎖，它將返回`true`。（注意，盡管我們沒有使用類似`LevelTracker.highestUnlockedLevel`的寫法，這個類型方法還是能夠訪問類型屬性`highestUnlockedLevel`）
 
-除了类型属性和类型方法，`LevelTracker`还监测每个玩家的进度。它用实例属性`currentLevel`来监测每个玩家当前的等级。
+除了類型屬性和類型方法，`LevelTracker`還監測每個玩家的進度。它用實例屬性`currentLevel`來監測每個玩家當前的等級。
 
-为了便于管理`currentLevel`属性，`LevelTracker`定义了实例方法`advance(to:)`。这个方法会在更新`currentLevel`之前检查所请求的新等级是否已经解锁。`advance(to:)`方法返回布尔值以指示是否能够设置`currentLevel`。因为允许在调用`advance(to:)`时候忽略返回值，不会产生编译警告，所以函数被标注为`@ discardableResult`属性，更多关于属性信息，请参考[属性](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html#//apple_ref/doc/uid/TP40014097-CH35-ID347)章节。
+為了便於管理`currentLevel`屬性，`LevelTracker`定義了實例方法`advance(to:)`。這個方法會在更新`currentLevel`之前檢查所請求的新等級是否已經解鎖。`advance(to:)`方法返回布爾值以指示是否能夠設置`currentLevel`。因為允許在調用`advance(to:)`時候忽略返回值，不會產生編譯警告，所以函數被標注為`@ discardableResult`屬性，更多關於屬性信息，請參考[屬性](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Attributes.html#//apple_ref/doc/uid/TP40014097-CH35-ID347)章節。
 
-下面，`Player`类使用`LevelTracker`来监测和更新每个玩家的发展进度：
+下面，`Player`類使用`LevelTracker`來監測和更新每個玩家的發展進度：
 
 ```swift
 class Player {
@@ -256,9 +256,9 @@ class Player {
 }
 ```
 
-`Player`类创建一个新的`LevelTracker`实例来监测这个用户的进度。它提供了`complete(level:)`方法，一旦玩家完成某个指定等级就调用它。这个方法为所有玩家解锁下一等级，并且将当前玩家的进度更新为下一等级。（我们忽略了`advance(to:)`返回的布尔值，因为之前调用`LevelTracker.unlock(_:)`时就知道了这个等级已经被解锁了）。
+`Player`類創建一個新的`LevelTracker`實例來監測這個用戶的進度。它提供了`complete(level:)`方法，一旦玩家完成某個指定等級就調用它。這個方法為所有玩家解鎖下一等級，並且將當前玩家的進度更新為下一等級。（我們忽略了`advance(to:)`返回的布爾值，因為之前調用`LevelTracker.unlock(_:)`時就知道了這個等級已經被解鎖了）。
 
-你还可以为一个新的玩家创建一个`Player`的实例，然后看这个玩家完成等级一时发生了什么：
+你還可以為一個新的玩家創建一個`Player`的實例，然後看這個玩家完成等級一時發生了什麼：
 
 ```swift
 var player = Player(name: "Argyrios")
@@ -267,7 +267,7 @@ print("highest unlocked level is now \(LevelTracker.highestUnlockedLevel)")
 // 打印 "highest unlocked level is now 2"
 ```
 
-如果你创建了第二个玩家，并尝试让他开始一个没有被任何玩家解锁的等级，那么试图设置玩家当前等级将会失败：
+如果你創建了第二個玩家，並嘗試讓他開始一個沒有被任何玩家解鎖的等級，那麼試圖設置玩家當前等級將會失敗：
 
 ```swift
 player = Player(name: "Beto")

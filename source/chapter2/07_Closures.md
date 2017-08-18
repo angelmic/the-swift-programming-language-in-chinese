@@ -1,94 +1,94 @@
-# 闭包（Closures）
+# 閉包（Closures）
 -----------------
 
 > 1.0
-> 翻译：[wh1100717](https://github.com/wh1100717)
-> 校对：[lyuka](https://github.com/lyuka)
+> 翻譯：[wh1100717](https://github.com/wh1100717)
+> 校對：[lyuka](https://github.com/lyuka)
 
 > 2.0
-> 翻译+校对：[100mango](https://github.com/100mango)
+> 翻譯+校對：[100mango](https://github.com/100mango)
 
 > 2.1
-> 翻译：[100mango](https://github.com/100mango), [magicdict](https://github.com/magicdict)
-> 校对：[shanks](http://codebuild.me)
+> 翻譯：[100mango](https://github.com/100mango), [magicdict](https://github.com/magicdict)
+> 校對：[shanks](http://codebuild.me)
 >
 > 2.2
-> 翻译+校对：[SketchK](https://github.com/SketchK) 2016-05-12
+> 翻譯+校對：[SketchK](https://github.com/SketchK) 2016-05-12
 >
 > 3.0
-> 翻译：[Lanford](https://github.com/LanfordCai) 2016-09-19   
+> 翻譯：[Lanford](https://github.com/LanfordCai) 2016-09-19   
 > 3.0.1，shanks，2016-11-12
 
-本页包含内容：
+本頁包含內容：
 
-- [闭包表达式](#closure_expressions)
-- [尾随闭包](#trailing_closures)
-- [值捕获](#capturing_values)
-- [闭包是引用类型](#closures_are_reference_types)
-- [逃逸闭包](#escaping_closures)
-- [自动闭包](#autoclosures)
+- [閉包表達式](#closure_expressions)
+- [尾隨閉包](#trailing_closures)
+- [值捕獲](#capturing_values)
+- [閉包是引用類型](#closures_are_reference_types)
+- [逃逸閉包](#escaping_closures)
+- [自動閉包](#autoclosures)
 
-*闭包*是自包含的函数代码块，可以在代码中被传递和使用。Swift 中的闭包与 C 和 Objective-C 中的代码块（blocks）以及其他一些编程语言中的匿名函数比较相似。
+*閉包*是自包含的函數代碼塊，可以在代碼中被傳遞和使用。Swift 中的閉包與 C 和 Objective-C 中的代碼塊（blocks）以及其他一些編程語言中的匿名函數比較相似。
 
-闭包可以捕获和存储其所在上下文中任意常量和变量的引用。被称为*包裹*常量和变量。 Swift 会为你管理在捕获过程中涉及到的所有内存操作。
+閉包可以捕獲和存儲其所在上下文中任意常量和變量的引用。被稱為*包裹*常量和變量。 Swift 會為你管理在捕獲過程中涉及到的所有內存操作。
 
 > 注意
-> 如果你不熟悉捕获（capturing）这个概念也不用担心，你可以在[值捕获](#capturing_values)章节对其进行详细了解。
+> 如果你不熟悉捕獲（capturing）這個概念也不用擔心，你可以在[值捕獲](#capturing_values)章節對其進行詳細了解。
 
-在[函数](./06_Functions.html)章节中介绍的全局和嵌套函数实际上也是特殊的闭包，闭包采取如下三种形式之一：
+在[函數](./06_Functions.html)章節中介紹的全局和嵌套函數實際上也是特殊的閉包，閉包采取如下三種形式之一：
 
-* 全局函数是一个有名字但不会捕获任何值的闭包
-* 嵌套函数是一个有名字并可以捕获其封闭函数域内值的闭包
-* 闭包表达式是一个利用轻量级语法所写的可以捕获其上下文中变量或常量值的匿名闭包
+* 全局函數是一個有名字但不會捕獲任何值的閉包
+* 嵌套函數是一個有名字並可以捕獲其封閉函數域內值的閉包
+* 閉包表達式是一個利用輕量級語法所寫的可以捕獲其上下文中變量或常量值的匿名閉包
 
-Swift 的闭包表达式拥有简洁的风格，并鼓励在常见场景中进行语法优化，主要优化如下：
+Swift 的閉包表達式擁有簡潔的風格，並鼓勵在常見場景中進行語法優化，主要優化如下：
 
-* 利用上下文推断参数和返回值类型
-* 隐式返回单表达式闭包，即单表达式闭包可以省略 `return` 关键字
-* 参数名称缩写
-* 尾随闭包语法
+* 利用上下文推斷參數和返回值類型
+* 隱式返回單表達式閉包，即單表達式閉包可以省略 `return` 關鍵字
+* 參數名稱縮寫
+* 尾隨閉包語法
 
 <a name="closure_expressions"></a>
-## 闭包表达式
+## 閉包表達式
 
 
-[嵌套函数](./06_Functions.html#nested_function)是一个在较复杂函数中方便进行命名和定义自包含代码模块的方式。当然，有时候编写小巧的没有完整定义和命名的类函数结构也是很有用处的，尤其是在你处理一些函数并需要将另外一些函数作为该函数的参数时。
+[嵌套函數](./06_Functions.html#nested_function)是一個在較復雜函數中方便進行命名和定義自包含代碼模塊的方式。當然，有時候編寫小巧的沒有完整定義和命名的類函數結構也是很有用處的，尤其是在你處理一些函數並需要將另外一些函數作為該函數的參數時。
 
-*闭包表达式*是一种利用简洁语法构建内联闭包的方式。闭包表达式提供了一些语法优化，使得撰写闭包变得简单明了。下面闭包表达式的例子通过使用几次迭代展示了 `sorted(by:)` 方法定义和语法优化的方式。每一次迭代都用更简洁的方式描述了相同的功能。
+*閉包表達式*是一種利用簡潔語法構建內聯閉包的方式。閉包表達式提供了一些語法優化，使得撰寫閉包變得簡單明了。下面閉包表達式的例子通過使用幾次迭代展示了 `sorted(by:)` 方法定義和語法優化的方式。每一次迭代都用更簡潔的方式描述了相同的功能。
 
 <a name="the_sorted_function"></a>
 ### sorted 方法
 
-Swift 标准库提供了名为 `sorted(by:)` 的方法，它会根据你所提供的用于排序的闭包函数将已知类型数组中的值进行排序。一旦排序完成，`sorted(by:)` 方法会返回一个与原数组大小相同，包含同类型元素且元素已正确排序的新数组。原数组不会被 `sorted(by:)` 方法修改。
+Swift 標准庫提供了名為 `sorted(by:)` 的方法，它會根據你所提供的用於排序的閉包函數將已知類型數組中的值進行排序。一旦排序完成，`sorted(by:)` 方法會返回一個與原數組大小相同，包含同類型元素且元素已正確排序的新數組。原數組不會被 `sorted(by:)` 方法修改。
 
-下面的闭包表达式示例使用 `sorted(by:)` 方法对一个 `String` 类型的数组进行字母逆序排序。以下是初始数组：
+下面的閉包表達式示例使用 `sorted(by:)` 方法對一個 `String` 類型的數組進行字母逆序排序。以下是初始數組：
 
 ```swift
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 ```
 
-`sorted(by:)` 方法接受一个闭包，该闭包函数需要传入与数组元素类型相同的两个值，并返回一个布尔类型值来表明当排序结束后传入的第一个参数排在第二个参数前面还是后面。如果第一个参数值出现在第二个参数值*前面*，排序闭包函数需要返回`true`，反之返回`false`。
+`sorted(by:)` 方法接受一個閉包，該閉包函數需要傳入與數組元素類型相同的兩個值，並返回一個布爾類型值來表明當排序結束後傳入的第一個參數排在第二個參數前面還是後面。如果第一個參數值出現在第二個參數值*前面*，排序閉包函數需要返回`true`，反之返回`false`。
 
-该例子对一个 `String` 类型的数组进行排序，因此排序闭包函数类型需为 `(String, String) -> Bool`。
+該例子對一個 `String` 類型的數組進行排序，因此排序閉包函數類型需為 `(String, String) -> Bool`。
 
-提供排序闭包函数的一种方式是撰写一个符合其类型要求的普通函数，并将其作为 `sorted(by:)` 方法的参数传入：
+提供排序閉包函數的一種方式是撰寫一個符合其類型要求的普通函數，並將其作為 `sorted(by:)` 方法的參數傳入：
 
 ```swift
 func backward(_ s1: String, _ s2: String) -> Bool {
     return s1 > s2
 }
 var reversedNames = names.sorted(by: backward)
-// reversedNames 为 ["Ewa", "Daniella", "Chris", "Barry", "Alex"]
+// reversedNames 為 ["Ewa", "Daniella", "Chris", "Barry", "Alex"]
 ```
 
-如果第一个字符串（`s1`）大于第二个字符串（`s2`），`backward(_:_:)` 函数会返回 `true`，表示在新的数组中 `s1` 应该出现在 `s2` 前。对于字符串中的字符来说，“大于”表示“按照字母顺序较晚出现”。这意味着字母 `"B"` 大于字母 `"A"` ，字符串 `"Tom"` 大于字符串 `"Tim"`。该闭包将进行字母逆序排序，`"Barry"` 将会排在 `"Alex"` 之前。
+如果第一個字符串（`s1`）大於第二個字符串（`s2`），`backward(_:_:)` 函數會返回 `true`，表示在新的數組中 `s1` 應該出現在 `s2` 前。對於字符串中的字符來說，「大於」表示「按照字母順序較晚出現」。這意味著字母 `"B"` 大於字母 `"A"` ，字符串 `"Tom"` 大於字符串 `"Tim"`。該閉包將進行字母逆序排序，`"Barry"` 將會排在 `"Alex"` 之前。
 
-然而，以这种方式来编写一个实际上很简单的表达式（`a > b`)，确实太过繁琐了。对于这个例子来说，利用闭包表达式语法可以更好地构造一个内联排序闭包。
+然而，以這種方式來編寫一個實際上很簡單的表達式（`a > b`)，確實太過繁瑣了。對於這個例子來說，利用閉包表達式語法可以更好地構造一個內聯排序閉包。
 
 <a name="closure_expression_syntax"></a>
-### 闭包表达式语法
+### 閉包表達式語法
 
-闭包表达式语法有如下的一般形式：
+閉包表達式語法有如下的一般形式：
 
 ```swift
 { (parameters) -> returnType in
@@ -96,9 +96,9 @@ var reversedNames = names.sorted(by: backward)
 }
 ```
 
-*闭包表达式参数* 可以是 in-out 参数，但不能设定默认值。也可以使用具名的可变参数（译者注：但是如果可变参数不放在参数列表的最后一位的话，调用闭包的时时编译器将报错。可参考[这里](http://stackoverflow.com/questions/39548852/swift-3-0-closure-expression-what-if-the-variadic-parameters-not-at-the-last-pl)）。元组也可以作为参数和返回值。
+*閉包表達式參數* 可以是 in-out 參數，但不能設定默認值。也可以使用具名的可變參數（譯者注：但是如果可變參數不放在參數列表的最後一位的話，調用閉包的時時編譯器將報錯。可參考[這裡](http://stackoverflow.com/questions/39548852/swift-3-0-closure-expression-what-if-the-variadic-parameters-not-at-the-last-pl)）。元組也可以作為參數和返回值。
 
-下面的例子展示了之前 `backward(_:_:)` 函数对应的闭包表达式版本的代码：
+下面的例子展示了之前 `backward(_:_:)` 函數對應的閉包表達式版本的代碼：
 
 ```swift
 reversedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in
@@ -106,103 +106,103 @@ reversedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in
 })
 ```
 
-需要注意的是内联闭包参数和返回值类型声明与 `backward(_:_:)` 函数类型声明相同。在这两种方式中，都写成了 `(s1: String, s2: String) -> Bool`。然而在内联闭包表达式中，函数和返回值类型都写在*大括号内*，而不是大括号外。
+需要注意的是內聯閉包參數和返回值類型聲明與 `backward(_:_:)` 函數類型聲明相同。在這兩種方式中，都寫成了 `(s1: String, s2: String) -> Bool`。然而在內聯閉包表達式中，函數和返回值類型都寫在*大括號內*，而不是大括號外。
 
-闭包的函数体部分由关键字`in`引入。该关键字表示闭包的参数和返回值类型定义已经完成，闭包函数体即将开始。
+閉包的函數體部分由關鍵字`in`引入。該關鍵字表示閉包的參數和返回值類型定義已經完成，閉包函數體即將開始。
 
-由于这个闭包的函数体部分如此短，以至于可以将其改写成一行代码：
+由於這個閉包的函數體部分如此短，以至於可以將其改寫成一行代碼：
 
 ```swift
 reversedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in return s1 > s2 } )
 ```
 
-该例中 `sorted(by:)` 方法的整体调用保持不变，一对圆括号仍然包裹住了方法的整个参数。然而，参数现在变成了内联闭包。
+該例中 `sorted(by:)` 方法的整體調用保持不變，一對圓括號仍然包裹住了方法的整個參數。然而，參數現在變成了內聯閉包。
 
 <a name="inferring_type_from_context"></a>
-### 根据上下文推断类型
+### 根據上下文推斷類型
 
-因为排序闭包函数是作为 `sorted(by:)` 方法的参数传入的，Swift 可以推断其参数和返回值的类型。`sorted(by:)` 方法被一个字符串数组调用，因此其参数必须是 `(String, String) -> Bool` 类型的函数。这意味着 `(String, String)` 和 `Bool` 类型并不需要作为闭包表达式定义的一部分。因为所有的类型都可以被正确推断，返回箭头（`->`）和围绕在参数周围的括号也可以被省略：
+因為排序閉包函數是作為 `sorted(by:)` 方法的參數傳入的，Swift 可以推斷其參數和返回值的類型。`sorted(by:)` 方法被一個字符串數組調用，因此其參數必須是 `(String, String) -> Bool` 類型的函數。這意味著 `(String, String)` 和 `Bool` 類型並不需要作為閉包表達式定義的一部分。因為所有的類型都可以被正確推斷，返回箭頭（`->`）和圍繞在參數周圍的括號也可以被省略：
 
 ```swift
 reversedNames = names.sorted(by: { s1, s2 in return s1 > s2 } )
 ```
 
-实际上，通过内联闭包表达式构造的闭包作为参数传递给函数或方法时，总是能够推断出闭包的参数和返回值类型。这意味着闭包作为函数或者方法的参数时，你几乎不需要利用完整格式构造内联闭包。
+實際上，通過內聯閉包表達式構造的閉包作為參數傳遞給函數或方法時，總是能夠推斷出閉包的參數和返回值類型。這意味著閉包作為函數或者方法的參數時，你幾乎不需要利用完整格式構造內聯閉包。
 
-尽管如此，你仍然可以明确写出有着完整格式的闭包。如果完整格式的闭包能够提高代码的可读性，则我们更鼓励采用完整格式的闭包。而在 `sorted(by:)` 方法这个例子里，显然闭包的目的就是排序。由于这个闭包是为了处理字符串数组的排序，因此读者能够推测出这个闭包是用于字符串处理的。
+盡管如此，你仍然可以明確寫出有著完整格式的閉包。如果完整格式的閉包能夠提高代碼的可讀性，則我們更鼓勵采用完整格式的閉包。而在 `sorted(by:)` 方法這個例子裡，顯然閉包的目的就是排序。由於這個閉包是為了處理字符串數組的排序，因此讀者能夠推測出這個閉包是用於字符串處理的。
 
 <a name="implicit_returns_from_single_expression_closures"></a>
-### 单表达式闭包隐式返回
-单行表达式闭包可以通过省略 `return` 关键字来隐式返回单行表达式的结果，如上版本的例子可以改写为：
+### 單表達式閉包隱式返回
+單行表達式閉包可以通過省略 `return` 關鍵字來隱式返回單行表達式的結果，如上版本的例子可以改寫為：
 
 ```swift
 reversedNames = names.sorted(by: { s1, s2 in s1 > s2 } )
 ```
 
-在这个例子中，`sorted(by:)` 方法的参数类型明确了闭包必须返回一个 `Bool` 类型值。因为闭包函数体只包含了一个单一表达式（`s1 > s2`），该表达式返回 `Bool` 类型值，因此这里没有歧义，`return` 关键字可以省略。
+在這個例子中，`sorted(by:)` 方法的參數類型明確了閉包必須返回一個 `Bool` 類型值。因為閉包函數體只包含了一個單一表達式（`s1 > s2`），該表達式返回 `Bool` 類型值，因此這裡沒有歧義，`return` 關鍵字可以省略。
 
 <a name="shorthand_argument_names"></a>
-### 参数名称缩写
+### 參數名稱縮寫
 
-Swift 自动为内联闭包提供了参数名称缩写功能，你可以直接通过 `$0`，`$1`，`$2` 来顺序调用闭包的参数，以此类推。
+Swift 自動為內聯閉包提供了參數名稱縮寫功能，你可以直接通過 `$0`，`$1`，`$2` 來順序調用閉包的參數，以此類推。
 
-如果你在闭包表达式中使用参数名称缩写，你可以在闭包定义中省略参数列表，并且对应参数名称缩写的类型会通过函数类型进行推断。`in`关键字也同样可以被省略，因为此时闭包表达式完全由闭包函数体构成：
+如果你在閉包表達式中使用參數名稱縮寫，你可以在閉包定義中省略參數列表，並且對應參數名稱縮寫的類型會通過函數類型進行推斷。`in`關鍵字也同樣可以被省略，因為此時閉包表達式完全由閉包函數體構成：
 
 ```swift
 reversedNames = names.sorted(by: { $0 > $1 } )
 ```
 
-在这个例子中，`$0`和`$1`表示闭包中第一个和第二个 `String` 类型的参数。
+在這個例子中，`$0`和`$1`表示閉包中第一個和第二個 `String` 類型的參數。
 
 <a name="operator_methods"></a>
-### 运算符方法
+### 運算符方法
 
-实际上还有一种更简短的方式来编写上面例子中的闭包表达式。Swift 的 `String` 类型定义了关于大于号（`>`）的字符串实现，其作为一个函数接受两个 `String` 类型的参数并返回 `Bool` 类型的值。而这正好与 `sorted(by:)` 方法的参数需要的函数类型相符合。因此，你可以简单地传递一个大于号，Swift 可以自动推断出你想使用大于号的字符串函数实现：
+實際上還有一種更簡短的方式來編寫上面例子中的閉包表達式。Swift 的 `String` 類型定義了關於大於號（`>`）的字符串實現，其作為一個函數接受兩個 `String` 類型的參數並返回 `Bool` 類型的值。而這正好與 `sorted(by:)` 方法的參數需要的函數類型相符合。因此，你可以簡單地傳遞一個大於號，Swift 可以自動推斷出你想使用大於號的字符串函數實現：
 
 ```swift
 reversedNames = names.sorted(by: >)
 ```
 
-更多关于运算符方法的内容请查看[运算符方法](./25_Advanced_Operators.html#operator_methods)。
+更多關於運算符方法的內容請查看[運算符方法](./25_Advanced_Operators.html#operator_methods)。
 
 <a name="trailing_closures"></a>
-## 尾随闭包
+## 尾隨閉包
 
-如果你需要将一个很长的闭包表达式作为最后一个参数传递给函数，可以使用*尾随闭包*来增强函数的可读性。尾随闭包是一个书写在函数括号之后的闭包表达式，函数支持将其作为最后一个参数调用。在使用尾随闭包时，你不用写出它的参数标签：
+如果你需要將一個很長的閉包表達式作為最後一個參數傳遞給函數，可以使用*尾隨閉包*來增強函數的可讀性。尾隨閉包是一個書寫在函數括號之後的閉包表達式，函數支持將其作為最後一個參數調用。在使用尾隨閉包時，你不用寫出它的參數標簽：
 
 ```swift
 func someFunctionThatTakesAClosure(closure: () -> Void) {
-    // 函数体部分
+    // 函數體部分
 }
 
-// 以下是不使用尾随闭包进行函数调用
+// 以下是不使用尾隨閉包進行函數調用
 someFunctionThatTakesAClosure(closure: {
-    // 闭包主体部分
+    // 閉包主體部分
 })
 
-// 以下是使用尾随闭包进行函数调用
+// 以下是使用尾隨閉包進行函數調用
 someFunctionThatTakesAClosure() {
-    // 闭包主体部分
+    // 閉包主體部分
 }
 ```
 
-在[闭包表达式语法](#closure_expression_syntax)一节中作为 `sorted(by:)` 方法参数的字符串排序闭包可以改写为：
+在[閉包表達式語法](#closure_expression_syntax)一節中作為 `sorted(by:)` 方法參數的字符串排序閉包可以改寫為：
 
 ```swift
 reversedNames = names.sorted() { $0 > $1 }
 ```
 
-如果闭包表达式是函数或方法的唯一参数，则当你使用尾随闭包时，你甚至可以把 `()` 省略掉：
+如果閉包表達式是函數或方法的唯一參數，則當你使用尾隨閉包時，你甚至可以把 `()` 省略掉：
 
 ```swift
 reversedNames = names.sorted { $0 > $1 }
 ```
 
-当闭包非常长以至于不能在一行中进行书写时，尾随闭包变得非常有用。举例来说，Swift 的 `Array` 类型有一个 `map(_:)` 方法，这个方法获取一个闭包表达式作为其唯一参数。该闭包函数会为数组中的每一个元素调用一次，并返回该元素所映射的值。具体的映射方式和返回值类型由闭包来指定。
+當閉包非常長以至於不能在一行中進行書寫時，尾隨閉包變得非常有用。舉例來說，Swift 的 `Array` 類型有一個 `map(_:)` 方法，這個方法獲取一個閉包表達式作為其唯一參數。該閉包函數會為數組中的每一個元素調用一次，並返回該元素所映射的值。具體的映射方式和返回值類型由閉包來指定。
 
-当提供给数组的闭包应用于每个数组元素后，`map(_:)` 方法将返回一个新的数组，数组中包含了与原数组中的元素一一对应的映射后的值。
+當提供給數組的閉包應用於每個數組元素後，`map(_:)` 方法將返回一個新的數組，數組中包含了與原數組中的元素一一對應的映射後的值。
 
-下例介绍了如何在 `map(_:)` 方法中使用尾随闭包将 `Int` 类型数组 `[16, 58, 510]` 转换为包含对应 `String` 类型的值的数组`["OneSix", "FiveEight", "FiveOneZero"]`：
+下例介紹了如何在 `map(_:)` 方法中使用尾隨閉包將 `Int` 類型數組 `[16, 58, 510]` 轉換為包含對應 `String` 類型的值的數組`["OneSix", "FiveEight", "FiveOneZero"]`：
 
 ```swift
 let digitNames = [
@@ -212,9 +212,9 @@ let digitNames = [
 let numbers = [16, 58, 510]
 ```
 
-如上代码创建了一个整型数位和它们英文版本名字相映射的字典。同时还定义了一个准备转换为字符串数组的整型数组。
+如上代碼創建了一個整型數位和它們英文版本名字相映射的字典。同時還定義了一個准備轉換為字符串數組的整型數組。
 
-你现在可以通过传递一个尾随闭包给 `numbers` 数组的 `map(_:)` 方法来创建对应的字符串版本数组：
+你現在可以通過傳遞一個尾隨閉包給 `numbers` 數組的 `map(_:)` 方法來創建對應的字符串版本數組：
 
 ```swift
 let strings = numbers.map {
@@ -227,35 +227,35 @@ let strings = numbers.map {
     } while number > 0
     return output
 }
-// strings 常量被推断为字符串类型数组，即 [String]
-// 其值为 ["OneSix", "FiveEight", "FiveOneZero"]
+// strings 常量被推斷為字符串類型數組，即 [String]
+// 其值為 ["OneSix", "FiveEight", "FiveOneZero"]
 ```
 
-`map(_:)` 为数组中每一个元素调用了一次闭包表达式。你不需要指定闭包的输入参数 `number` 的类型，因为可以通过要映射的数组类型进行推断。
+`map(_:)` 為數組中每一個元素調用了一次閉包表達式。你不需要指定閉包的輸入參數 `number` 的類型，因為可以通過要映射的數組類型進行推斷。
 
-在该例中，局部变量 `number` 的值由闭包中的 `number` 参数获得，因此可以在闭包函数体内对其进行修改，(闭包或者函数的参数总是常量)，闭包表达式指定了返回类型为 `String`，以表明存储映射值的新数组类型为 `String`。
+在該例中，局部變量 `number` 的值由閉包中的 `number` 參數獲得，因此可以在閉包函數體內對其進行修改，(閉包或者函數的參數總是常量)，閉包表達式指定了返回類型為 `String`，以表明存儲映射值的新數組類型為 `String`。
 
-闭包表达式在每次被调用的时候创建了一个叫做 `output` 的字符串并返回。其使用求余运算符（`number % 10`）计算最后一位数字并利用 `digitNames` 字典获取所映射的字符串。这个闭包能够用于创建任意正整数的字符串表示。
+閉包表達式在每次被調用的時候創建了一個叫做 `output` 的字符串並返回。其使用求余運算符（`number % 10`）計算最後一位數字並利用 `digitNames` 字典獲取所映射的字符串。這個閉包能夠用於創建任意正整數的字符串表示。
 
 > 注意：  
-> 字典 `digitNames` 下标后跟着一个叹号（`!`），因为字典下标返回一个可选值（optional value），表明该键不存在时会查找失败。在上例中，由于可以确定 `number % 10` 总是 `digitNames` 字典的有效下标，因此叹号可以用于强制解包 (force-unwrap) 存储在下标的可选类型的返回值中的`String`类型的值。
+> 字典 `digitNames` 下標後跟著一個嘆號（`!`），因為字典下標返回一個可選值（optional value），表明該鍵不存在時會查找失敗。在上例中，由於可以確定 `number % 10` 總是 `digitNames` 字典的有效下標，因此嘆號可以用於強制解包 (force-unwrap) 存儲在下標的可選類型的返回值中的`String`類型的值。
 
-从 `digitNames` 字典中获取的字符串被添加到 `output` 的*前部*，逆序建立了一个字符串版本的数字。（在表达式 `number % 10` 中，如果 `number` 为 `16`，则返回 `6`，`58` 返回 `8`，`510` 返回 `0`。）
+從 `digitNames` 字典中獲取的字符串被添加到 `output` 的*前部*，逆序建立了一個字符串版本的數字。（在表達式 `number % 10` 中，如果 `number` 為 `16`，則返回 `6`，`58` 返回 `8`，`510` 返回 `0`。）
 
-`number` 变量之后除以 `10`。因为其是整数，在计算过程中未除尽部分被忽略。因此 `16` 变成了 `1`，`58` 变成了 `5`，`510` 变成了 `51`。
+`number` 變量之後除以 `10`。因為其是整數，在計算過程中未除盡部分被忽略。因此 `16` 變成了 `1`，`58` 變成了 `5`，`510` 變成了 `51`。
 
-整个过程重复进行，直到 `number /= 10` 为 `0`，这时闭包会将字符串 `output` 返回，而 `map(_:)` 方法则会将字符串添加到映射数组中。
+整個過程重復進行，直到 `number /= 10` 為 `0`，這時閉包會將字符串 `output` 返回，而 `map(_:)` 方法則會將字符串添加到映射數組中。
 
-在上面的例子中，通过尾随闭包语法，优雅地在函数后封装了闭包的具体功能，而不再需要将整个闭包包裹在 `map(_:)` 方法的括号内。
+在上面的例子中，通過尾隨閉包語法，優雅地在函數後封裝了閉包的具體功能，而不再需要將整個閉包包裹在 `map(_:)` 方法的括號內。
 
 <a name="capturing_values"></a>
-## 值捕获
+## 值捕獲
 
-闭包可以在其被定义的上下文中*捕获*常量或变量。即使定义这些常量和变量的原作用域已经不存在，闭包仍然可以在闭包函数体内引用和修改这些值。
+閉包可以在其被定義的上下文中*捕獲*常量或變量。即使定義這些常量和變量的原作用域已經不存在，閉包仍然可以在閉包函數體內引用和修改這些值。
 
-Swift 中，可以捕获值的闭包的最简单形式是嵌套函数，也就是定义在其他函数的函数体内的函数。嵌套函数可以捕获其外部函数所有的参数以及定义的常量和变量。
+Swift 中，可以捕獲值的閉包的最簡單形式是嵌套函數，也就是定義在其他函數的函數體內的函數。嵌套函數可以捕獲其外部函數所有的參數以及定義的常量和變量。
 
-举个例子，这有一个叫做 `makeIncrementer` 的函数，其包含了一个叫做 `incrementer` 的嵌套函数。嵌套函数 `incrementer()` 从上下文中捕获了两个值，`runningTotal` 和 `amount`。捕获这些值之后，`makeIncrementer` 将 `incrementer` 作为闭包返回。每次调用 `incrementer` 时，其会以 `amount` 作为增量增加 `runningTotal` 的值。
+舉個例子，這有一個叫做 `makeIncrementer` 的函數，其包含了一個叫做 `incrementer` 的嵌套函數。嵌套函數 `incrementer()` 從上下文中捕獲了兩個值，`runningTotal` 和 `amount`。捕獲這些值之後，`makeIncrementer` 將 `incrementer` 作為閉包返回。每次調用 `incrementer` 時，其會以 `amount` 作為增量增加 `runningTotal` 的值。
 
 ```swift
 func makeIncrementer(forIncrement amount: Int) -> () -> Int {
@@ -268,13 +268,13 @@ func makeIncrementer(forIncrement amount: Int) -> () -> Int {
 }
 ```
 
-`makeIncrementer` 返回类型为 `() -> Int`。这意味着其返回的是一个*函数*，而非一个简单类型的值。该函数在每次调用时不接受参数，只返回一个 `Int` 类型的值。关于函数返回其他函数的内容，请查看[函数类型作为返回类型](./06_Functions.html#function_types_as_return_types)。
+`makeIncrementer` 返回類型為 `() -> Int`。這意味著其返回的是一個*函數*，而非一個簡單類型的值。該函數在每次調用時不接受參數，只返回一個 `Int` 類型的值。關於函數返回其他函數的內容，請查看[函數類型作為返回類型](./06_Functions.html#function_types_as_return_types)。
 
-`makeIncrementer(forIncrement:)` 函数定义了一个初始值为 `0` 的整型变量 `runningTotal`，用来存储当前总计数值。该值为 `incrementer` 的返回值。
+`makeIncrementer(forIncrement:)` 函數定義了一個初始值為 `0` 的整型變量 `runningTotal`，用來存儲當前總計數值。該值為 `incrementer` 的返回值。
 
-`makeIncrementer(forIncrement:)` 有一个 `Int` 类型的参数，其外部参数名为 `forIncrement`，内部参数名为 `amount`，该参数表示每次 `incrementer` 被调用时 `runningTotal` 将要增加的量。`makeIncrementer` 函数还定义了一个嵌套函数 `incrementer`，用来执行实际的增加操作。该函数简单地使 `runningTotal` 增加 `amount`，并将其返回。
+`makeIncrementer(forIncrement:)` 有一個 `Int` 類型的參數，其外部參數名為 `forIncrement`，內部參數名為 `amount`，該參數表示每次 `incrementer` 被調用時 `runningTotal` 將要增加的量。`makeIncrementer` 函數還定義了一個嵌套函數 `incrementer`，用來執行實際的增加操作。該函數簡單地使 `runningTotal` 增加 `amount`，並將其返回。
 
-如果我们单独考虑嵌套函数 `incrementer()`，会发现它有些不同寻常：
+如果我們單獨考慮嵌套函數 `incrementer()`，會發現它有些不同尋常：
 
 ```swift
 func incrementer() -> Int {
@@ -283,68 +283,68 @@ func incrementer() -> Int {
 }
 ```
 
-`incrementer()` 函数并没有任何参数，但是在函数体内访问了 `runningTotal` 和 `amount` 变量。这是因为它从外围函数捕获了 `runningTotal` 和 `amount` 变量的*引用*。捕获引用保证了 `runningTotal` 和 `amount` 变量在调用完 `makeIncrementer` 后不会消失，并且保证了在下一次执行 `incrementer` 函数时，`runningTotal` 依旧存在。
+`incrementer()` 函數並沒有任何參數，但是在函數體內訪問了 `runningTotal` 和 `amount` 變量。這是因為它從外圍函數捕獲了 `runningTotal` 和 `amount` 變量的*引用*。捕獲引用保證了 `runningTotal` 和 `amount` 變量在調用完 `makeIncrementer` 後不會消失，並且保證了在下一次執行 `incrementer` 函數時，`runningTotal` 依舊存在。
 
 > 注意
-> 为了优化，如果一个值不会被闭包改变，或者在闭包创建后不会改变，Swift 可能会改为捕获并保存一份对值的拷贝。
-> Swift 也会负责被捕获变量的所有内存管理工作，包括释放不再需要的变量。
+> 為了優化，如果一個值不會被閉包改變，或者在閉包創建後不會改變，Swift 可能會改為捕獲並保存一份對值的拷貝。
+> Swift 也會負責被捕獲變量的所有內存管理工作，包括釋放不再需要的變量。
 
-下面是一个使用 `makeIncrementer` 的例子：
+下面是一個使用 `makeIncrementer` 的例子：
 
 ```swift
 let incrementByTen = makeIncrementer(forIncrement: 10)
 ```
 
-该例子定义了一个叫做 `incrementByTen` 的常量，该常量指向一个每次调用会将其 `runningTotal` 变量增加 `10` 的 `incrementer` 函数。调用这个函数多次可以得到以下结果：
+該例子定義了一個叫做 `incrementByTen` 的常量，該常量指向一個每次調用會將其 `runningTotal` 變量增加 `10` 的 `incrementer` 函數。調用這個函數多次可以得到以下結果：
 
 ```swift
 incrementByTen()
-// 返回的值为10
+// 返回的值為10
 incrementByTen()
-// 返回的值为20
+// 返回的值為20
 incrementByTen()
-// 返回的值为30
+// 返回的值為30
 ```
 
-如果你创建了另一个 `incrementer`，它会有属于自己的引用，指向一个全新、独立的 `runningTotal` 变量：
+如果你創建了另一個 `incrementer`，它會有屬於自己的引用，指向一個全新、獨立的 `runningTotal` 變量：
 
 ```swift
 let incrementBySeven = makeIncrementer(forIncrement: 7)
 incrementBySeven()
-// 返回的值为7
+// 返回的值為7
 ```
 
-再次调用原来的 `incrementByTen` 会继续增加它自己的 `runningTotal` 变量，该变量和 `incrementBySeven` 中捕获的变量没有任何联系：
+再次調用原來的 `incrementByTen` 會繼續增加它自己的 `runningTotal` 變量，該變量和 `incrementBySeven` 中捕獲的變量沒有任何聯系：
 
 ```swift
 incrementByTen()
-// 返回的值为40
+// 返回的值為40
 ```
 
 > 注意：   
-> 如果你将闭包赋值给一个类实例的属性，并且该闭包通过访问该实例或其成员而捕获了该实例，你将在闭包和该实例间创建一个循环强引用。Swift 使用捕获列表来打破这种循环强引用。更多信息，请参考[闭包引起的循环强引用](./16_Automatic_Reference_Counting.html#strong_reference_cycles_for_closures)。
+> 如果你將閉包賦值給一個類實例的屬性，並且該閉包通過訪問該實例或其成員而捕獲了該實例，你將在閉包和該實例間創建一個循環強引用。Swift 使用捕獲列表來打破這種循環強引用。更多信息，請參考[閉包引起的循環強引用](./16_Automatic_Reference_Counting.html#strong_reference_cycles_for_closures)。
 
 <a name="closures_are_reference_types"></a>
-## 闭包是引用类型
+## 閉包是引用類型
 
-上面的例子中，`incrementBySeven` 和 `incrementByTen` 都是常量，但是这些常量指向的闭包仍然可以增加其捕获的变量的值。这是因为函数和闭包都是*引用类型*。
+上面的例子中，`incrementBySeven` 和 `incrementByTen` 都是常量，但是這些常量指向的閉包仍然可以增加其捕獲的變量的值。這是因為函數和閉包都是*引用類型*。
 
-无论你将函数或闭包赋值给一个常量还是变量，你实际上都是将常量或变量的值设置为对应函数或闭包的*引用*。上面的例子中，指向闭包的引用 `incrementByTen` 是一个常量，而并非闭包内容本身。
+無論你將函數或閉包賦值給一個常量還是變量，你實際上都是將常量或變量的值設置為對應函數或閉包的*引用*。上面的例子中，指向閉包的引用 `incrementByTen` 是一個常量，而並非閉包內容本身。
 
-这也意味着如果你将闭包赋值给了两个不同的常量或变量，两个值都会指向同一个闭包：
+這也意味著如果你將閉包賦值給了兩個不同的常量或變量，兩個值都會指向同一個閉包：
 
 ```swift
 let alsoIncrementByTen = incrementByTen
 alsoIncrementByTen()
-// 返回的值为50
+// 返回的值為50
 ```
 
 <a name="escaping_closures"></a>
-## 逃逸闭包
+## 逃逸閉包
 
-当一个闭包作为参数传到一个函数中，但是这个闭包在函数返回之后才被执行，我们称该闭包从函数中*逃逸*。当你定义接受闭包作为参数的函数时，你可以在参数名之前标注 `@escaping`，用来指明这个闭包是允许“逃逸”出这个函数的。  
+當一個閉包作為參數傳到一個函數中，但是這個閉包在函數返回之後才被執行，我們稱該閉包從函數中*逃逸*。當你定義接受閉包作為參數的函數時，你可以在參數名之前標注 `@escaping`，用來指明這個閉包是允許「逃逸」出這個函數的。  
 
-一种能使闭包“逃逸”出函数的方法是，将这个闭包保存在一个函数外部定义的变量中。举个例子，很多启动异步操作的函数接受一个闭包参数作为 completion handler。这类函数会在异步操作开始之后立刻返回，但是闭包直到异步操作结束后才会被调用。在这种情况下，闭包需要“逃逸”出函数，因为闭包需要在函数返回之后被调用。例如：
+一種能使閉包「逃逸」出函數的方法是，將這個閉包保存在一個函數外部定義的變量中。舉個例子，很多啟動異步操作的函數接受一個閉包參數作為 completion handler。這類函數會在異步操作開始之後立刻返回，但是閉包直到異步操作結束後才會被調用。在這種情況下，閉包需要「逃逸」出函數，因為閉包需要在函數返回之後被調用。例如：
 
 ```swift
 var completionHandlers: [() -> Void] = []
@@ -353,9 +353,9 @@ func someFunctionWithEscapingClosure(completionHandler: @escaping () -> Void) {
 }
 ```
 
-`someFunctionWithEscapingClosure(_:)` 函数接受一个闭包作为参数，该闭包被添加到一个函数外定义的数组中。如果你不将这个参数标记为 `@escaping`，就会得到一个编译错误。
+`someFunctionWithEscapingClosure(_:)` 函數接受一個閉包作為參數，該閉包被添加到一個函數外定義的數組中。如果你不將這個參數標記為 `@escaping`，就會得到一個編譯錯誤。
 
-将一个闭包标记为 `@escaping` 意味着你必须在闭包中显式地引用 `self`。比如说，在下面的代码中，传递到 `someFunctionWithEscapingClosure(_:)` 中的闭包是一个逃逸闭包，这意味着它需要显式地引用 `self`。相对的，传递到 `someFunctionWithNonescapingClosure(_:)` 中的闭包是一个非逃逸闭包，这意味着它可以隐式引用 `self`。
+將一個閉包標記為 `@escaping` 意味著你必須在閉包中顯式地引用 `self`。比如說，在下面的代碼中，傳遞到 `someFunctionWithEscapingClosure(_:)` 中的閉包是一個逃逸閉包，這意味著它需要顯式地引用 `self`。相對的，傳遞到 `someFunctionWithNonescapingClosure(_:)` 中的閉包是一個非逃逸閉包，這意味著它可以隱式引用 `self`。
 
 
 ```swift
@@ -382,13 +382,13 @@ print(instance.x)
 ```
 
 <a name="autoclosures"></a>
-## 自动闭包
+## 自動閉包
 
-*自动闭包*是一种自动创建的闭包，用于包装传递给函数作为参数的表达式。这种闭包不接受任何参数，当它被调用的时候，会返回被包装在其中的表达式的值。这种便利语法让你能够省略闭包的花括号，用一个普通的表达式来代替显式的闭包。
+*自動閉包*是一種自動創建的閉包，用於包裝傳遞給函數作為參數的表達式。這種閉包不接受任何參數，當它被調用的時候，會返回被包裝在其中的表達式的值。這種便利語法讓你能夠省略閉包的花括號，用一個普通的表達式來代替顯式的閉包。
 
-我们经常会*调用*采用自动闭包的函数，但是很少去*实现*这样的函数。举个例子来说，`assert(condition:message:file:line:)` 函数接受自动闭包作为它的 `condition` 参数和 `message` 参数；它的 `condition` 参数仅会在 debug 模式下被求值，它的 `message` 参数仅当 `condition` 参数为 `false` 时被计算求值。
+我們經常會*調用*采用自動閉包的函數，但是很少去*實現*這樣的函數。舉個例子來說，`assert(condition:message:file:line:)` 函數接受自動閉包作為它的 `condition` 參數和 `message` 參數；它的 `condition` 參數僅會在 debug 模式下被求值，它的 `message` 參數僅當 `condition` 參數為 `false` 時被計算求值。
 
-自动闭包让你能够延迟求值，因为直到你调用这个闭包，代码段才会被执行。延迟求值对于那些有副作用（Side Effect）和高计算成本的代码来说是很有益处的，因为它使得你能控制代码的执行时机。下面的代码展示了闭包如何延时求值。
+自動閉包讓你能夠延遲求值，因為直到你調用這個閉包，代碼段才會被執行。延遲求值對於那些有副作用（Side Effect）和高計算成本的代碼來說是很有益處的，因為它使得你能控制代碼的執行時機。下面的代碼展示了閉包如何延時求值。
 
 ```swift
 var customersInLine = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
@@ -405,9 +405,9 @@ print(customersInLine.count)
 // 打印出 "4"
 ```
 
-尽管在闭包的代码中，`customersInLine` 的第一个元素被移除了，不过在闭包被调用之前，这个元素是不会被移除的。如果这个闭包永远不被调用，那么在闭包里面的表达式将永远不会执行，那意味着列表中的元素永远不会被移除。请注意，`customerProvider` 的类型不是 `String`，而是 `() -> String`，一个没有参数且返回值为 `String` 的函数。
+盡管在閉包的代碼中，`customersInLine` 的第一個元素被移除了，不過在閉包被調用之前，這個元素是不會被移除的。如果這個閉包永遠不被調用，那麼在閉包裡面的表達式將永遠不會執行，那意味著列表中的元素永遠不會被移除。請注意，`customerProvider` 的類型不是 `String`，而是 `() -> String`，一個沒有參數且返回值為 `String` 的函數。
 
-将闭包作为参数传递给函数时，你能获得同样的延时求值行为。
+將閉包作為參數傳遞給函數時，你能獲得同樣的延時求值行為。
 
 ```swift
 // customersInLine is ["Alex", "Ewa", "Barry", "Daniella"]
@@ -418,7 +418,7 @@ serve(customer: { customersInLine.remove(at: 0) } )
 // 打印出 "Now serving Alex!"
 ```
 
-上面的 `serve(customer:)` 函数接受一个返回顾客名字的显式的闭包。下面这个版本的 `serve(customer:)` 完成了相同的操作，不过它并没有接受一个显式的闭包，而是通过将参数标记为 `@autoclosure` 来接收一个自动闭包。现在你可以将该函数当作接受 `String` 类型参数（而非闭包）的函数来调用。`customerProvider` 参数将自动转化为一个闭包，因为该参数被标记了 `@autoclosure` 特性。
+上面的 `serve(customer:)` 函數接受一個返回顧客名字的顯式的閉包。下面這個版本的 `serve(customer:)` 完成了相同的操作，不過它並沒有接受一個顯式的閉包，而是通過將參數標記為 `@autoclosure` 來接收一個自動閉包。現在你可以將該函數當作接受 `String` 類型參數（而非閉包）的函數來調用。`customerProvider` 參數將自動轉化為一個閉包，因為該參數被標記了 `@autoclosure` 特性。
 
 ```swift
 // customersInLine is ["Ewa", "Barry", "Daniella"]
@@ -430,9 +430,9 @@ serve(customer: customersInLine.remove(at: 0))
 ```
 
 > 注意
-> 过度使用 `autoclosures` 会让你的代码变得难以理解。上下文和函数名应该能够清晰地表明求值是被延迟执行的。
+> 過度使用 `autoclosures` 會讓你的代碼變得難以理解。上下文和函數名應該能夠清晰地表明求值是被延遲執行的。
 
-如果你想让一个自动闭包可以“逃逸”，则应该同时使用 `@autoclosure` 和 `@escaping` 属性。`@escaping` 属性的讲解见上面的[逃逸闭包](#escaping_closures)。
+如果你想讓一個自動閉包可以「逃逸」，則應該同時使用 `@autoclosure` 和 `@escaping` 屬性。`@escaping` 屬性的講解見上面的[逃逸閉包](#escaping_closures)。
 
 ```swift
 // customersInLine i= ["Barry", "Daniella"]
@@ -452,5 +452,5 @@ for customerProvider in customerProviders {
 // 打印 "Now serving Daniella!"
 ```
 
-在上面的代码中，`collectCustomerProviders(_:)` 函数并没有调用传入的 `customerProvider` 闭包，而是将闭包追加到了 `customerProviders` 数组中。这个数组定义在函数作用域范围外，这意味着数组内的闭包能够在函数返回之后被调用。因此，`customerProvider` 参数必须允许“逃逸”出函数作用域。
+在上面的代碼中，`collectCustomerProviders(_:)` 函數並沒有調用傳入的 `customerProvider` 閉包，而是將閉包追加到了 `customerProviders` 數組中。這個數組定義在函數作用域范圍外，這意味著數組內的閉包能夠在函數返回之後被調用。因此，`customerProvider` 參數必須允許「逃逸」出函數作用域。
 

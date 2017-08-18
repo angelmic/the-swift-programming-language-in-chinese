@@ -1,18 +1,18 @@
-# WWDC里面的那个“大炮打气球”
+# WWDC裡面的那個「大炮打氣球」
 
-> 翻译：[老码团队翻译组-Arya](http://weibo.com/littlekok/)  
-> 校对：[老码团队翻译组-](Jame)
+> 翻譯：[老碼團隊翻譯組-Arya](http://weibo.com/littlekok/)  
+> 校對：[老碼團隊翻譯組-](Jame)
 
 ![Ballon playground](https://devimages.apple.com.edgekey.net/swift/images/swift-screenshot.jpg)
 
 
-很多小伙伴说，对WWDC上介绍Swift语言时，演示的那个“大炮打气球”的Ballons项目很感兴趣。
+很多小伙伴說，對WWDC上介紹Swift語言時，演示的那個「大炮打氣球」的Ballons項目很感興趣。
 
-Ballons不但展现了playgrounds许多很赞的特性，还让我们看到写代码的过程，原来可以这么互动，这么好玩。
+Ballons不但展現了playgrounds許多很贊的特性，還讓我們看到寫代碼的過程，原來可以這麼互動，這麼好玩。
 
-现在你可以下载这个[Ballons.playground](https://developer.apple.com/swift/blog/downloads/Balloons.zip)的教学版本，学习这些有趣的效果是怎么实现的。教学版本里除了源文件，还有相关说明文档，我们还出了一些小小的实验题，你可以动手修改代码，然后在右侧马上看到效果。
+現在你可以下載這個[Ballons.playground](https://developer.apple.com/swift/blog/downloads/Balloons.zip)的教學版本，學習這些有趣的效果是怎麼實現的。教學版本裡除了源文件，還有相關說明文檔，我們還出了一些小小的實驗題，你可以動手修改代碼，然後在右側馬上看到效果。
 
-这个playground文件用到了SpriteKit的新特性，因此需要最新beta版本的Xcode 6和Yosemite系统来支持它运行。
+這個playground文件用到了SpriteKit的新特性，因此需要最新beta版本的Xcode 6和Yosemite系統來支持它運行。
 
 
-本文由翻译自Apple Swift Blog的博文：[Ballons](https://developer.apple.com/swift/blog/?id=9) 
+本文由翻譯自Apple Swift Blog的博文：[Ballons](https://developer.apple.com/swift/blog/?id=9) 

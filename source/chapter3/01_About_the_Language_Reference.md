@@ -1,40 +1,40 @@
-# 关于语言参考（About the Language Reference）
+# 關於語言參考（About the Language Reference）
 -----------------
 
 > 1.0
-> 翻译：[dabing1022](https://github.com/dabing1022)
-> 校对：[numbbbbb](https://github.com/numbbbbb)
+> 翻譯：[dabing1022](https://github.com/dabing1022)
+> 校對：[numbbbbb](https://github.com/numbbbbb)
 
 > 2.0
-> 翻译+校对：[KYawn](https://github.com/KYawn)
+> 翻譯+校對：[KYawn](https://github.com/KYawn)
 
-本页内容包括：
+本頁內容包括：
 
-- [如何阅读语法](#how_to_read_the_grammar)
+- [如何閱讀語法](#how_to_read_the_grammar)
 
-本书的这一节描述了 Swift 编程语言的形式语法。这里描述的语法是为了帮助您更详细地了解该语言，而不是让您直接实现一个解析器或编译器。
+本書的這一節描述了 Swift 編程語言的形式語法。這裡描述的語法是為了幫助您更詳細地了解該語言，而不是讓您直接實現一個解析器或編譯器。
 
-Swift 语言相对较小，这是由于 Swift 代码中的几乎所有常见类型、函数以及运算符都已经在 Swift 标准库中定义了。虽然这些类型、函数和运算符并不是 Swift 语言自身的一部分，但是它们被广泛应用于本书的讨论和代码范例中。
+Swift 語言相對較小，這是由於 Swift 代碼中的幾乎所有常見類型、函數以及運算符都已經在 Swift 標准庫中定義了。雖然這些類型、函數和運算符並不是 Swift 語言自身的一部分，但是它們被廣泛應用於本書的討論和代碼范例中。
 
 <a name="how_to_read_the_grammar"></a>
-## 如何阅读语法
+## 如何閱讀語法
 
-用来描述 Swift 编程语言形式语法的符号遵循下面几个约定：
+用來描述 Swift 編程語言形式語法的符號遵循下面幾個約定：
 
--  箭头（`→`）用来标记语法产式，可以理解为“可由……构成”。
--  斜体文字用来表示句法类型，并出现在一个语法产式规则两侧。
--  关键字和标点符号由固定宽度的粗体文本表示，只出现在一个语法产式规则的右侧。
--  可供选择的语法产式由竖线（`|`）分隔。当可选用的语法产式太多时，为了阅读方便，它们将被拆分为多行语法产式规则。
--  少数情况下，语法产式规则的右侧会有用于描述的常规字体文字。
--  可选的句法类型和字面值用尾标 `opt` 来标记。
+-  箭頭（`→`）用來標記語法產式，可以理解為「可由……構成」。
+-  斜體文字用來表示句法類型，並出現在一個語法產式規則兩側。
+-  關鍵字和標點符號由固定寬度的粗體文本表示，只出現在一個語法產式規則的右側。
+-  可供選擇的語法產式由豎線（`|`）分隔。當可選用的語法產式太多時，為了閱讀方便，它們將被拆分為多行語法產式規則。
+-  少數情況下，語法產式規則的右側會有用於描述的常規字體文字。
+-  可選的句法類型和字面值用尾標 `opt` 來標記。
 
-举个例子，getter-setter 的语法块的定义如下：
+舉個例子，getter-setter 的語法塊的定義如下：
 
-> getter-setter 方法块语法  
-> *getter-setter 方法块* → { [*getter 子句*](05_Declarations.html#getter-clause) [*setter 子句*](05_Declarations.html#setter-clause)<sub>可选</sub> } | { [*setter 子句*](05_Declarations.html#setter-clause) [*getter 子句*](05_Declarations.html#getter-clause) }
+> getter-setter 方法塊語法  
+> *getter-setter 方法塊* → { [*getter 子句*](05_Declarations.html#getter-clause) [*setter 子句*](05_Declarations.html#setter-clause)<sub>可選</sub> } | { [*setter 子句*](05_Declarations.html#setter-clause) [*getter 子句*](05_Declarations.html#getter-clause) }
 
-这个定义表明，一个 getter-setter 方法块可以由一个 getter 子句后跟一个可选的 setter 子句构成，然后用大括号括起来，或者由一个 setter 子句后跟一个 getter 子句构成，然后用大括号括起来。下面的两个语法产式等价于上述的语法产式，并明确指出了如何取舍：
+這個定義表明，一個 getter-setter 方法塊可以由一個 getter 子句後跟一個可選的 setter 子句構成，然後用大括號括起來，或者由一個 setter 子句後跟一個 getter 子句構成，然後用大括號括起來。下面的兩個語法產式等價於上述的語法產式，並明確指出了如何取舍：
 
-> getter-setter 方法块语法  
-> getter-setter 方法块 → { [*getter 子句*](05_Declarations.html#getter-clause)  [*setter 子句*](05_Declarations.html#setter-clause)<sub>可选</sub> }  
-> getter-setter 方法块 → { [*setter 子句*](05_Declarations.html#setter-clause) [*getter 子句*](05_Declarations.html#getter-clause) }
+> getter-setter 方法塊語法  
+> getter-setter 方法塊 → { [*getter 子句*](05_Declarations.html#getter-clause)  [*setter 子句*](05_Declarations.html#setter-clause)<sub>可選</sub> }  
+> getter-setter 方法塊 → { [*setter 子句*](05_Declarations.html#setter-clause) [*getter 子句*](05_Declarations.html#getter-clause) }

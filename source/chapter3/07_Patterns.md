@@ -2,49 +2,49 @@
 -----------------
 
 > 1.0
-> 翻译：[honghaoz](https://github.com/honghaoz)
-> 校对：[numbbbbb](https://github.com/numbbbbb), [stanzhai](https://github.com/stanzhai)
+> 翻譯：[honghaoz](https://github.com/honghaoz)
+> 校對：[numbbbbb](https://github.com/numbbbbb), [stanzhai](https://github.com/stanzhai)
 
 > 2.0
-> 翻译+校对：[ray16897188](https://github.com/ray16897188),
+> 翻譯+校對：[ray16897188](https://github.com/ray16897188),
 
 > 2.1
-> 翻译：[BridgeQ](https://github.com/WXGBridgeQ)
+> 翻譯：[BridgeQ](https://github.com/WXGBridgeQ)
 
-本页内容包括：
+本頁內容包括：
 
 - [通配符模式（Wildcard Pattern）](#wildcard_pattern)
-- [标识符模式（Identifier Pattern）](#identifier_pattern)
-- [值绑定模式（Value-Binding Pattern）](#value-binding_pattern)
-- [元组模式（Tuple Pattern）](#tuple_pattern)
-- [枚举用例模式（Enumeration Case Pattern）](#enumeration_case_pattern)
-- [可选模式（Optional Pattern）](#optional_pattern)
-- [类型转换模式（Type-Casting Pattern）](#type-casting_patterns)
-- [表达式模式（Expression Pattern）](#expression_pattern)
+- [標識符模式（Identifier Pattern）](#identifier_pattern)
+- [值綁定模式（Value-Binding Pattern）](#value-binding_pattern)
+- [元組模式（Tuple Pattern）](#tuple_pattern)
+- [枚舉用例模式（Enumeration Case Pattern）](#enumeration_case_pattern)
+- [可選模式（Optional Pattern）](#optional_pattern)
+- [類型轉換模式（Type-Casting Pattern）](#type-casting_patterns)
+- [表達式模式（Expression Pattern）](#expression_pattern)
 
-模式代表单个值或者复合值的结构。例如，元组 `(1, 2)` 的结构是由逗号分隔的，包含两个元素的列表。因为模式代表一种值的结构，而不是特定的某个值，你可以利用模式来匹配各种各样的值。比如，`(x, y)` 可以匹配元组 `(1, 2)`，以及任何含两个元素的元组。除了利用模式匹配一个值以外，你可以从复合值中提取出部分或全部值，然后分别把各个部分的值和一个常量或变量绑定起来。
+模式代表單個值或者復合值的結構。例如，元組 `(1, 2)` 的結構是由逗號分隔的，包含兩個元素的列表。因為模式代表一種值的結構，而不是特定的某個值，你可以利用模式來匹配各種各樣的值。比如，`(x, y)` 可以匹配元組 `(1, 2)`，以及任何含兩個元素的元組。除了利用模式匹配一個值以外，你可以從復合值中提取出部分或全部值，然後分別把各個部分的值和一個常量或變量綁定起來。
 
-Swift 中的模式分为两类：一种能成功匹配任何类型的值，另一种在运行时匹配某个特定值时可能会失败。
+Swift 中的模式分為兩類：一種能成功匹配任何類型的值，另一種在運行時匹配某個特定值時可能會失敗。
 
-第一类模式用于解构简单变量、常量和可选绑定中的值。此类模式包括通配符模式、标识符模式，以及包含前两种模式的值绑定模式和元组模式。你可以为这类模式指定一个类型标注，从而限制它们只能匹配某种特定类型的值。
+第一類模式用於解構簡單變量、常量和可選綁定中的值。此類模式包括通配符模式、標識符模式，以及包含前兩種模式的值綁定模式和元組模式。你可以為這類模式指定一個類型標注，從而限制它們只能匹配某種特定類型的值。
 
-第二类模式用于全模式匹配，这种情况下你试图匹配的值在运行时可能不存在。此类模式包括枚举用例模式、可选模式、表达式模式和类型转换模式。你在 `switch` 语句的 `case` 标签中，`do` 语句的 `catch` 子句中，或者在 `if`、`while`、`guard` 和 `for-in` 语句的 `case` 条件句中使用这类模式。
+第二類模式用於全模式匹配，這種情況下你試圖匹配的值在運行時可能不存在。此類模式包括枚舉用例模式、可選模式、表達式模式和類型轉換模式。你在 `switch` 語句的 `case` 標簽中，`do` 語句的 `catch` 子句中，或者在 `if`、`while`、`guard` 和 `for-in` 語句的 `case` 條件句中使用這類模式。
 
-> 模式语法  
+> 模式語法  
 <a name="pattern"></a>
-> *模式* → [*通配符模式*](#wildcard_pattern) [*类型标注*](03_Types.md#type-annotation)<sub>可选</sub>  
-> *模式* → [*标识符模式*](#identifier_pattern) [*类型标注*](03_Types.md#type-annotation)<sub>可选</sub>  
-> *模式* → [*值绑定模式*](#value-binding-pattern)  
-> *模式* → [*元组模式*](#tuple-pattern) [*类型标注*](03_Types.md#type-annotation)<sub>可选</sub>  
-> *模式* → [*枚举用例模式*](#enum-case-pattern)  
-> *模式* → [*可选模式*](#optional-pattern)  
-> *模式* → [*类型转换模式*](#type-casting-pattern)  
-> *模式* → [*表达式模式*](#expression-pattern)  
+> *模式* → [*通配符模式*](#wildcard_pattern) [*類型標注*](03_Types.md#type-annotation)<sub>可選</sub>  
+> *模式* → [*標識符模式*](#identifier_pattern) [*類型標注*](03_Types.md#type-annotation)<sub>可選</sub>  
+> *模式* → [*值綁定模式*](#value-binding-pattern)  
+> *模式* → [*元組模式*](#tuple-pattern) [*類型標注*](03_Types.md#type-annotation)<sub>可選</sub>  
+> *模式* → [*枚舉用例模式*](#enum-case-pattern)  
+> *模式* → [*可選模式*](#optional-pattern)  
+> *模式* → [*類型轉換模式*](#type-casting-pattern)  
+> *模式* → [*表達式模式*](#expression-pattern)  
 
 <a name="wildcard_pattern"></a>
 ## 通配符模式（Wildcard Pattern）
 
-通配符模式由一个下划线（`_`）构成，用于匹配并忽略任何值。当你想忽略被匹配的值时可以使用该模式。例如，下面这段代码在闭区间 `1...3` 中迭代，每次迭代都忽略该区间的当前值：
+通配符模式由一個下劃線（`_`）構成，用於匹配並忽略任何值。當你想忽略被匹配的值時可以使用該模式。例如，下面這段代碼在閉區間 `1...3` 中迭代，每次迭代都忽略該區間的當前值：
 
 ```swift
 for _ in 1...3 {
@@ -52,68 +52,68 @@ for _ in 1...3 {
 }
 ```
 
-> 通配符模式语法  
+> 通配符模式語法  
 <a name="wildcard-pattern"></a>
 > *通配符模式* → **_**  
 
 <a name="identifier_pattern"></a>
-## 标识符模式（Identifier Pattern）
+## 標識符模式（Identifier Pattern）
 
-标识符模式匹配任何值，并将匹配的值和一个变量或常量绑定起来。例如，在下面的常量声明中，`someValue` 是一个标识符模式，匹配了 `Int` 类型的 `42`：
+標識符模式匹配任何值，並將匹配的值和一個變量或常量綁定起來。例如，在下面的常量聲明中，`someValue` 是一個標識符模式，匹配了 `Int` 類型的 `42`：
 
 ```swift
 let someValue = 42
 ```
 
-当匹配成功时，`42` 被绑定（赋值）给常量 `someValue`。
+當匹配成功時，`42` 被綁定（賦值）給常量 `someValue`。
 
-如果一个变量或常量声明的左边是一个标识符模式，那么这个标识符模式是值绑定模式的子模式。
+如果一個變量或常量聲明的左邊是一個標識符模式，那麼這個標識符模式是值綁定模式的子模式。
 
-> 标识符模式语法  
+> 標識符模式語法  
 <a name="identifier-pattern"></a>
-> *标识符模式* → [*标识符*](02_Lexical_Structure.md#identifier)  
+> *標識符模式* → [*標識符*](02_Lexical_Structure.md#identifier)  
 
 <a name="value-binding_pattern"></a>
-## 值绑定模式（Value-Binding Pattern）
+## 值綁定模式（Value-Binding Pattern）
 
-值绑定模式把匹配到的值绑定给一个变量或常量。把匹配到的值绑定给常量时，用关键字 `let`，绑定给变量时，用关键字 `var`。
+值綁定模式把匹配到的值綁定給一個變量或常量。把匹配到的值綁定給常量時，用關鍵字 `let`，綁定給變量時，用關鍵字 `var`。
 
-在值绑定模式中的标识符模式会把新命名的变量或常量与匹配到的值做绑定。例如，你可以拆开一个元组，然后把每个元素绑定到相应的标识符模式中。
+在值綁定模式中的標識符模式會把新命名的變量或常量與匹配到的值做綁定。例如，你可以拆開一個元組，然後把每個元素綁定到相應的標識符模式中。
 
 ```swift
 let point = (3, 2)
 switch point {
-// 将 point 中的元素绑定到 x 和 y
+// 將 point 中的元素綁定到 x 和 y
 case let (x, y):
     print("The point is at (\(x), \(y)).")
 }
-// 打印 “The point is at (3, 2).”
+// 打印 「The point is at (3, 2).」
 ```
 
-在上面这个例子中，`let` 会分配到元组模式 `(x, y)` 中的各个标识符模式。因此，`switch` 语句中 `case let (x, y):` 和 `case (let x, let y):` 的匹配效果是一样的。
+在上面這個例子中，`let` 會分配到元組模式 `(x, y)` 中的各個標識符模式。因此，`switch` 語句中 `case let (x, y):` 和 `case (let x, let y):` 的匹配效果是一樣的。
 
-> 值绑定模式语法  
+> 值綁定模式語法  
 <a name="value-binding-pattern"></a>
-> *值绑定模式* → **var** [*模式*](#pattern) | **let** [*模式*](#pattern)  
+> *值綁定模式* → **var** [*模式*](#pattern) | **let** [*模式*](#pattern)  
 
 <a name="tuple_pattern"></a>
-## 元组模式
+## 元組模式
 
-元组模式是由逗号分隔的，具有零个或多个模式的列表，并由一对圆括号括起来。元组模式匹配相应元组类型的值。
+元組模式是由逗號分隔的，具有零個或多個模式的列表，並由一對圓括號括起來。元組模式匹配相應元組類型的值。
 
-你可以使用类型标注去限制一个元组模式能匹配哪种元组类型。例如，在常量声明 `let (x, y): (Int, Int) = (1, 2)` 中的元组模式 `(x, y): (Int, Int)` 只匹配两个元素都是 `Int` 类型的元组。
+你可以使用類型標注去限制一個元組模式能匹配哪種元組類型。例如，在常量聲明 `let (x, y): (Int, Int) = (1, 2)` 中的元組模式 `(x, y): (Int, Int)` 只匹配兩個元素都是 `Int` 類型的元組。
 
-当元组模式被用于 `for-in` 语句或者变量和常量声明时，它仅可以包含通配符模式、标识符模式、可选模式或者其他包含这些模式的元组模式。比如下面这段代码就不正确，因为 `(x, 0)` 中的元素 `0` 是一个表达式模式：
+當元組模式被用於 `for-in` 語句或者變量和常量聲明時，它僅可以包含通配符模式、標識符模式、可選模式或者其他包含這些模式的元組模式。比如下面這段代碼就不正確，因為 `(x, 0)` 中的元素 `0` 是一個表達式模式：
 
 ```swift
 let points = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1)]
-// 下面的代码是错误的
+// 下面的代碼是錯誤的
 for (x, 0) in points {
     /* ... */
 }
 ```
 
-只包含一个元素的元组模式的圆括号没有效果，模式只匹配这个单个元素的类型。举例来说，下面的语句是等效的：
+只包含一個元素的元組模式的圓括號沒有效果，模式只匹配這個單個元素的類型。舉例來說，下面的語句是等效的：
 
 ```swift
 let a = 2        // a: Int = 2
@@ -121,46 +121,46 @@ let (a) = 2      // a: Int = 2
 let (a): Int = 2 // a: Int = 2
 ```
 
-> 元组模式语法  
+> 元組模式語法  
 <a name="tuple-pattern"></a>
-> *元组模式* → **(** [*元组模式元素列表*](#tuple-pattern-element-list)<sub>可选</sub> **)**  
+> *元組模式* → **(** [*元組模式元素列表*](#tuple-pattern-element-list)<sub>可選</sub> **)**  
 <a name="tuple-pattern-element-list"></a>
-> *元组模式元素列表* → [*元组模式元素*](#tuple-pattern-element) | [*元组模式元素*](#tuple-pattern-element) **,** [*元组模式元素列表*](#tuple-pattern-element-list)  
+> *元組模式元素列表* → [*元組模式元素*](#tuple-pattern-element) | [*元組模式元素*](#tuple-pattern-element) **,** [*元組模式元素列表*](#tuple-pattern-element-list)  
 <a name="tuple-pattern-element"></a>
-> *元组模式元素* → [*模式*](#pattern)  
+> *元組模式元素* → [*模式*](#pattern)  
 
 <a name="enumeration_case_pattern"></a>
-## 枚举用例模式（Enumeration Case Pattern）
+## 枚舉用例模式（Enumeration Case Pattern）
 
-枚举用例模式匹配现有的某个枚举类型的某个用例。枚举用例模式出现在 `switch` 语句中的 `case` 标签中，以及 `if`、`while`、`guard` 和 `for-in` 语句的 `case` 条件中。
+枚舉用例模式匹配現有的某個枚舉類型的某個用例。枚舉用例模式出現在 `switch` 語句中的 `case` 標簽中，以及 `if`、`while`、`guard` 和 `for-in` 語句的 `case` 條件中。
 
-如果你准备匹配的枚举用例有任何关联的值，则相应的枚举用例模式必须指定一个包含每个关联值元素的元组模式。关于使用 `switch` 语句来匹配包含关联值的枚举用例的例子，请参阅 [关联值](../chapter2/08_Enumerations.md#associated_values)。
+如果你准備匹配的枚舉用例有任何關聯的值，則相應的枚舉用例模式必須指定一個包含每個關聯值元素的元組模式。關於使用 `switch` 語句來匹配包含關聯值的枚舉用例的例子，請參閱 [關聯值](../chapter2/08_Enumerations.md#associated_values)。
 
-> 枚举用例模式语法  
+> 枚舉用例模式語法  
 <a name="enum-case-pattern"></a>
-> *枚举用例模式* → [*类型标识*](03_Types.md#type-identifier)<sub>可选</sub> **.** [*枚举用例名*](05_Declarations.md#enum-case-name) [*元组模式*](#tuple-pattern)<sub>可选</sub>  
+> *枚舉用例模式* → [*類型標識*](03_Types.md#type-identifier)<sub>可選</sub> **.** [*枚舉用例名*](05_Declarations.md#enum-case-name) [*元組模式*](#tuple-pattern)<sub>可選</sub>  
 
 <a name="optional_pattern"></a>
-## 可选模式（Optional Pattern）
+## 可選模式（Optional Pattern）
 
-可选模式匹配包装在一个 `Optional(Wrapped)` 或者 `ExplicitlyUnwrappedOptional(Wrapped)` 枚举中的 `Some(Wrapped)` 用例中的值。可选模式由一个标识符模式和紧随其后的一个问号组成，可以像枚举用例模式一样使用。
+可選模式匹配包裝在一個 `Optional(Wrapped)` 或者 `ExplicitlyUnwrappedOptional(Wrapped)` 枚舉中的 `Some(Wrapped)` 用例中的值。可選模式由一個標識符模式和緊隨其後的一個問號組成，可以像枚舉用例模式一樣使用。
 
-由于可选模式是 `Optional` 和 `ImplicitlyUnwrappedOptional` 枚举用例模式的语法糖，下面两种写法是等效的：
+由於可選模式是 `Optional` 和 `ImplicitlyUnwrappedOptional` 枚舉用例模式的語法糖，下面兩種寫法是等效的：
 
 ```swift
 let someOptional: Int? = 42
-// 使用枚举用例模式匹配
+// 使用枚舉用例模式匹配
 if case .Some(let x) = someOptional {
     print(x)
 }
 
-// 使用可选模式匹配
+// 使用可選模式匹配
 if case let x? = someOptional {
     print(x)
 }
 ```
 
-可选模式为 `for-in` 语句提供了一种迭代数组的简便方式，只为数组中非 `nil` 的元素执行循环体。
+可選模式為 `for-in` 語句提供了一種迭代數組的簡便方式，只為數組中非 `nil` 的元素執行循環體。
 
 ```swift
 let arrayOfOptionalInts: [Int?] = [nil, 2, 3, nil, 5]
@@ -173,38 +173,38 @@ for case let number? in arrayOfOptinalInts {
 // Found a 5
 ```
 
-> 可选模式语法  
+> 可選模式語法  
 <a name="optional-pattern"></a>
-> *可选模式* → [*标识符模式*](03_Types.md#type-identifier) **?**
+> *可選模式* → [*標識符模式*](03_Types.md#type-identifier) **?**
 
 <a name="type-casting_patterns"></a>
-## 类型转换模式（Type-Casting Patterns）
+## 類型轉換模式（Type-Casting Patterns）
 
-有两种类型转换模式，`is` 模式和 `as` 模式。`is` 模式只出现在 `switch` 语句中的 `case` 标签中。`is` 模式和 `as` 模式形式如下：
+有兩種類型轉換模式，`is` 模式和 `as` 模式。`is` 模式只出現在 `switch` 語句中的 `case` 標簽中。`is` 模式和 `as` 模式形式如下：
 
-> is `类型`  
-> `模式` as `类型`
+> is `類型`  
+> `模式` as `類型`
 
-`is` 模式仅当一个值的类型在运行时和 `is` 模式右边的指定类型一致，或者是其子类的情况下，才会匹配这个值。`is` 模式和 `is` 运算符有相似表现，它们都进行类型转换，但是 `is` 模式没有返回类型。
+`is` 模式僅當一個值的類型在運行時和 `is` 模式右邊的指定類型一致，或者是其子類的情況下，才會匹配這個值。`is` 模式和 `is` 運算符有相似表現，它們都進行類型轉換，但是 `is` 模式沒有返回類型。
 
-`as` 模式仅当一个值的类型在运行时和 `as` 模式右边的指定类型一致，或者是其子类的情况下，才会匹配这个值。如果匹配成功，被匹配的值的类型被转换成 `as` 模式右边指定的类型。
+`as` 模式僅當一個值的類型在運行時和 `as` 模式右邊的指定類型一致，或者是其子類的情況下，才會匹配這個值。如果匹配成功，被匹配的值的類型被轉換成 `as` 模式右邊指定的類型。
 
-关于使用 `switch` 语句配合 `is` 模式和 `as` 模式来匹配值的例子，请参阅 [Any 和 AnyObject 的类型转换](../chapter2/19_Type_Casting.md#type_casting_for_any_and_anyobject)。
+關於使用 `switch` 語句配合 `is` 模式和 `as` 模式來匹配值的例子，請參閱 [Any 和 AnyObject 的類型轉換](../chapter2/19_Type_Casting.md#type_casting_for_any_and_anyobject)。
 
-> 类型转换模式语法  
+> 類型轉換模式語法  
 <a name="type-casting-pattern"></a>
-> *类型转换模式* → [*is模式*](#is-pattern) | [*as模式*](#as-pattern)  
+> *類型轉換模式* → [*is模式*](#is-pattern) | [*as模式*](#as-pattern)  
 <a name="is-pattern"></a>
-> *is模式* → **is** [*类型*](03_Types.md#type)  
+> *is模式* → **is** [*類型*](03_Types.md#type)  
 <a name="as-pattern"></a>
-> *as模式* → [*模式*](#pattern) **as** [*类型*](03_Types.md#type)  
+> *as模式* → [*模式*](#pattern) **as** [*類型*](03_Types.md#type)  
 
 <a name="expression_pattern"></a>
-## 表达式模式（Expression Pattern）
+## 表達式模式（Expression Pattern）
 
-表达式模式代表表达式的值。表达式模式只出现在 `switch` 语句中的 `case` 标签中。
+表達式模式代表表達式的值。表達式模式只出現在 `switch` 語句中的 `case` 標簽中。
 
-表达式模式代表的表达式会使用 Swift 标准库中的 `~=` 运算符与输入表达式的值进行比较。如果 `~=` 运算符返回 `true`，则匹配成功。默认情况下，`~=` 运算符使用 `==` 运算符来比较两个相同类型的值。它也可以将一个整型数值与一个 `Range` 实例中的一段整数区间做匹配，正如下面这个例子所示：
+表達式模式代表的表達式會使用 Swift 標准庫中的 `~=` 運算符與輸入表達式的值進行比較。如果 `~=` 運算符返回 `true`，則匹配成功。默認情況下，`~=` 運算符使用 `==` 運算符來比較兩個相同類型的值。它也可以將一個整型數值與一個 `Range` 實例中的一段整數區間做匹配，正如下面這個例子所示：
 
 ```swift
 let point = (1, 2)
@@ -216,13 +216,13 @@ case (-2...2, -2...2):
 default:
     print("The point is at (\(point.0), \(point.1)).")
 }
-// 打印 “(1, 2) is near the origin.”
+// 打印 「(1, 2) is near the origin.」
 ```
 
-你可以重载 `~=` 运算符来提供自定义的表达式匹配行为。比如你可以重写上面的例子，将 `point` 表达式与字符串形式表示的点进行比较。
+你可以重載 `~=` 運算符來提供自定義的表達式匹配行為。比如你可以重寫上面的例子，將 `point` 表達式與字符串形式表示的點進行比較。
 
 ```swift
-// 重载 ~= 运算符对字符串和整数进行比较
+// 重載 ~= 運算符對字符串和整數進行比較
 func ~=(pattern: String, value: Int) -> Bool {
     return pattern == "\(value)"
 }
@@ -233,9 +233,9 @@ case ("0", "0"):
 default:
     print("The point is at (\(point.0), \(point.1)).")
 }
-// 打印 “The point is at (1, 2).”
+// 打印 「The point is at (1, 2).」
 ```
 
-> 表达式模式语法  
+> 表達式模式語法  
 <a name="expression-pattern"></a>
-> *表达式模式* → [*表达式*](04_Expressions.md#expression)  
+> *表達式模式* → [*表達式*](04_Expressions.md#expression)  

@@ -1,133 +1,133 @@
-# 基础部分（The Basics）
+# 基礎部分（The Basics）
 -----------------
 
 > 1.0
-> 翻译：[numbbbbb](https://github.com/numbbbbb), [lyuka](https://github.com/lyuka), [JaySurplus](https://github.com/JaySurplus)
-> 校对：[lslxdx](https://github.com/lslxdx)
+> 翻譯：[numbbbbb](https://github.com/numbbbbb), [lyuka](https://github.com/lyuka), [JaySurplus](https://github.com/JaySurplus)
+> 校對：[lslxdx](https://github.com/lslxdx)
 
 > 2.0
-> 翻译+校对：[xtymichael](https://github.com/xtymichael)
+> 翻譯+校對：[xtymichael](https://github.com/xtymichael)
 
 > 2.1
-> 翻译：[Prayer](https://github.com/futantan)
-> 校对：[shanks](http://codebuild.me)，[overtrue](https://github.com/overtrue)
+> 翻譯：[Prayer](https://github.com/futantan)
+> 校對：[shanks](http://codebuild.me)，[overtrue](https://github.com/overtrue)
 > 
 > 2.2
-> 校对：[SketchK](https://github.com/SketchK) 
+> 校對：[SketchK](https://github.com/SketchK) 
 > 
 > 3.0
-> 校对：[CMB](https://github.com/chenmingbiao)，版本时间2016-09-13
+> 校對：[CMB](https://github.com/chenmingbiao)，版本時間2016-09-13
 > 
 > 3.0.1, 2016-11-11，shanks
 
-本页包含内容：
+本頁包含內容：
 
-- [常量和变量](#constants_and_variables)
-- [声明常量和变量](#declaring)
-- [类型标注](#type_annotations)
-- [常量和变量的命名](#naming)
-- [输出常量和变量](#printing)
-- [注释](#comments)
-- [分号](#semicolons)
-- [整数](#integers)
-- [整数范围](#integer_bounds)
+- [常量和變量](#constants_and_variables)
+- [聲明常量和變量](#declaring)
+- [類型標注](#type_annotations)
+- [常量和變量的命名](#naming)
+- [輸出常量和變量](#printing)
+- [注釋](#comments)
+- [分號](#semicolons)
+- [整數](#integers)
+- [整數范圍](#integer_bounds)
 - [Int](#Int)
 - [UInt](#UInt)
-- [浮点数](#floating-point_numbers)
-- [类型安全和类型推断](#type_safety_and_type_inference)
-- [数值型字面量](#numeric_literals)
-- [数值型类型转换](#numeric_type_conversion)
-- [整数转换](#integer_conversion)
-- [数整数和浮点数转换](#integer_and_floating_point_conversion)
-- [类型别名](#type_aliases)
-- [布尔值](#booleans)
-- [元组](#tuples)
-- [可选](#optionals)
+- [浮點數](#floating-point_numbers)
+- [類型安全和類型推斷](#type_safety_and_type_inference)
+- [數值型字面量](#numeric_literals)
+- [數值型類型轉換](#numeric_type_conversion)
+- [整數轉換](#integer_conversion)
+- [數整數和浮點數轉換](#integer_and_floating_point_conversion)
+- [類型別名](#type_aliases)
+- [布爾值](#booleans)
+- [元組](#tuples)
+- [可選](#optionals)
 - [nil](#nil)
-- [if 语句以及强制解析](#if)
-- [可选绑定](#optional_binding)
-- [隐式解析可选类型](#implicityly_unwrapped_optionals)
-- [错误处理](#error_handling)
-- [断言](#assertions)
+- [if 語句以及強制解析](#if)
+- [可選綁定](#optional_binding)
+- [隱式解析可選類型](#implicityly_unwrapped_optionals)
+- [錯誤處理](#error_handling)
+- [斷言](#assertions)
 
-Swift 是一门开发 iOS, macOS, watchOS 和 tvOS 应用的新语言。然而，如果你有 C 或者 Objective-C 开发经验的话，你会发现 Swift 的很多内容都是你熟悉的。
+Swift 是一門開發 iOS, macOS, watchOS 和 tvOS 應用的新語言。然而，如果你有 C 或者 Objective-C 開發經驗的話，你會發現 Swift 的很多內容都是你熟悉的。
 
-Swift 包含了 C 和 Objective-C 上所有基础数据类型，`Int`表示整型值； `Double` 和 `Float` 表示浮点型值； `Bool` 是布尔型值；`String` 是文本型数据。 Swift 还提供了三个基本的集合类型，`Array` ，`Set` 和 `Dictionary` ，详见[集合类型](04_Collection_Types.html)。
+Swift 包含了 C 和 Objective-C 上所有基礎數據類型，`Int`表示整型值； `Double` 和 `Float` 表示浮點型值； `Bool` 是布爾型值；`String` 是文本型數據。 Swift 還提供了三個基本的集合類型，`Array` ，`Set` 和 `Dictionary` ，詳見[集合類型](04_Collection_Types.html)。
 
-就像 C 语言一样，Swift 使用变量来进行存储并通过变量名来关联值。在 Swift 中，广泛的使用着值不可变的变量，它们就是常量，而且比 C 语言的常量更强大。在 Swift 中，如果你要处理的值不需要改变，那使用常量可以让你的代码更加安全并且更清晰地表达你的意图。
+就像 C 語言一樣，Swift 使用變量來進行存儲並通過變量名來關聯值。在 Swift 中，廣泛的使用著值不可變的變量，它們就是常量，而且比 C 語言的常量更強大。在 Swift 中，如果你要處理的值不需要改變，那使用常量可以讓你的代碼更加安全並且更清晰地表達你的意圖。
 
-除了我们熟悉的类型，Swift 还增加了 Objective-C 中没有的高阶数据类型比如元组（Tuple）。元组可以让你创建或者传递一组数据，比如作为函数的返回值时，你可以用一个元组可以返回多个值。
+除了我們熟悉的類型，Swift 還增加了 Objective-C 中沒有的高階數據類型比如元組（Tuple）。元組可以讓你創建或者傳遞一組數據，比如作為函數的返回值時，你可以用一個元組可以返回多個值。
 
-Swift 还增加了可选（Optional）类型，用于处理值缺失的情况。可选表示 “那儿有一个值，并且它等于 *x* ” 或者 “那儿没有值” 。可选有点像在 Objective-C 中使用 `nil` ，但是它可以用在任何类型上，不仅仅是类。可选类型比 Objective-C 中的 `nil` 指针更加安全也更具表现力，它是 Swift 许多强大特性的重要组成部分。
+Swift 還增加了可選（Optional）類型，用於處理值缺失的情況。可選表示 「那兒有一個值，並且它等於 *x* 」 或者 「那兒沒有值」 。可選有點像在 Objective-C 中使用 `nil` ，但是它可以用在任何類型上，不僅僅是類。可選類型比 Objective-C 中的 `nil` 指針更加安全也更具表現力，它是 Swift 許多強大特性的重要組成部分。
 
-Swift 是一门*类型安全*的语言，这意味着 Swift 可以让你清楚地知道值的类型。如果你的代码期望得到一个 `String` ，类型安全会阻止你不小心传入一个 `Int` 。同样的，如果你的代码期望得到一个 `String`，类型安全会阻止你意外传入一个可选的 `String` 。类型安全可以帮助你在开发阶段尽早发现并修正错误。
+Swift 是一門*類型安全*的語言，這意味著 Swift 可以讓你清楚地知道值的類型。如果你的代碼期望得到一個 `String` ，類型安全會阻止你不小心傳入一個 `Int` 。同樣的，如果你的代碼期望得到一個 `String`，類型安全會阻止你意外傳入一個可選的 `String` 。類型安全可以幫助你在開發階段盡早發現並修正錯誤。
 
 <a name="constants_and_variables"></a>
-## 常量和变量
+## 常量和變量
 
-常量和变量把一个名字（比如 `maximumNumberOfLoginAttempts` 或者 `welcomeMessage` ）和一个指定类型的值（比如数字 `10` 或者字符串 `"Hello"` ）关联起来。*常量*的值一旦设定就不能改变，而*变量*的值可以随意更改。
+常量和變量把一個名字（比如 `maximumNumberOfLoginAttempts` 或者 `welcomeMessage` ）和一個指定類型的值（比如數字 `10` 或者字符串 `"Hello"` ）關聯起來。*常量*的值一旦設定就不能改變，而*變量*的值可以隨意更改。
 
 <a name="declaring"></a>
-### 声明常量和变量
+### 聲明常量和變量
 
-常量和变量必须在使用前声明，用 `let` 来声明常量，用 `var` 来声明变量。下面的例子展示了如何用常量和变量来记录用户尝试登录的次数：
+常量和變量必須在使用前聲明，用 `let` 來聲明常量，用 `var` 來聲明變量。下面的例子展示了如何用常量和變量來記錄用戶嘗試登錄的次數：
 
 ```swift
 let maximumNumberOfLoginAttempts = 10
 var currentLoginAttempt = 0
 ```
 
-这两行代码可以被理解为：
+這兩行代碼可以被理解為：
 
-“声明一个名字是 `maximumNumberOfLoginAttempts` 的新常量，并给它一个值 `10` 。然后，声明一个名字是 `currentLoginAttempt` 的变量并将它的值初始化为 `0` 。”
+「聲明一個名字是 `maximumNumberOfLoginAttempts` 的新常量，並給它一個值 `10` 。然後，聲明一個名字是 `currentLoginAttempt` 的變量並將它的值初始化為 `0` 。」
 
-在这个例子中，允许的最大尝试登录次数被声明为一个常量，因为这个值不会改变。当前尝试登录次数被声明为一个变量，因为每次尝试登录失败的时候都需要增加这个值。
+在這個例子中，允許的最大嘗試登錄次數被聲明為一個常量，因為這個值不會改變。當前嘗試登錄次數被聲明為一個變量，因為每次嘗試登錄失敗的時候都需要增加這個值。
 
-你可以在一行中声明多个常量或者多个变量，用逗号隔开：
+你可以在一行中聲明多個常量或者多個變量，用逗號隔開：
 
 ```swift
 var x = 0.0, y = 0.0, z = 0.0
 ```
 
 > 注意：  
-> 如果你的代码中有不需要改变的值，请使用 `let` 关键字将它声明为常量。只将需要改变的值声明为变量。
+> 如果你的代碼中有不需要改變的值，請使用 `let` 關鍵字將它聲明為常量。只將需要改變的值聲明為變量。
 
 <a name="type_annotations"></a>
-### 类型标注
+### 類型標注
 
-当你声明常量或者变量的时候可以加上*类型标注（type annotation）*，说明常量或者变量中要存储的值的类型。如果要添加类型标注，需要在常量或者变量名后面加上一个冒号和空格，然后加上类型名称。
+當你聲明常量或者變量的時候可以加上*類型標注（type annotation）*，說明常量或者變量中要存儲的值的類型。如果要添加類型標注，需要在常量或者變量名後面加上一個冒號和空格，然後加上類型名稱。
 
-这个例子给 `welcomeMessage` 变量添加了类型标注，表示这个变量可以存储 `String` 类型的值：
+這個例子給 `welcomeMessage` 變量添加了類型標注，表示這個變量可以存儲 `String` 類型的值：
 
 ```swift
 var welcomeMessage: String
 ```
 
-声明中的冒号代表着*“是...类型”*，所以这行代码可以被理解为：
+聲明中的冒號代表著*「是...類型」*，所以這行代碼可以被理解為：
 
-“声明一个类型为 `String` ，名字为 `welcomeMessage` 的变量。”
+「聲明一個類型為 `String` ，名字為 `welcomeMessage` 的變量。」
 
-“类型为 `String` ”的意思是“可以存储任意 `String` 类型的值。”
+「類型為 `String` 」的意思是「可以存儲任意 `String` 類型的值。」
 
-`welcomeMessage` 变量现在可以被设置成任意字符串：
+`welcomeMessage` 變量現在可以被設置成任意字符串：
 
 ```swift
 welcomeMessage = "Hello"
 ```
 
-你可以在一行中定义多个同样类型的变量，用逗号分割，并在最后一个变量名之后添加类型标注：
+你可以在一行中定義多個同樣類型的變量，用逗號分割，並在最後一個變量名之後添加類型標注：
 
 ```swift
 var red, green, blue: Double
 ```
 
 > 注意：  
-> 一般来说你很少需要写类型标注。如果你在声明常量或者变量的时候赋了一个初始值，Swift可以推断出这个常量或者变量的类型，请参考[类型安全和类型推断](#type_safety_and_type_inference)。在上面的例子中，没有给 `welcomeMessage` 赋初始值，所以变量 `welcomeMessage` 的类型是通过一个类型标注指定的，而不是通过初始值推断的。
+> 一般來說你很少需要寫類型標注。如果你在聲明常量或者變量的時候賦了一個初始值，Swift可以推斷出這個常量或者變量的類型，請參考[類型安全和類型推斷](#type_safety_and_type_inference)。在上面的例子中，沒有給 `welcomeMessage` 賦初始值，所以變量 `welcomeMessage` 的類型是通過一個類型標注指定的，而不是通過初始值推斷的。
 
 <a name="naming"></a>
-### 常量和变量的命名
+### 常量和變量的命名
 
-你可以用任何你喜欢的字符作为常量和变量名，包括 Unicode 字符：
+你可以用任何你喜歡的字符作為常量和變量名，包括 Unicode 字符：
 
 ```swift
 let π = 3.14159
@@ -135,210 +135,210 @@ let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 ```
 
-常量与变量名不能包含数学符号，箭头，保留的（或者非法的）Unicode 码位，连线与制表符。也不能以数字开头，但是可以在常量与变量名的其他地方包含数字。
+常量與變量名不能包含數學符號，箭頭，保留的（或者非法的）Unicode 碼位，連線與制表符。也不能以數字開頭，但是可以在常量與變量名的其他地方包含數字。
 
-一旦你将常量或者变量声明为确定的类型，你就不能使用相同的名字再次进行声明，或者改变其存储的值的类型。同时，你也不能将常量与变量进行互转。
+一旦你將常量或者變量聲明為確定的類型，你就不能使用相同的名字再次進行聲明，或者改變其存儲的值的類型。同時，你也不能將常量與變量進行互轉。
 
 > 注意：  
-> 如果你需要使用与Swift保留关键字相同的名称作为常量或者变量名，你可以使用反引号（`）将关键字包围的方式将其作为名字使用。无论如何，你应当避免使用关键字作为常量或变量名，除非你别无选择。
+> 如果你需要使用與Swift保留關鍵字相同的名稱作為常量或者變量名，你可以使用反引號（`）將關鍵字包圍的方式將其作為名字使用。無論如何，你應當避免使用關鍵字作為常量或變量名，除非你別無選擇。
 
-你可以更改现有的变量值为其他同类型的值，在下面的例子中，`friendlyWelcome`的值从`"Hello!"`改为了`"Bonjour!"`:
+你可以更改現有的變量值為其他同類型的值，在下面的例子中，`friendlyWelcome`的值從`"Hello!"`改為了`"Bonjour!"`:
 
 ```swift
 var friendlyWelcome = "Hello!"
 friendlyWelcome = "Bonjour!"
-// friendlyWelcome 现在是 "Bonjour!"
+// friendlyWelcome 現在是 "Bonjour!"
 ```
 
-与变量不同，常量的值一旦被确定就不能更改了。尝试这样做会导致编译时报错：
+與變量不同，常量的值一旦被確定就不能更改了。嘗試這樣做會導致編譯時報錯：
 
 ```swift
 let languageName = "Swift"
 languageName = "Swift++"
-// 这会报编译时错误 - languageName 不可改变
+// 這會報編譯時錯誤 - languageName 不可改變
 ```
 
 <a name="printing"></a>
-### 输出常量和变量
+### 輸出常量和變量
 
-你可以用`print(_:separator:terminator:)`函数来输出当前常量或变量的值:
+你可以用`print(_:separator:terminator:)`函數來輸出當前常量或變量的值:
 
 ```swift
 print(friendlyWelcome)
-// 输出 "Bonjour!"
+// 輸出 "Bonjour!"
 ```
 
-`print(_:separator:terminator:)` 是一个用来输出一个或多个值到适当输出区的全局函数。如果你用 Xcode，`print(_:separator:terminator:)` 将会输出内容到“console”面板上。`separator` 和 `terminator` 参数具有默认值，因此你调用这个函数的时候可以忽略它们。默认情况下，该函数通过添加换行符来结束当前行。如果不想换行，可以传递一个空字符串给 `terminator` 参数--例如，`print(someValue, terminator:"")` 。关于参数默认值的更多信息，请参考[默认参数值](./06_Functions.html#default_parameter_values)。
+`print(_:separator:terminator:)` 是一個用來輸出一個或多個值到適當輸出區的全局函數。如果你用 Xcode，`print(_:separator:terminator:)` 將會輸出內容到「console」面板上。`separator` 和 `terminator` 參數具有默認值，因此你調用這個函數的時候可以忽略它們。默認情況下，該函數通過添加換行符來結束當前行。如果不想換行，可以傳遞一個空字符串給 `terminator` 參數--例如，`print(someValue, terminator:"")` 。關於參數默認值的更多信息，請參考[默認參數值](./06_Functions.html#default_parameter_values)。
 
-Swift 用*字符串插值（string interpolation）*的方式把常量名或者变量名当做占位符加入到长字符串中，Swift 会用当前常量或变量的值替换这些占位符。将常量或变量名放入圆括号中，并在开括号前使用反斜杠将其转义：
+Swift 用*字符串插值（string interpolation）*的方式把常量名或者變量名當做占位符加入到長字符串中，Swift 會用當前常量或變量的值替換這些占位符。將常量或變量名放入圓括號中，並在開括號前使用反斜杠將其轉義：
 
 ```swift
 print("The current value of friendlyWelcome is \(friendlyWelcome)")
-// 输出 "The current value of friendlyWelcome is Bonjour!
+// 輸出 "The current value of friendlyWelcome is Bonjour!
 ```
 
 > 注意：  
-字符串插值所有可用的选项，请参考[字符串插值](./03_Strings_and_Characters.html#string_interpolation)。
+字符串插值所有可用的選項，請參考[字符串插值](./03_Strings_and_Characters.html#string_interpolation)。
 
 <a name="comments"></a>
-## 注释
-请将你的代码中的非执行文本注释成提示或者笔记以方便你将来阅读。Swift 的编译器将会在编译代码时自动忽略掉注释部分。
+## 注釋
+請將你的代碼中的非執行文本注釋成提示或者筆記以方便你將來閱讀。Swift 的編譯器將會在編譯代碼時自動忽略掉注釋部分。
 
-Swift 中的注释与 C 语言的注释非常相似。单行注释以双正斜杠（`//`）作为起始标记:
-
-```swift
-// 这是一个注释
-```
-
-你也可以进行多行注释，其起始标记为单个正斜杠后跟随一个星号（`/*`），终止标记为一个星号后跟随单个正斜杠（`*/`）:
+Swift 中的注釋與 C 語言的注釋非常相似。單行注釋以雙正斜杠（`//`）作為起始標記:
 
 ```swift
-/* 这是一个,
-多行注释 */
+// 這是一個注釋
 ```
 
-与 C 语言多行注释不同，Swift 的多行注释可以嵌套在其它的多行注释之中。你可以先生成一个多行注释块，然后在这个注释块之中再嵌套成第二个多行注释。终止注释时先插入第二个注释块的终止标记，然后再插入第一个注释块的终止标记：
+你也可以進行多行注釋，其起始標記為單個正斜杠後跟隨一個星號（`/*`），終止標記為一個星號後跟隨單個正斜杠（`*/`）:
 
 ```swift
-/* 这是第一个多行注释的开头
-/* 这是第二个被嵌套的多行注释 */
-这是第一个多行注释的结尾 */
+/* 這是一個,
+多行注釋 */
 ```
 
-通过运用嵌套多行注释，你可以快速方便的注释掉一大段代码，即使这段代码之中已经含有了多行注释块。
+與 C 語言多行注釋不同，Swift 的多行注釋可以嵌套在其它的多行注釋之中。你可以先生成一個多行注釋塊，然後在這個注釋塊之中再嵌套成第二個多行注釋。終止注釋時先插入第二個注釋塊的終止標記，然後再插入第一個注釋塊的終止標記：
+
+```swift
+/* 這是第一個多行注釋的開頭
+/* 這是第二個被嵌套的多行注釋 */
+這是第一個多行注釋的結尾 */
+```
+
+通過運用嵌套多行注釋，你可以快速方便的注釋掉一大段代碼，即使這段代碼之中已經含有了多行注釋塊。
 
 <a name="semicolons"></a>
-## 分号
-与其他大部分编程语言不同，Swift 并不强制要求你在每条语句的结尾处使用分号（`;`），当然，你也可以按照你自己的习惯添加分号。有一种情况下必须要用分号，即你打算在同一行内写多条独立的语句：
+## 分號
+與其他大部分編程語言不同，Swift 並不強制要求你在每條語句的結尾處使用分號（`;`），當然，你也可以按照你自己的習慣添加分號。有一種情況下必須要用分號，即你打算在同一行內寫多條獨立的語句：
 
 ```swift
 let cat = "🐱"; print(cat)
-// 输出 "🐱"
+// 輸出 "🐱"
 ```
 
 <a name="integers"></a>
-## 整数
+## 整數
 
-整数就是没有小数部分的数字，比如 `42` 和 `-23` 。整数可以是 `有符号`（正、负、零）或者 `无符号`（正、零）。
+整數就是沒有小數部分的數字，比如 `42` 和 `-23` 。整數可以是 `有符號`（正、負、零）或者 `無符號`（正、零）。
 
-Swift 提供了8，16，32和64位的有符号和无符号整数类型。这些整数类型和 C 语言的命名方式很像，比如8位无符号整数类型是`UInt8`，32位有符号整数类型是 `Int32` 。就像 Swift 的其他类型一样，整数类型采用大写命名法。
+Swift 提供了8，16，32和64位的有符號和無符號整數類型。這些整數類型和 C 語言的命名方式很像，比如8位無符號整數類型是`UInt8`，32位有符號整數類型是 `Int32` 。就像 Swift 的其他類型一樣，整數類型采用大寫命名法。
 
 <a name="integer_bounds"></a>
-### 整数范围
+### 整數范圍
 
-你可以访问不同整数类型的 `min` 和 `max` 属性来获取对应类型的最小值和最大值：
+你可以訪問不同整數類型的 `min` 和 `max` 屬性來獲取對應類型的最小值和最大值：
 
 ```swift
-let minValue = UInt8.min  // minValue 为 0，是 UInt8 类型
-let maxValue = UInt8.max  // maxValue 为 255，是 UInt8 类型
+let minValue = UInt8.min  // minValue 為 0，是 UInt8 類型
+let maxValue = UInt8.max  // maxValue 為 255，是 UInt8 類型
 ```
 
-`min` 和 `max` 所传回值的类型，正是其所对的整数类型(如上例UInt8, 所传回的类型是UInt8)，可用在表达式中相同类型值旁。
+`min` 和 `max` 所傳回值的類型，正是其所對的整數類型(如上例UInt8, 所傳回的類型是UInt8)，可用在表達式中相同類型值旁。
 
 <a name="Int"></a>
 ### Int
 
-一般来说，你不需要专门指定整数的长度。Swift 提供了一个特殊的整数类型`Int`，长度与当前平台的原生字长相同：
+一般來說，你不需要專門指定整數的長度。Swift 提供了一個特殊的整數類型`Int`，長度與當前平台的原生字長相同：
 
-* 在32位平台上，`Int` 和 `Int32` 长度相同。
-* 在64位平台上，`Int` 和 `Int64` 长度相同。
+* 在32位平台上，`Int` 和 `Int32` 長度相同。
+* 在64位平台上，`Int` 和 `Int64` 長度相同。
 
-除非你需要特定长度的整数，一般来说使用 `Int` 就够了。这可以提高代码一致性和可复用性。即使是在32位平台上，`Int` 可以存储的整数范围也可以达到 `-2,147,483,648` ~ `2,147,483,647` ，大多数时候这已经足够大了。
+除非你需要特定長度的整數，一般來說使用 `Int` 就夠了。這可以提高代碼一致性和可復用性。即使是在32位平台上，`Int` 可以存儲的整數范圍也可以達到 `-2,147,483,648` ~ `2,147,483,647` ，大多數時候這已經足夠大了。
 
 <a name="UInt"></a>
 ### UInt
 
-Swift 也提供了一个特殊的无符号类型 `UInt`，长度与当前平台的原生字长相同：
+Swift 也提供了一個特殊的無符號類型 `UInt`，長度與當前平台的原生字長相同：
 
-* 在32位平台上，`UInt` 和 `UInt32` 长度相同。
-* 在64位平台上，`UInt` 和 `UInt64` 长度相同。
+* 在32位平台上，`UInt` 和 `UInt32` 長度相同。
+* 在64位平台上，`UInt` 和 `UInt64` 長度相同。
 
 > 注意：  
-尽量不要使用`UInt`，除非你真的需要存储一个和当前平台原生字长相同的无符号整数。除了这种情况，最好使用`Int`，即使你要存储的值已知是非负的。统一使用`Int`可以提高代码的可复用性，避免不同类型数字之间的转换，并且匹配数字的类型推断，请参考[类型安全和类型推断](#type_safety_and_type_inference)。
+盡量不要使用`UInt`，除非你真的需要存儲一個和當前平台原生字長相同的無符號整數。除了這種情況，最好使用`Int`，即使你要存儲的值已知是非負的。統一使用`Int`可以提高代碼的可復用性，避免不同類型數字之間的轉換，並且匹配數字的類型推斷，請參考[類型安全和類型推斷](#type_safety_and_type_inference)。
 
 <a name="floating-point_numbers"></a>
-## 浮点数
+## 浮點數
 
-浮点数是有小数部分的数字，比如 `3.14159` ，`0.1` 和 `-273.15`。
+浮點數是有小數部分的數字，比如 `3.14159` ，`0.1` 和 `-273.15`。
 
-浮点类型比整数类型表示的范围更大，可以存储比 `Int` 类型更大或者更小的数字。Swift 提供了两种有符号浮点数类型：
+浮點類型比整數類型表示的范圍更大，可以存儲比 `Int` 類型更大或者更小的數字。Swift 提供了兩種有符號浮點數類型：
 
-* `Double`表示64位浮点数。当你需要存储很大或者很高精度的浮点数时请使用此类型。
-* `Float`表示32位浮点数。精度要求不高的话可以使用此类型。
+* `Double`表示64位浮點數。當你需要存儲很大或者很高精度的浮點數時請使用此類型。
+* `Float`表示32位浮點數。精度要求不高的話可以使用此類型。
 
 > 注意：  
-`Double`精确度很高，至少有15位数字，而`Float`只有6位数字。选择哪个类型取决于你的代码需要处理的值的范围，在两种类型都匹配的情况下，将优先选择 `Double`。
+`Double`精確度很高，至少有15位數字，而`Float`只有6位數字。選擇哪個類型取決於你的代碼需要處理的值的范圍，在兩種類型都匹配的情況下，將優先選擇 `Double`。
 
 <a name="type_safety_and_type_inference"></a>
-## 类型安全和类型推断
+## 類型安全和類型推斷
 
-Swift 是一个*类型安全（type safe）*的语言。类型安全的语言可以让你清楚地知道代码要处理的值的类型。如果你的代码需要一个`String`，你绝对不可能不小心传进去一个`Int`。
+Swift 是一個*類型安全（type safe）*的語言。類型安全的語言可以讓你清楚地知道代碼要處理的值的類型。如果你的代碼需要一個`String`，你絕對不可能不小心傳進去一個`Int`。
 
-由于 Swift 是类型安全的，所以它会在编译你的代码时进行*类型检查（type checks）*，并把不匹配的类型标记为错误。这可以让你在开发的时候尽早发现并修复错误。
+由於 Swift 是類型安全的，所以它會在編譯你的代碼時進行*類型檢查（type checks）*，並把不匹配的類型標記為錯誤。這可以讓你在開發的時候盡早發現並修復錯誤。
 
-当你要处理不同类型的值时，类型检查可以帮你避免错误。然而，这并不是说你每次声明常量和变量的时候都需要显式指定类型。如果你没有显式指定类型，Swift 会使用*类型推断（type inference）*来选择合适的类型。有了类型推断，编译器可以在编译代码的时候自动推断出表达式的类型。原理很简单，只要检查你赋的值即可。
+當你要處理不同類型的值時，類型檢查可以幫你避免錯誤。然而，這並不是說你每次聲明常量和變量的時候都需要顯式指定類型。如果你沒有顯式指定類型，Swift 會使用*類型推斷（type inference）*來選擇合適的類型。有了類型推斷，編譯器可以在編譯代碼的時候自動推斷出表達式的類型。原理很簡單，只要檢查你賦的值即可。
 
-因为有类型推断，和 C 或者 Objective-C 比起来 Swift 很少需要声明类型。常量和变量虽然需要明确类型，但是大部分工作并不需要你自己来完成。
+因為有類型推斷，和 C 或者 Objective-C 比起來 Swift 很少需要聲明類型。常量和變量雖然需要明確類型，但是大部分工作並不需要你自己來完成。
 
-当你声明常量或者变量并赋初值的时候类型推断非常有用。当你在声明常量或者变量的时候赋给它们一个字面量（literal value 或 literal）即可触发类型推断。（字面量就是会直接出现在你代码中的值，比如 `42` 和 `3.14159` 。）
+當你聲明常量或者變量並賦初值的時候類型推斷非常有用。當你在聲明常量或者變量的時候賦給它們一個字面量（literal value 或 literal）即可觸發類型推斷。（字面量就是會直接出現在你代碼中的值，比如 `42` 和 `3.14159` 。）
 
-例如，如果你给一个新常量赋值 `42` 并且没有标明类型，Swift 可以推断出常量类型是 `Int` ，因为你给它赋的初始值看起来像一个整数：
+例如，如果你給一個新常量賦值 `42` 並且沒有標明類型，Swift 可以推斷出常量類型是 `Int` ，因為你給它賦的初始值看起來像一個整數：
 
 ```swift
 let meaningOfLife = 42
-// meaningOfLife 会被推测为 Int 类型
+// meaningOfLife 會被推測為 Int 類型
 ```
 
-同理，如果你没有给浮点字面量标明类型，Swift 会推断你想要的是 `Double`：
+同理，如果你沒有給浮點字面量標明類型，Swift 會推斷你想要的是 `Double`：
 
 ```swift
 let pi = 3.14159
-// pi 会被推测为 Double 类型
+// pi 會被推測為 Double 類型
 ```
 
-当推断浮点数的类型时，Swift 总是会选择 `Double` 而不是`Float`。
+當推斷浮點數的類型時，Swift 總是會選擇 `Double` 而不是`Float`。
 
-如果表达式中同时出现了整数和浮点数，会被推断为 `Double` 类型：
+如果表達式中同時出現了整數和浮點數，會被推斷為 `Double` 類型：
 
 ```swift
 let anotherPi = 3 + 0.14159
-// anotherPi 会被推测为 Double 类型
+// anotherPi 會被推測為 Double 類型
 ```
 
-原始值 `3` 没有显式声明类型，而表达式中出现了一个浮点字面量，所以表达式会被推断为 `Double` 类型。
+原始值 `3` 沒有顯式聲明類型，而表達式中出現了一個浮點字面量，所以表達式會被推斷為 `Double` 類型。
 
 <a name="numeric_literals"></a>
-## 数值型字面量
+## 數值型字面量
 
-整数字面量可以被写作：
+整數字面量可以被寫作：
 
-* 一个*十进制*数，没有前缀
-* 一个*二进制*数，前缀是`0b`
-* 一个*八进制*数，前缀是`0o`
-* 一个*十六进制*数，前缀是`0x`
+* 一個*十進制*數，沒有前綴
+* 一個*二進制*數，前綴是`0b`
+* 一個*八進制*數，前綴是`0o`
+* 一個*十六進制*數，前綴是`0x`
 
-下面的所有整数字面量的十进制值都是`17`:
+下面的所有整數字面量的十進制值都是`17`:
 
 ```swift
 let decimalInteger = 17
-let binaryInteger = 0b10001       // 二进制的17
-let octalInteger = 0o21           // 八进制的17
-let hexadecimalInteger = 0x11     // 十六进制的17
+let binaryInteger = 0b10001       // 二進制的17
+let octalInteger = 0o21           // 八進制的17
+let hexadecimalInteger = 0x11     // 十六進制的17
 ```
 
-浮点字面量可以是十进制（没有前缀）或者是十六进制（前缀是 `0x` ）。小数点两边必须有至少一个十进制数字（或者是十六进制的数字）。十进制浮点数也可以有一个可选的指数（exponent)，通过大写或者小写的 `e` 来指定；十六进制浮点数必须有一个指数，通过大写或者小写的 `p` 来指定。
+浮點字面量可以是十進制（沒有前綴）或者是十六進制（前綴是 `0x` ）。小數點兩邊必須有至少一個十進制數字（或者是十六進制的數字）。十進制浮點數也可以有一個可選的指數（exponent)，通過大寫或者小寫的 `e` 來指定；十六進制浮點數必須有一個指數，通過大寫或者小寫的 `p` 來指定。
 
-如果一个十进制数的指数为 `exp`，那这个数相当于基数和10^exp的乘积：
+如果一個十進制數的指數為 `exp`，那這個數相當於基數和10^exp的乘積：
 
-* `1.25e2` 表示 1.25 × 10^2，等于 `125.0`。
-* `1.25e-2` 表示 1.25 × 10^-2，等于 `0.0125`。
+* `1.25e2` 表示 1.25 × 10^2，等於 `125.0`。
+* `1.25e-2` 表示 1.25 × 10^-2，等於 `0.0125`。
 
-如果一个十六进制数的指数为`exp`，那这个数相当于基数和2^exp的乘积：
+如果一個十六進制數的指數為`exp`，那這個數相當於基數和2^exp的乘積：
 
-* `0xFp2` 表示 15 × 2^2，等于 `60.0`。
-* `0xFp-2` 表示 15 × 2^-2，等于 `3.75`。
+* `0xFp2` 表示 15 × 2^2，等於 `60.0`。
+* `0xFp-2` 表示 15 × 2^-2，等於 `3.75`。
 
-下面的这些浮点字面量都等于十进制的`12.1875`：
+下面的這些浮點字面量都等於十進制的`12.1875`：
 
 ```swift
 let decimalDouble = 12.1875
@@ -346,7 +346,7 @@ let exponentDouble = 1.21875e1
 let hexadecimalDouble = 0xC.3p0
 ```
 
-数值类字面量可以包括额外的格式来增强可读性。整数和浮点数都可以添加额外的零并且包含下划线，并不会影响字面量：
+數值類字面量可以包括額外的格式來增強可讀性。整數和浮點數都可以添加額外的零並且包含下劃線，並不會影響字面量：
 
 ```swift
 let paddedDouble = 000123.456
@@ -355,27 +355,27 @@ let justOverOneMillion = 1_000_000.000_000_1
 ```
 
 <a name="numeric_type_conversion"></a>
-## 数值型类型转换
+## 數值型類型轉換
 
-通常来讲，即使代码中的整数常量和变量已知非负，也请使用`Int`类型。总是使用默认的整数类型可以保证你的整数常量和变量可以直接被复用并且可以匹配整数类字面量的类型推断。
+通常來講，即使代碼中的整數常量和變量已知非負，也請使用`Int`類型。總是使用默認的整數類型可以保證你的整數常量和變量可以直接被復用並且可以匹配整數類字面量的類型推斷。
 
-只有在必要的时候才使用其他整数类型，比如要处理外部的长度明确的数据或者为了优化性能、内存占用等等。使用显式指定长度的类型可以及时发现值溢出并且可以暗示正在处理特殊数据。
+只有在必要的時候才使用其他整數類型，比如要處理外部的長度明確的數據或者為了優化性能、內存占用等等。使用顯式指定長度的類型可以及時發現值溢出並且可以暗示正在處理特殊數據。
 
 <a name="integer_conversion"></a>
-### 整数转换
+### 整數轉換
 
-不同整数类型的变量和常量可以存储不同范围的数字。`Int8`类型的常量或者变量可以存储的数字范围是`-128`~`127`，而`UInt8`类型的常量或者变量能存储的数字范围是`0`~`255`。如果数字超出了常量或者变量可存储的范围，编译的时候会报错：
+不同整數類型的變量和常量可以存儲不同范圍的數字。`Int8`類型的常量或者變量可以存儲的數字范圍是`-128`~`127`，而`UInt8`類型的常量或者變量能存儲的數字范圍是`0`~`255`。如果數字超出了常量或者變量可存儲的范圍，編譯的時候會報錯：
 
 ```swift
 let cannotBeNegative: UInt8 = -1
-// UInt8 类型不能存储负数，所以会报错
+// UInt8 類型不能存儲負數，所以會報錯
 let tooBig: Int8 = Int8.max + 1
-// Int8 类型不能存储超过最大值的数，所以会报错
+// Int8 類型不能存儲超過最大值的數，所以會報錯
 ```
 
-由于每种整数类型都可以存储不同范围的值，所以你必须根据不同情况选择性使用数值型类型转换。这种选择性使用的方式，可以预防隐式转换的错误并让你的代码中的类型转换意图变得清晰。
+由於每種整數類型都可以存儲不同范圍的值，所以你必須根據不同情況選擇性使用數值型類型轉換。這種選擇性使用的方式，可以預防隱式轉換的錯誤並讓你的代碼中的類型轉換意圖變得清晰。
 
-要将一种数字类型转换成另一种，你要用当前值来初始化一个期望类型的新数字，这个数字的类型就是你的目标类型。在下面的例子中，常量`twoThousand`是`UInt16`类型，然而常量`one`是`UInt8`类型。它们不能直接相加，因为它们类型不同。所以要调用`UInt16(one)`来创建一个新的`UInt16`数字并用`one`的值来初始化，然后使用这个新数字来计算：
+要將一種數字類型轉換成另一種，你要用當前值來初始化一個期望類型的新數字，這個數字的類型就是你的目標類型。在下面的例子中，常量`twoThousand`是`UInt16`類型，然而常量`one`是`UInt8`類型。它們不能直接相加，因為它們類型不同。所以要調用`UInt16(one)`來創建一個新的`UInt16`數字並用`one`的值來初始化，然後使用這個新數字來計算：
 
 ```swift
 let twoThousand: UInt16 = 2_000
@@ -383,69 +383,69 @@ let one: UInt8 = 1
 let twoThousandAndOne = twoThousand + UInt16(one)
 ```
 
-现在两个数字的类型都是 `UInt16`，可以进行相加。目标常量 `twoThousandAndOne` 的类型被推断为 `UInt16`，因为它是两个 `UInt16` 值的和。
+現在兩個數字的類型都是 `UInt16`，可以進行相加。目標常量 `twoThousandAndOne` 的類型被推斷為 `UInt16`，因為它是兩個 `UInt16` 值的和。
 
-`SomeType(ofInitialValue)` 是调用 Swift 构造器并传入一个初始值的默认方法。在语言内部，`UInt16` 有一个构造器，可以接受一个`UInt8`类型的值，所以这个构造器可以用现有的 `UInt8` 来创建一个新的 `UInt16`。注意，你并不能传入任意类型的值，只能传入 `UInt16` 内部有对应构造器的值。不过你可以扩展现有的类型来让它可以接收其他类型的值（包括自定义类型），请参考[扩展](./20_Extensions.html)。
+`SomeType(ofInitialValue)` 是調用 Swift 構造器並傳入一個初始值的默認方法。在語言內部，`UInt16` 有一個構造器，可以接受一個`UInt8`類型的值，所以這個構造器可以用現有的 `UInt8` 來創建一個新的 `UInt16`。注意，你並不能傳入任意類型的值，只能傳入 `UInt16` 內部有對應構造器的值。不過你可以擴展現有的類型來讓它可以接收其他類型的值（包括自定義類型），請參考[擴展](./20_Extensions.html)。
 
 <a name="integer_and_floating_point_conversion"></a>
-### 整数和浮点数转换
+### 整數和浮點數轉換
 
-整数和浮点数的转换必须显式指定类型：
+整數和浮點數的轉換必須顯式指定類型：
 
 ```swift
 let three = 3
 let pointOneFourOneFiveNine = 0.14159
 let pi = Double(three) + pointOneFourOneFiveNine
-// pi 等于 3.14159，所以被推测为 Double 类型
+// pi 等於 3.14159，所以被推測為 Double 類型
 ```
 
-这个例子中，常量 `three` 的值被用来创建一个 `Double` 类型的值，所以加号两边的数类型须相同。如果不进行转换，两者无法相加。
+這個例子中，常量 `three` 的值被用來創建一個 `Double` 類型的值，所以加號兩邊的數類型須相同。如果不進行轉換，兩者無法相加。
 
-浮点数到整数的反向转换同样行，整数类型可以用 `Double` 或者 `Float` 类型来初始化：
+浮點數到整數的反向轉換同樣行，整數類型可以用 `Double` 或者 `Float` 類型來初始化：
 
 ```swift
 let integerPi = Int(pi)
-// integerPi 等于 3，所以被推测为 Int 类型
+// integerPi 等於 3，所以被推測為 Int 類型
 ```
 
-当用这种方式来初始化一个新的整数值时，浮点值会被截断。也就是说 `4.75` 会变成 `4`，`-3.9` 会变成 `-3`。
+當用這種方式來初始化一個新的整數值時，浮點值會被截斷。也就是說 `4.75` 會變成 `4`，`-3.9` 會變成 `-3`。
 
 > 注意：   
-结合数字类常量和变量不同于结合数字类字面量。字面量`3`可以直接和字面量`0.14159`相加，因为数字字面量本身没有明确的类型。它们的类型只在编译器需要求值的时候被推测。
+結合數字類常量和變量不同於結合數字類字面量。字面量`3`可以直接和字面量`0.14159`相加，因為數字字面量本身沒有明確的類型。它們的類型只在編譯器需要求值的時候被推測。
 
 <a name="type_aliases"></a>
-## 类型别名
+## 類型別名
 
-*类型别名（type aliases）*就是给现有类型定义另一个名字。你可以使用`typealias`关键字来定义类型别名。
+*類型別名（type aliases）*就是給現有類型定義另一個名字。你可以使用`typealias`關鍵字來定義類型別名。
 
-当你想要给现有类型起一个更有意义的名字时，类型别名非常有用。假设你正在处理特定长度的外部资源的数据：
+當你想要給現有類型起一個更有意義的名字時，類型別名非常有用。假設你正在處理特定長度的外部資源的數據：
 
 ```swift
 typealias AudioSample = UInt16
 ```
 
-定义了一个类型别名之后，你可以在任何使用原始名的地方使用别名：
+定義了一個類型別名之後，你可以在任何使用原始名的地方使用別名：
 
 ```swift
 var maxAmplitudeFound = AudioSample.min
-// maxAmplitudeFound 现在是 0
+// maxAmplitudeFound 現在是 0
 ```
 
-本例中，`AudioSample`被定义为`UInt16`的一个别名。因为它是别名，`AudioSample.min`实际上是`UInt16.min`，所以会给`maxAmplitudeFound`赋一个初值`0`。
+本例中，`AudioSample`被定義為`UInt16`的一個別名。因為它是別名，`AudioSample.min`實際上是`UInt16.min`，所以會給`maxAmplitudeFound`賦一個初值`0`。
 
 <a name="booleans"></a>
-## 布尔值
+## 布爾值
 
-Swift 有一个基本的*布尔（Boolean）类型*，叫做`Bool`。布尔值指*逻辑*上的值，因为它们只能是真或者假。Swift 有两个布尔常量，`true` 和 `false`：
+Swift 有一個基本的*布爾（Boolean）類型*，叫做`Bool`。布爾值指*邏輯*上的值，因為它們只能是真或者假。Swift 有兩個布爾常量，`true` 和 `false`：
 
 ```swift
 let orangesAreOrange = true
 let turnipsAreDelicious = false
 ```
 
-`orangesAreOrange` 和 `turnipsAreDelicious` 的类型会被推断为 `Bool`，因为它们的初值是布尔字面量。就像之前提到的 `Int` 和 `Double` 一样，如果你创建变量的时候给它们赋值 `true` 或者 `false`，那你不需要将常量或者变量声明为 `Bool` 类型。初始化常量或者变量的时候如果所赋的值类型已知，就可以触发类型推断，这让 Swift 代码更加简洁并且可读性更高。
+`orangesAreOrange` 和 `turnipsAreDelicious` 的類型會被推斷為 `Bool`，因為它們的初值是布爾字面量。就像之前提到的 `Int` 和 `Double` 一樣，如果你創建變量的時候給它們賦值 `true` 或者 `false`，那你不需要將常量或者變量聲明為 `Bool` 類型。初始化常量或者變量的時候如果所賦的值類型已知，就可以觸發類型推斷，這讓 Swift 代碼更加簡潔並且可讀性更高。
 
-当你编写条件语句比如 `if` 语句的时候，布尔值非常有用：
+當你編寫條件語句比如 `if` 語句的時候，布爾值非常有用：
 
 ```swift
 if turnipsAreDelicious {
@@ -453,17 +453,17 @@ if turnipsAreDelicious {
 } else {
     print("Eww, turnips are horrible.")
 }
-// 输出 "Eww, turnips are horrible."
+// 輸出 "Eww, turnips are horrible."
 ```
 
-条件语句，例如`if`，请参考[控制流](./05_Control_Flow.html)。
+條件語句，例如`if`，請參考[控制流](./05_Control_Flow.html)。
 
-如果你在需要使用 `Bool` 类型的地方使用了非布尔值，Swift 的类型安全机制会报错。下面的例子会报告一个编译时错误：
+如果你在需要使用 `Bool` 類型的地方使用了非布爾值，Swift 的類型安全機制會報錯。下面的例子會報告一個編譯時錯誤：
 
 ```swift
 let i = 1
 if i {
-    // 这个例子不会通过编译，会报错
+    // 這個例子不會通過編譯，會報錯
 }
 ```
 
@@ -472,162 +472,162 @@ if i {
 ```swift
 let i = 1
 if i == 1 {
-    // 这个例子会编译成功
+    // 這個例子會編譯成功
 }
 ```
 
-`i == 1` 的比较结果是 `Bool` 类型，所以第二个例子可以通过类型检查。类似 `i == 1` 这样的比较，请参考[基本操作符](./05_Control_Flow.html)。
+`i == 1` 的比較結果是 `Bool` 類型，所以第二個例子可以通過類型檢查。類似 `i == 1` 這樣的比較，請參考[基本操作符](./05_Control_Flow.html)。
 
-和 Swift 中的其他类型安全的例子一样，这个方法可以避免错误并保证这块代码的意图总是清晰的。
+和 Swift 中的其他類型安全的例子一樣，這個方法可以避免錯誤並保證這塊代碼的意圖總是清晰的。
 
 <a name="tuples"></a>
-## 元组
+## 元組
 
-*元组（tuples）*把多个值组合成一个复合值。元组内的值可以是任意类型，并不要求是相同类型。
+*元組（tuples）*把多個值組合成一個復合值。元組內的值可以是任意類型，並不要求是相同類型。
 
-下面这个例子中，`(404, "Not Found")` 是一个描述 *HTTP 状态码（HTTP status code）*的元组。HTTP 状态码是当你请求网页的时候 web 服务器返回的一个特殊值。如果你请求的网页不存在就会返回一个 `404 Not Found` 状态码。
+下面這個例子中，`(404, "Not Found")` 是一個描述 *HTTP 狀態碼（HTTP status code）*的元組。HTTP 狀態碼是當你請求網頁的時候 web 服務器返回的一個特殊值。如果你請求的網頁不存在就會返回一個 `404 Not Found` 狀態碼。
 
 ```swift
 let http404Error = (404, "Not Found")
-// http404Error 的类型是 (Int, String)，值是 (404, "Not Found")
+// http404Error 的類型是 (Int, String)，值是 (404, "Not Found")
 ```
 
-`(404, "Not Found")` 元组把一个 `Int` 值和一个 `String` 值组合起来表示 HTTP 状态码的两个部分：一个数字和一个人类可读的描述。这个元组可以被描述为“一个类型为 `(Int, String)` 的元组”。
+`(404, "Not Found")` 元組把一個 `Int` 值和一個 `String` 值組合起來表示 HTTP 狀態碼的兩個部分：一個數字和一個人類可讀的描述。這個元組可以被描述為「一個類型為 `(Int, String)` 的元組」。
 
-你可以把任意顺序的类型组合成一个元组，这个元组可以包含所有类型。只要你想，你可以创建一个类型为 `(Int, Int, Int)` 或者 `(String, Bool)` 或者其他任何你想要的组合的元组。
+你可以把任意順序的類型組合成一個元組，這個元組可以包含所有類型。只要你想，你可以創建一個類型為 `(Int, Int, Int)` 或者 `(String, Bool)` 或者其他任何你想要的組合的元組。
 
-你可以将一个元组的内容分解（decompose）成单独的常量和变量，然后你就可以正常使用它们了：
+你可以將一個元組的內容分解（decompose）成單獨的常量和變量，然後你就可以正常使用它們了：
 
 ```swift
 let (statusCode, statusMessage) = http404Error
 print("The status code is \(statusCode)")
-// 输出 "The status code is 404"
+// 輸出 "The status code is 404"
 print("The status message is \(statusMessage)")
-// 输出 "The status message is Not Found"
+// 輸出 "The status message is Not Found"
 ```
 
-如果你只需要一部分元组值，分解的时候可以把要忽略的部分用下划线（`_`）标记：
+如果你只需要一部分元組值，分解的時候可以把要忽略的部分用下劃線（`_`）標記：
 
 ```swift
 let (justTheStatusCode, _) = http404Error
 print("The status code is \(justTheStatusCode)")
-// 输出 "The status code is 404"
+// 輸出 "The status code is 404"
 ```
 
-此外，你还可以通过下标来访问元组中的单个元素，下标从零开始：
+此外，你還可以通過下標來訪問元組中的單個元素，下標從零開始：
 
 ```swift
 print("The status code is \(http404Error.0)")
-// 输出 "The status code is 404"
+// 輸出 "The status code is 404"
 print("The status message is \(http404Error.1)")
-// 输出 "The status message is Not Found"
+// 輸出 "The status message is Not Found"
 ```
 
-你可以在定义元组的时候给单个元素命名：
+你可以在定義元組的時候給單個元素命名：
 
 ```swift
 let http200Status = (statusCode: 200, description: "OK")
 ```
 
-给元组中的元素命名后，你可以通过名字来获取这些元素的值：
+給元組中的元素命名後，你可以通過名字來獲取這些元素的值：
 
 ```swift
 print("The status code is \(http200Status.statusCode)")
-// 输出 "The status code is 200"
+// 輸出 "The status code is 200"
 print("The status message is \(http200Status.description)")
-// 输出 "The status message is OK"
+// 輸出 "The status message is OK"
 ```
 
-作为函数返回值时，元组非常有用。一个用来获取网页的函数可能会返回一个 `(Int, String)` 元组来描述是否获取成功。和只能返回一个类型的值比较起来，一个包含两个不同类型值的元组可以让函数的返回信息更有用。请参考[函数参数与返回值](./06_Functions.html#Function_Parameters_and_Return_Values)。
+作為函數返回值時，元組非常有用。一個用來獲取網頁的函數可能會返回一個 `(Int, String)` 元組來描述是否獲取成功。和只能返回一個類型的值比較起來，一個包含兩個不同類型值的元組可以讓函數的返回信息更有用。請參考[函數參數與返回值](./06_Functions.html#Function_Parameters_and_Return_Values)。
 
 > 注意：  
-元组在临时组织值的时候很有用，但是并不适合创建复杂的数据结构。如果你的数据结构并不是临时使用，请使用类或者结构体而不是元组。请参考[类和结构体](./09_Classes_and_Structures.html)。
+元組在臨時組織值的時候很有用，但是並不適合創建復雜的數據結構。如果你的數據結構並不是臨時使用，請使用類或者結構體而不是元組。請參考[類和結構體](./09_Classes_and_Structures.html)。
 
 <a name="optionals"></a>
-## 可选类型
+## 可選類型
 
-使用*可选类型（optionals）*来处理值可能缺失的情况。可选类型表示：
+使用*可選類型（optionals）*來處理值可能缺失的情況。可選類型表示：
 
-* 有值，等于 x
+* 有值，等於 x
 
 或者
 
-* 没有值
+* 沒有值
 
 > 注意：  
-C 和 Objective-C 中并没有可选类型这个概念。最接近的是 Objective-C 中的一个特性，一个方法要不返回一个对象要不返回`nil`，`nil`表示“缺少一个合法的对象”。然而，这只对对象起作用——对于结构体，基本的 C 类型或者枚举类型不起作用。对于这些类型，Objective-C 方法一般会返回一个特殊值（比如`NSNotFound`）来暗示值缺失。这种方法假设方法的调用者知道并记得对特殊值进行判断。然而，Swift 的可选类型可以让你暗示*任意类型*的值缺失，并不需要一个特殊值。
+C 和 Objective-C 中並沒有可選類型這個概念。最接近的是 Objective-C 中的一個特性，一個方法要不返回一個對象要不返回`nil`，`nil`表示「缺少一個合法的對象」。然而，這只對對象起作用——對於結構體，基本的 C 類型或者枚舉類型不起作用。對於這些類型，Objective-C 方法一般會返回一個特殊值（比如`NSNotFound`）來暗示值缺失。這種方法假設方法的調用者知道並記得對特殊值進行判斷。然而，Swift 的可選類型可以讓你暗示*任意類型*的值缺失，並不需要一個特殊值。
 
-来看一个例子。Swift 的 `Int` 类型有一种构造器，作用是将一个 `String` 值转换成一个 `Int` 值。然而，并不是所有的字符串都可以转换成一个整数。字符串 `"123"` 可以被转换成数字 `123` ，但是字符串 `"hello, world"` 不行。
+來看一個例子。Swift 的 `Int` 類型有一種構造器，作用是將一個 `String` 值轉換成一個 `Int` 值。然而，並不是所有的字符串都可以轉換成一個整數。字符串 `"123"` 可以被轉換成數字 `123` ，但是字符串 `"hello, world"` 不行。
 
-下面的例子使用这种构造器来尝试将一个 `String` 转换成 `Int`：
+下面的例子使用這種構造器來嘗試將一個 `String` 轉換成 `Int`：
 
 ```swift
 let possibleNumber = "123"
 let convertedNumber = Int(possibleNumber)
-// convertedNumber 被推测为类型 "Int?"， 或者类型 "optional Int"
+// convertedNumber 被推測為類型 "Int?"， 或者類型 "optional Int"
 ```
 
-因为该构造器可能会失败，所以它返回一个*可选类型*（optional）`Int`，而不是一个 `Int`。一个可选的 `Int` 被写作 `Int?` 而不是 `Int`。问号暗示包含的值是可选类型，也就是说可能包含 `Int` 值也可能*不包含值*。（不能包含其他任何值比如 `Bool` 值或者 `String` 值。只能是 `Int` 或者什么都没有。）
+因為該構造器可能會失敗，所以它返回一個*可選類型*（optional）`Int`，而不是一個 `Int`。一個可選的 `Int` 被寫作 `Int?` 而不是 `Int`。問號暗示包含的值是可選類型，也就是說可能包含 `Int` 值也可能*不包含值*。（不能包含其他任何值比如 `Bool` 值或者 `String` 值。只能是 `Int` 或者什麼都沒有。）
 
 <a name="nil"></a>
 ### nil
 
-你可以给可选变量赋值为`nil`来表示它没有值：
+你可以給可選變量賦值為`nil`來表示它沒有值：
 
 ```swift
 var serverResponseCode: Int? = 404
-// serverResponseCode 包含一个可选的 Int 值 404
+// serverResponseCode 包含一個可選的 Int 值 404
 serverResponseCode = nil
-// serverResponseCode 现在不包含值
+// serverResponseCode 現在不包含值
 ```
 
 > 注意：  
-`nil`不能用于非可选的常量和变量。如果你的代码中有常量或者变量需要处理值缺失的情况，请把它们声明成对应的可选类型。
+`nil`不能用於非可選的常量和變量。如果你的代碼中有常量或者變量需要處理值缺失的情況，請把它們聲明成對應的可選類型。
 
-如果你声明一个可选常量或者变量但是没有赋值，它们会自动被设置为 `nil`：
+如果你聲明一個可選常量或者變量但是沒有賦值，它們會自動被設置為 `nil`：
 
 ```swift
 var surveyAnswer: String?
-// surveyAnswer 被自动设置为 nil
+// surveyAnswer 被自動設置為 nil
 ```
 
 > 注意：  
-Swift 的 `nil` 和 Objective-C 中的 `nil` 并不一样。在 Objective-C 中，`nil` 是一个指向不存在对象的指针。在 Swift 中，`nil` 不是指针——它是一个确定的值，用来表示值缺失。任何类型的可选状态都可以被设置为 `nil`，不只是对象类型。
+Swift 的 `nil` 和 Objective-C 中的 `nil` 並不一樣。在 Objective-C 中，`nil` 是一個指向不存在對象的指針。在 Swift 中，`nil` 不是指針——它是一個確定的值，用來表示值缺失。任何類型的可選狀態都可以被設置為 `nil`，不只是對象類型。
 
 <a name="if"></a>
-### if 语句以及强制解析
+### if 語句以及強制解析
 
-你可以使用 `if` 语句和 `nil` 比较来判断一个可选值是否包含值。你可以使用“相等”(`==`)或“不等”(`!=`)来执行比较。
+你可以使用 `if` 語句和 `nil` 比較來判斷一個可選值是否包含值。你可以使用「相等」(`==`)或「不等」(`!=`)來執行比較。
 
-如果可选类型有值，它将不等于 `nil`：
+如果可選類型有值，它將不等於 `nil`：
 
 ```swift
 if convertedNumber != nil {
     print("convertedNumber contains some integer value.")
 }
-// 输出 "convertedNumber contains some integer value."
+// 輸出 "convertedNumber contains some integer value."
 ```
 
-当你确定可选类型确实包含值之后，你可以在可选的名字后面加一个感叹号（`!`）来获取值。这个惊叹号表示“我知道这个可选有值，请使用它。”这被称为可选值的*强制解析（forced unwrapping）*：
+當你確定可選類型確實包含值之後，你可以在可選的名字後面加一個感嘆號（`!`）來獲取值。這個驚嘆號表示「我知道這個可選有值，請使用它。」這被稱為可選值的*強制解析（forced unwrapping）*：
 
 ```swift
 if convertedNumber != nil {
     print("convertedNumber has an integer value of \(convertedNumber!).")
 }
-// 输出 "convertedNumber has an integer value of 123."
+// 輸出 "convertedNumber has an integer value of 123."
 ```
 
-更多关于 `if` 语句的内容，请参考[控制流](05_Control_Flow.html)。
+更多關於 `if` 語句的內容，請參考[控制流](05_Control_Flow.html)。
 
 > 注意：  
-使用 `!` 来获取一个不存在的可选值会导致运行时错误。使用 `!` 来强制解析值之前，一定要确定可选包含一个非 `nil` 的值。
+使用 `!` 來獲取一個不存在的可選值會導致運行時錯誤。使用 `!` 來強制解析值之前，一定要確定可選包含一個非 `nil` 的值。
 
 <a name="optional_binding"></a>
-### 可选绑定
+### 可選綁定
 
-使用*可选绑定（optional binding）*来判断可选类型是否包含值，如果包含就把值赋给一个临时常量或者变量。可选绑定可以用在 `if` 和 `while` 语句中，这条语句不仅可以用来判断可选类型中是否有值，同时可以将可选类型中的值赋给一个常量或者变量。`if` 和 `while` 语句，请参考[控制流](./05_Control_Flow.html)。
+使用*可選綁定（optional binding）*來判斷可選類型是否包含值，如果包含就把值賦給一個臨時常量或者變量。可選綁定可以用在 `if` 和 `while` 語句中，這條語句不僅可以用來判斷可選類型中是否有值，同時可以將可選類型中的值賦給一個常量或者變量。`if` 和 `while` 語句，請參考[控制流](./05_Control_Flow.html)。
 
-像下面这样在 `if` 语句中写一个可选绑定：
+像下面這樣在 `if` 語句中寫一個可選綁定：
 
 ```swift
 if let constantName = someOptional {
@@ -635,7 +635,7 @@ if let constantName = someOptional {
 }
 ```
 
-你可以像上面这样使用可选绑定来重写 `possibleNumber` 这个[例子](./01_The_Basics.html#optionals)：
+你可以像上面這樣使用可選綁定來重寫 `possibleNumber` 這個[例子](./01_The_Basics.html#optionals)：
 
 ```swift
 if let actualNumber = Int(possibleNumber) {
@@ -643,24 +643,24 @@ if let actualNumber = Int(possibleNumber) {
 } else {
     print("\'\(possibleNumber)\' could not be converted to an integer")
 }
-// 输出 "'123' has an integer value of 123"
+// 輸出 "'123' has an integer value of 123"
 ```
 
-这段代码可以被理解为：
+這段代碼可以被理解為：
 
-“如果 `Int(possibleNumber)` 返回的可选 `Int` 包含一个值，创建一个叫做 `actualNumber` 的新常量并将可选包含的值赋给它。”
+「如果 `Int(possibleNumber)` 返回的可選 `Int` 包含一個值，創建一個叫做 `actualNumber` 的新常量並將可選包含的值賦給它。」
 
-如果转换成功，`actualNumber` 常量可以在 `if` 语句的第一个分支中使用。它已经被可选类型 *包含的* 值初始化过，所以不需要再使用 `!` 后缀来获取它的值。在这个例子中，`actualNumber` 只被用来输出转换结果。
+如果轉換成功，`actualNumber` 常量可以在 `if` 語句的第一個分支中使用。它已經被可選類型 *包含的* 值初始化過，所以不需要再使用 `!` 後綴來獲取它的值。在這個例子中，`actualNumber` 只被用來輸出轉換結果。
 
-你可以在可选绑定中使用常量和变量。如果你想在`if`语句的第一个分支中操作 `actualNumber` 的值，你可以改成 `if var actualNumber`，这样可选类型包含的值就会被赋给一个变量而非常量。
+你可以在可選綁定中使用常量和變量。如果你想在`if`語句的第一個分支中操作 `actualNumber` 的值，你可以改成 `if var actualNumber`，這樣可選類型包含的值就會被賦給一個變量而非常量。
 
-你可以包含多个可选绑定或多个布尔条件在一个 `if` 语句中，只要使用逗号分开就行。只要有任意一个可选绑定的值为`nil`，或者任意一个布尔条件为`false`，则整个`if`条件判断为`false`，这时你就需要使用嵌套 `if` 条件语句来处理，如下所示：
+你可以包含多個可選綁定或多個布爾條件在一個 `if` 語句中，只要使用逗號分開就行。只要有任意一個可選綁定的值為`nil`，或者任意一個布爾條件為`false`，則整個`if`條件判斷為`false`，這時你就需要使用嵌套 `if` 條件語句來處理，如下所示：
 
 ```swift
 if let firstNumber = Int("4"), let secondNumber = Int("42"), firstNumber < secondNumber && secondNumber < 100 {
     print("\(firstNumber) < \(secondNumber) < 100")
 }
-// 输出 "4 < 42 < 100"
+// 輸出 "4 < 42 < 100"
  
 if let firstNumber = Int("4") {
     if let secondNumber = Int("42") {
@@ -669,87 +669,87 @@ if let firstNumber = Int("4") {
         }
     }
 }
-// 输出 "4 < 42 < 100"
+// 輸出 "4 < 42 < 100"
 ```
 
 > 注意：
-> 在 `if` 条件语句中使用常量和变量来创建一个可选绑定，仅在 `if` 语句的句中(`body`)中才能获取到值。相反，在 `guard` 语句中使用常量和变量来创建一个可选绑定，仅在 `guard` 语句外且在语句后才能获取到值，请参考[提前退出](./05_Control_Flow#early_exit.html)。
+> 在 `if` 條件語句中使用常量和變量來創建一個可選綁定，僅在 `if` 語句的句中(`body`)中才能獲取到值。相反，在 `guard` 語句中使用常量和變量來創建一個可選綁定，僅在 `guard` 語句外且在語句後才能獲取到值，請參考[提前退出](./05_Control_Flow#early_exit.html)。
 
 <a name="implicityly_unwrapped_optionals"></a>
-### 隐式解析可选类型
+### 隱式解析可選類型
 
-如上所述，可选类型暗示了常量或者变量可以“没有值”。可选可以通过 `if` 语句来判断是否有值，如果有值的话可以通过可选绑定来解析值。
+如上所述，可選類型暗示了常量或者變量可以「沒有值」。可選可以通過 `if` 語句來判斷是否有值，如果有值的話可以通過可選綁定來解析值。
 
-有时候在程序架构中，第一次被赋值之后，可以确定一个可选类型_总会_有值。在这种情况下，每次都要判断和解析可选值是非常低效的，因为可以确定它总会有值。
+有時候在程序架構中，第一次被賦值之後，可以確定一個可選類型_總會_有值。在這種情況下，每次都要判斷和解析可選值是非常低效的，因為可以確定它總會有值。
 
-这种类型的可选状态被定义为隐式解析可选类型（implicitly unwrapped optionals）。把想要用作可选的类型的后面的问号（`String?`）改成感叹号（`String!`）来声明一个隐式解析可选类型。
+這種類型的可選狀態被定義為隱式解析可選類型（implicitly unwrapped optionals）。把想要用作可選的類型的後面的問號（`String?`）改成感嘆號（`String!`）來聲明一個隱式解析可選類型。
 
-当可选类型被第一次赋值之后就可以确定之后一直有值的时候，隐式解析可选类型非常有用。隐式解析可选类型主要被用在 Swift 中类的构造过程中，请参考[无主引用以及隐式解析可选属性](./16_Automatic_Reference_Counting.html#unowned_references_and_implicitly_unwrapped_optional_properties)。
+當可選類型被第一次賦值之後就可以確定之後一直有值的時候，隱式解析可選類型非常有用。隱式解析可選類型主要被用在 Swift 中類的構造過程中，請參考[無主引用以及隱式解析可選屬性](./16_Automatic_Reference_Counting.html#unowned_references_and_implicitly_unwrapped_optional_properties)。
 
-一个隐式解析可选类型其实就是一个普通的可选类型，但是可以被当做非可选类型来使用，并不需要每次都使用解析来获取可选值。下面的例子展示了可选类型 `String` 和隐式解析可选类型 `String` 之间的区别：
+一個隱式解析可選類型其實就是一個普通的可選類型，但是可以被當做非可選類型來使用，並不需要每次都使用解析來獲取可選值。下面的例子展示了可選類型 `String` 和隱式解析可選類型 `String` 之間的區別：
 
 ```swift
 let possibleString: String? = "An optional string."
-let forcedString: String = possibleString! // 需要感叹号来获取值
+let forcedString: String = possibleString! // 需要感嘆號來獲取值
 
 let assumedString: String! = "An implicitly unwrapped optional string."
-let implicitString: String = assumedString  // 不需要感叹号
+let implicitString: String = assumedString  // 不需要感嘆號
 ```
 
-你可以把隐式解析可选类型当做一个可以自动解析的可选类型。你要做的只是声明的时候把感叹号放到类型的结尾，而不是每次取值的可选名字的结尾。
+你可以把隱式解析可選類型當做一個可以自動解析的可選類型。你要做的只是聲明的時候把感嘆號放到類型的結尾，而不是每次取值的可選名字的結尾。
 
 > 注意：  
-> 如果你在隐式解析可选类型没有值的时候尝试取值，会触发运行时错误。和你在没有值的普通可选类型后面加一个惊叹号一样。
+> 如果你在隱式解析可選類型沒有值的時候嘗試取值，會觸發運行時錯誤。和你在沒有值的普通可選類型後面加一個驚嘆號一樣。
 
-你仍然可以把隐式解析可选类型当做普通可选类型来判断它是否包含值：
+你仍然可以把隱式解析可選類型當做普通可選類型來判斷它是否包含值：
 
 ```swift
 if assumedString != nil {
     print(assumedString)
 }
-// 输出 "An implicitly unwrapped optional string."
+// 輸出 "An implicitly unwrapped optional string."
 ```
 
-你也可以在可选绑定中使用隐式解析可选类型来检查并解析它的值：
+你也可以在可選綁定中使用隱式解析可選類型來檢查並解析它的值：
 
 ```swift
 if let definiteString = assumedString {
     print(definiteString)
 }
-// 输出 "An implicitly unwrapped optional string."
+// 輸出 "An implicitly unwrapped optional string."
 ```
 
 > 注意：  
-> 如果一个变量之后可能变成`nil`的话请不要使用隐式解析可选类型。如果你需要在变量的生命周期中判断是否是`nil`的话，请使用普通可选类型。
+> 如果一個變量之後可能變成`nil`的話請不要使用隱式解析可選類型。如果你需要在變量的生命周期中判斷是否是`nil`的話，請使用普通可選類型。
 
 <a name="error_handling"></a>
-## 错误处理
-你可以使用 *错误处理（error handling）* 来应对程序执行中可能会遇到的错误条件。
+## 錯誤處理
+你可以使用 *錯誤處理（error handling）* 來應對程序執行中可能會遇到的錯誤條件。
 
-相对于可选中运用值的存在与缺失来表达函数的成功与失败，错误处理可以推断失败的原因，并传播至程序的其他部分。
+相對於可選中運用值的存在與缺失來表達函數的成功與失敗，錯誤處理可以推斷失敗的原因，並傳播至程序的其他部分。
 
-当一个函数遇到错误条件，它能报错。调用函数的地方能抛出错误消息并合理处理。
+當一個函數遇到錯誤條件，它能報錯。調用函數的地方能拋出錯誤消息並合理處理。
 
 ```swift
 func canThrowAnError() throws {
-    // 这个函数有可能抛出错误
+    // 這個函數有可能拋出錯誤
 }
 ```
 
-一个函数可以通过在声明中添加`throws`关键词来抛出错误消息。当你的函数能抛出错误消息时, 你应该在表达式中前置`try`关键词。
+一個函數可以通過在聲明中添加`throws`關鍵詞來拋出錯誤消息。當你的函數能拋出錯誤消息時, 你應該在表達式中前置`try`關鍵詞。
 
 ```swift
 do {
     try canThrowAnError()
-    // 没有错误消息抛出
+    // 沒有錯誤消息拋出
 } catch {
-    // 有一个错误消息抛出
+    // 有一個錯誤消息拋出
 }
 ```
 
-一个`do`语句创建了一个新的包含作用域,使得错误能被传播到一个或多个`catch`从句。
+一個`do`語句創建了一個新的包含作用域,使得錯誤能被傳播到一個或多個`catch`從句。
 
-这里有一个错误处理如何用来应对不同错误条件的例子。
+這裡有一個錯誤處理如何用來應對不同錯誤條件的例子。
 
 ```swift
 func makeASandwich() throws {
@@ -766,51 +766,51 @@ do {
 }
 ```
 
-在此例中，`makeASandwich()`（做一个三明治）函数会抛出一个错误消息如果没有干净的盘子或者某个原料缺失。因为 `makeASandwich()` 抛出错误，函数调用被包裹在 `try` 表达式中。将函数包裹在一个 `do` 语句中，任何被抛出的错误会被传播到提供的 `catch` 从句中。
+在此例中，`makeASandwich()`（做一個三明治）函數會拋出一個錯誤消息如果沒有幹凈的盤子或者某個原料缺失。因為 `makeASandwich()` 拋出錯誤，函數調用被包裹在 `try` 表達式中。將函數包裹在一個 `do` 語句中，任何被拋出的錯誤會被傳播到提供的 `catch` 從句中。
 
-如果没有错误被抛出，`eatASandwich()` 函数会被调用。如果一个匹配 `SandwichError.outOfCleanDishes` 的错误被抛出，`washDishes()` 函数会被调用。如果一个匹配 `SandwichError.missingIngredients` 的错误被抛出，`buyGroceries(_:)` 函数会被调用，并且使用 `catch` 所捕捉到的关联值 `[String]` 作为参数。
+如果沒有錯誤被拋出，`eatASandwich()` 函數會被調用。如果一個匹配 `SandwichError.outOfCleanDishes` 的錯誤被拋出，`washDishes()` 函數會被調用。如果一個匹配 `SandwichError.missingIngredients` 的錯誤被拋出，`buyGroceries(_:)` 函數會被調用，並且使用 `catch` 所捕捉到的關聯值 `[String]` 作為參數。
 
-抛出，捕捉，以及传播错误会在[错误处理](./18_Error_Handling.html)章节详细说明。
+拋出，捕捉，以及傳播錯誤會在[錯誤處理](./18_Error_Handling.html)章節詳細說明。
 
 <a name="assertions"></a>
-## 断言
+## 斷言
 
-可选类型可以让你判断值是否存在，你可以在代码中优雅地处理值缺失的情况。然而，在某些情况下，如果值缺失或者值并不满足特定的条件，你的代码可能没办法继续执行。这时，你可以在你的代码中触发一个 *断言（assertion）* 来结束代码运行并通过调试来找到值缺失的原因。
+可選類型可以讓你判斷值是否存在，你可以在代碼中優雅地處理值缺失的情況。然而，在某些情況下，如果值缺失或者值並不滿足特定的條件，你的代碼可能沒辦法繼續執行。這時，你可以在你的代碼中觸發一個 *斷言（assertion）* 來結束代碼運行並通過調試來找到值缺失的原因。
 
-### 使用断言进行调试
+### 使用斷言進行調試
 
-断言会在运行时判断一个逻辑条件是否为 `true`。从字面意思来说，断言“断言”一个条件是否为真。你可以使用断言来保证在运行其他代码之前，某些重要的条件已经被满足。如果条件判断为 `true`，代码运行会继续进行；如果条件判断为 `false`，代码执行结束，你的应用被终止。
+斷言會在運行時判斷一個邏輯條件是否為 `true`。從字面意思來說，斷言「斷言」一個條件是否為真。你可以使用斷言來保證在運行其他代碼之前，某些重要的條件已經被滿足。如果條件判斷為 `true`，代碼運行會繼續進行；如果條件判斷為 `false`，代碼執行結束，你的應用被終止。
 
-如果你的代码在调试环境下触发了一个断言，比如你在 Xcode 中构建并运行一个应用，你可以清楚地看到不合法的状态发生在哪里并检查断言被触发时你的应用的状态。此外，断言允许你附加一条调试信息。
+如果你的代碼在調試環境下觸發了一個斷言，比如你在 Xcode 中構建並運行一個應用，你可以清楚地看到不合法的狀態發生在哪裡並檢查斷言被觸發時你的應用的狀態。此外，斷言允許你附加一條調試信息。
 
-你可以使用全局 `assert(_:_:file:line:)` 函数来写一个断言。向这个函数传入一个结果为 `true` 或者 `false` 的表达式以及一条信息，当表达式的结果为 `false` 的时候这条信息会被显示：
+你可以使用全局 `assert(_:_:file:line:)` 函數來寫一個斷言。向這個函數傳入一個結果為 `true` 或者 `false` 的表達式以及一條信息，當表達式的結果為 `false` 的時候這條信息會被顯示：
 
 ```swift
 let age = -3
 assert(age >= 0, "A person's age cannot be less than zero")
-// 因为 age < 0，所以断言会触发
+// 因為 age < 0，所以斷言會觸發
 ```
 
-在这个例子中，只有 `age >= 0` 为 `true` 的时候，即 `age` 的值非负的时候，代码才会继续执行。如果 `age` 的值是负数，就像代码中那样，`age >= 0` 为 `false`，断言被触发，终止应用。
+在這個例子中，只有 `age >= 0` 為 `true` 的時候，即 `age` 的值非負的時候，代碼才會繼續執行。如果 `age` 的值是負數，就像代碼中那樣，`age >= 0` 為 `false`，斷言被觸發，終止應用。
 
-如果不需要断言信息，可以省略，就像这样：
+如果不需要斷言信息，可以省略，就像這樣：
 
 ```swift
 assert(age >= 0)
 ```
 
 > 注意：  
-> 当代码使用优化编译的时候，断言将会被禁用，例如在 Xcode 中，使用默认的 target Release 配置选项来 build 时，断言会被禁用。
+> 當代碼使用優化編譯的時候，斷言將會被禁用，例如在 Xcode 中，使用默認的 target Release 配置選項來 build 時，斷言會被禁用。
 
-### 何时使用断言
+### 何時使用斷言
 
-当条件可能为假时使用断言，但是最终一定要_保证_条件为真，这样你的代码才能继续运行。断言的适用情景：
+當條件可能為假時使用斷言，但是最終一定要_保證_條件為真，這樣你的代碼才能繼續運行。斷言的適用情景：
 
-* 整数类型的下标索引被传入一个自定义下标实现，但是下标索引值可能太小或者太大。
-* 需要给函数传入一个值，但是非法的值可能导致函数不能正常执行。
-* 一个可选值现在是 `nil`，但是后面的代码运行需要一个非 `nil` 值。
+* 整數類型的下標索引被傳入一個自定義下標實現，但是下標索引值可能太小或者太大。
+* 需要給函數傳入一個值，但是非法的值可能導致函數不能正常執行。
+* 一個可選值現在是 `nil`，但是後面的代碼運行需要一個非 `nil` 值。
 
-请参考[下标](./12_Subscripts.html)和[函数](./06_Functions.html)。
+請參考[下標](./12_Subscripts.html)和[函數](./06_Functions.html)。
 
 > 注意：  
-> 断言可能导致你的应用终止运行，所以你应当仔细设计你的代码来让非法条件不会出现。然而，在你的应用发布之前，有时候非法条件可能出现，这时使用断言可以快速发现问题。
+> 斷言可能導致你的應用終止運行，所以你應當仔細設計你的代碼來讓非法條件不會出現。然而，在你的應用發布之前，有時候非法條件可能出現，這時使用斷言可以快速發現問題。

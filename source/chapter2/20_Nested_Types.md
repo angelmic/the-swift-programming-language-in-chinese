@@ -1,44 +1,44 @@
-# 嵌套类型
+# 嵌套類型
 -----------------
 
 > 1.0
-> 翻译：[Lin-H](https://github.com/Lin-H)
-> 校对：[shinyzhu](https://github.com/shinyzhu)
+> 翻譯：[Lin-H](https://github.com/Lin-H)
+> 校對：[shinyzhu](https://github.com/shinyzhu)
 
 > 2.0
-> 翻译+校对：[SergioChan](https://github.com/SergioChan)
+> 翻譯+校對：[SergioChan](https://github.com/SergioChan)
 
 > 2.1
-> 校对：[shanks](http://codebuild.me)，2015-11-01
+> 校對：[shanks](http://codebuild.me)，2015-11-01
 > 
 > 2.2
-> 翻译+校对：[SketchK](https://github.com/SketchK) 2016-05-16    
+> 翻譯+校對：[SketchK](https://github.com/SketchK) 2016-05-16    
 > 3.0.1，shanks，2016-11-13
 
-本页包含内容：
+本頁包含內容：
 
-- [嵌套类型实践](#nested_types_in_action)
-- [引用嵌套类型](#referring_to_nested_types)
+- [嵌套類型實踐](#nested_types_in_action)
+- [引用嵌套類型](#referring_to_nested_types)
 
-枚举常被用于为特定类或结构体实现某些功能。类似的，枚举可以方便的定义工具类或结构体，从而为某个复杂的类型所使用。为了实现这种功能，Swift 允许你定义*嵌套类型*，可以在支持的类型中定义嵌套的枚举、类和结构体。
+枚舉常被用於為特定類或結構體實現某些功能。類似的，枚舉可以方便的定義工具類或結構體，從而為某個復雜的類型所使用。為了實現這種功能，Swift 允許你定義*嵌套類型*，可以在支持的類型中定義嵌套的枚舉、類和結構體。
 
-要在一个类型中嵌套另一个类型，将嵌套类型的定义写在其外部类型的`{}`内，而且可以根据需要定义多级嵌套。
+要在一個類型中嵌套另一個類型，將嵌套類型的定義寫在其外部類型的`{}`內，而且可以根據需要定義多級嵌套。
 
 <a name="nested_types_in_action"></a>
-## 嵌套类型实践
+## 嵌套類型實踐
 
-下面这个例子定义了一个结构体`BlackjackCard`（二十一点），用来模拟`BlackjackCard`中的扑克牌点数。`BlackjackCard`结构体包含两个嵌套定义的枚举类型`Suit`和`Rank`。
+下面這個例子定義了一個結構體`BlackjackCard`（二十一點），用來模擬`BlackjackCard`中的撲克牌點數。`BlackjackCard`結構體包含兩個嵌套定義的枚舉類型`Suit`和`Rank`。
 
-在`BlackjackCard`中，`Ace`牌可以表示`1`或者`11`，`Ace`牌的这一特征通过一个嵌套在`Rank`枚举中的结构体`Values`来表示：
+在`BlackjackCard`中，`Ace`牌可以表示`1`或者`11`，`Ace`牌的這一特征通過一個嵌套在`Rank`枚舉中的結構體`Values`來表示：
 
 ```swift
 struct BlackjackCard {
-    // 嵌套的 Suit 枚举
+    // 嵌套的 Suit 枚舉
     enum Suit: Character {
        case Spades = "♠", Hearts = "♡", Diamonds = "♢", Clubs = "♣"
     }
 
-    // 嵌套的 Rank 枚举
+    // 嵌套的 Rank 枚舉
     enum Rank: Int {
        case Two = 2, Three, Four, Five, Six, Seven, Eight, Nine, Ten
        case Jack, Queen, King, Ace
@@ -57,7 +57,7 @@ struct BlackjackCard {
        }
     }
 
-    // BlackjackCard 的属性和方法
+    // BlackjackCard 的屬性和方法
     let rank: Rank, suit: Suit
     var description: String {
     	var output = "suit is \(suit.rawValue),"
@@ -70,37 +70,37 @@ struct BlackjackCard {
 }
 ```
 
-`Suit`枚举用来描述扑克牌的四种花色，并用一个`Character`类型的原始值表示花色符号。
+`Suit`枚舉用來描述撲克牌的四種花色，並用一個`Character`類型的原始值表示花色符號。
 
-`Rank`枚举用来描述扑克牌从`Ace`~`10`，以及`J`、`Q`、`K`，这`13`种牌，并用一个`Int`类型的原始值表示牌的面值。（这个`Int`类型的原始值未用于`Ace`、`J`、`Q`、`K`这`4`种牌。）
+`Rank`枚舉用來描述撲克牌從`Ace`~`10`，以及`J`、`Q`、`K`，這`13`種牌，並用一個`Int`類型的原始值表示牌的面值。（這個`Int`類型的原始值未用於`Ace`、`J`、`Q`、`K`這`4`種牌。）
 
-如上所述，`Rank`枚举在内部定义了一个嵌套结构体`Values`。结构体`Values`中定义了两个属性，用于反映只有`Ace`有两个数值，其余牌都只有一个数值：
+如上所述，`Rank`枚舉在內部定義了一個嵌套結構體`Values`。結構體`Values`中定義了兩個屬性，用於反映只有`Ace`有兩個數值，其余牌都只有一個數值：
 
-- `first`的类型为`Int`
-- `second`的类型为`Int?`，或者说“可选 `Int`”
+- `first`的類型為`Int`
+- `second`的類型為`Int?`，或者說「可選 `Int`」
 
-`Rank`还定义了一个计算型属性`values`，它将会返回一个`Values`结构体的实例。这个计算型属性会根据牌的面值，用适当的数值去初始化`Values`实例。对于`J`、`Q`、`K`、`Ace`这四种牌，会使用特殊数值。对于数字面值的牌，使用枚举实例的原始值。
+`Rank`還定義了一個計算型屬性`values`，它將會返回一個`Values`結構體的實例。這個計算型屬性會根據牌的面值，用適當的數值去初始化`Values`實例。對於`J`、`Q`、`K`、`Ace`這四種牌，會使用特殊數值。對於數字面值的牌，使用枚舉實例的原始值。
 
-`BlackjackCard`结构体拥有两个属性——`rank`与`suit`。它也同样定义了一个计算型属性`description`，`description`属性用`rank`和`suit`中的内容来构建对扑克牌名字和数值的描述。该属性使用可选绑定来检查可选类型`second`是否有值，若有值，则在原有的描述中增加对`second`的描述。
+`BlackjackCard`結構體擁有兩個屬性——`rank`與`suit`。它也同樣定義了一個計算型屬性`description`，`description`屬性用`rank`和`suit`中的內容來構建對撲克牌名字和數值的描述。該屬性使用可選綁定來檢查可選類型`second`是否有值，若有值，則在原有的描述中增加對`second`的描述。
 
-因为`BlackjackCard`是一个没有自定义构造器的结构体，在[结构体的逐一成员构造器](./14_Initialization.html#memberwise_initializers_for_structure_types)中可知，结构体有默认的成员构造器，所以你可以用默认的构造器去初始化新常量`theAceOfSpades`：
+因為`BlackjackCard`是一個沒有自定義構造器的結構體，在[結構體的逐一成員構造器](./14_Initialization.html#memberwise_initializers_for_structure_types)中可知，結構體有默認的成員構造器，所以你可以用默認的構造器去初始化新常量`theAceOfSpades`：
 
 ```swift
 let theAceOfSpades = BlackjackCard(rank: .Ace, suit: .Spades)
 print("theAceOfSpades: \(theAceOfSpades.description)")
-// 打印 “theAceOfSpades: suit is ♠, value is 1 or 11”
+// 打印 「theAceOfSpades: suit is ♠, value is 1 or 11」
 ```
 
-尽管`Rank`和`Suit`嵌套在`BlackjackCard`中，但它们的类型仍可从上下文中推断出来，所以在初始化实例时能够单独通过成员名称（`.Ace`和`.Spades`）引用枚举实例。在上面的例子中，`description`属性正确地反映了黑桃A牌具有`1`和`11`两个值。
+盡管`Rank`和`Suit`嵌套在`BlackjackCard`中，但它們的類型仍可從上下文中推斷出來，所以在初始化實例時能夠單獨通過成員名稱（`.Ace`和`.Spades`）引用枚舉實例。在上面的例子中，`description`屬性正確地反映了黑桃A牌具有`1`和`11`兩個值。
 
 <a name="referring_to_nested_types"></a>
-## 引用嵌套类型
+## 引用嵌套類型
 
-在外部引用嵌套类型时，在嵌套类型的类型名前加上其外部类型的类型名作为前缀：
+在外部引用嵌套類型時，在嵌套類型的類型名前加上其外部類型的類型名作為前綴：
 
 ```swift
 let heartsSymbol = BlackjackCard.Suit.Hearts.rawValue
-// 红心符号为 “♡”
+// 紅心符號為 「♡」
 ```
 
-对于上面这个例子，这样可以使`Suit`、`Rank`和`Values`的名字尽可能的短，因为它们的名字可以由定义它们的上下文来限定。
+對於上面這個例子，這樣可以使`Suit`、`Rank`和`Values`的名字盡可能的短，因為它們的名字可以由定義它們的上下文來限定。

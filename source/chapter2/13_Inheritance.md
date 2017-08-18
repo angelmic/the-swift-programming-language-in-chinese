@@ -1,41 +1,41 @@
-# 继承
+# 繼承
 -------------------
 
 > 1.0
-> 翻译：[Hawstein](https://github.com/Hawstein)
-> 校对：[menlongsheng](https://github.com/menlongsheng)
+> 翻譯：[Hawstein](https://github.com/Hawstein)
+> 校對：[menlongsheng](https://github.com/menlongsheng)
 
 > 2.0，2.1
-> 翻译+校对：[shanks](http://codebuild.me)
+> 翻譯+校對：[shanks](http://codebuild.me)
 > 
 > 2.2
-> 校对：[SketchK](https://github.com/SketchK) 2016-05-13  
+> 校對：[SketchK](https://github.com/SketchK) 2016-05-13  
 > 3.0.1，shanks，2016-11-13
 
-本页包含内容：
+本頁包含內容：
 
-- [定义一个基类](#defining_a_base_class)
-- [子类生成](#subclassing)
-- [重写](#overriding)
-- [防止重写](#preventing_overrides)
+- [定義一個基類](#defining_a_base_class)
+- [子類生成](#subclassing)
+- [重寫](#overriding)
+- [防止重寫](#preventing_overrides)
 
-一个类可以*继承*另一个类的方法，属性和其它特性。当一个类继承其它类时，继承类叫*子类*，被继承类叫*超类（或父类）*。在 Swift 中，继承是区分「类」与其它类型的一个基本特征。
+一個類可以*繼承*另一個類的方法，屬性和其它特性。當一個類繼承其它類時，繼承類叫*子類*，被繼承類叫*超類（或父類）*。在 Swift 中，繼承是區分「類」與其它類型的一個基本特征。
 
-在 Swift 中，类可以调用和访问超类的方法，属性和下标，并且可以重写这些方法，属性和下标来优化或修改它们的行为。Swift 会检查你的重写定义在超类中是否有匹配的定义，以此确保你的重写行为是正确的。
+在 Swift 中，類可以調用和訪問超類的方法，屬性和下標，並且可以重寫這些方法，屬性和下標來優化或修改它們的行為。Swift 會檢查你的重寫定義在超類中是否有匹配的定義，以此確保你的重寫行為是正確的。
 
-可以为类中继承来的属性添加属性观察器，这样一来，当属性值改变时，类就会被通知到。可以为任何属性添加属性观察器，无论它原本被定义为存储型属性还是计算型属性。
+可以為類中繼承來的屬性添加屬性觀察器，這樣一來，當屬性值改變時，類就會被通知到。可以為任何屬性添加屬性觀察器，無論它原本被定義為存儲型屬性還是計算型屬性。
 
 <a name="defining_a_base_class"></a>
-## 定义一个基类
+## 定義一個基類
 
-不继承于其它类的类，称之为*基类*。
+不繼承於其它類的類，稱之為*基類*。
 
 > 注意  
-Swift 中的类并不是从一个通用的基类继承而来。如果你不为你定义的类指定一个超类的话，这个类就自动成为基类。
+Swift 中的類並不是從一個通用的基類繼承而來。如果你不為你定義的類指定一個超類的話，這個類就自動成為基類。
 
-下面的例子定义了一个叫`Vehicle`的基类。这个基类声明了一个名为`currentSpeed `，默认值是`0.0`的存储属性（属性类型推断为`Double`）。`currentSpeed`属性的值被一个`String`类型的只读计算型属性`description`使用，用来创建车辆的描述。
+下面的例子定義了一個叫`Vehicle`的基類。這個基類聲明了一個名為`currentSpeed `，默認值是`0.0`的存儲屬性（屬性類型推斷為`Double`）。`currentSpeed`屬性的值被一個`String`類型的只讀計算型屬性`description`使用，用來創建車輛的描述。
 
-`Vehicle`基类也定义了一个名为`makeNoise`的方法。这个方法实际上不为`Vehicle`实例做任何事，但之后将会被`Vehicle`的子类定制：
+`Vehicle`基類也定義了一個名為`makeNoise`的方法。這個方法實際上不為`Vehicle`實例做任何事，但之後將會被`Vehicle`的子類定制：
 
 ```swift
 class Vehicle {
@@ -44,40 +44,40 @@ class Vehicle {
         return "traveling at \(currentSpeed) miles per hour"
     }
     func makeNoise() {
-        // 什么也不做-因为车辆不一定会有噪音
+        // 什麼也不做-因為車輛不一定會有噪音
     }
 }
 ```
 
-您可以用初始化语法创建一个`Vehicle`的新实例，即类名后面跟一个空括号：
+您可以用初始化語法創建一個`Vehicle`的新實例，即類名後面跟一個空括號：
 
 ```swift
 let someVehicle = Vehicle()
 ```
 
-现在已经创建了一个`Vehicle`的新实例，你可以访问它的`description`属性来打印车辆的当前速度：
+現在已經創建了一個`Vehicle`的新實例，你可以訪問它的`description`屬性來打印車輛的當前速度：
 
 ```swift
 print("Vehicle: \(someVehicle.description)")
 // 打印 "Vehicle: traveling at 0.0 miles per hour"
 ```
 
-`Vehicle`类定义了一个通用特性的车辆类，实际上没什么用处。为了让它变得更加有用，需要完善它从而能够描述一个更加具体类型的车辆。
+`Vehicle`類定義了一個通用特性的車輛類，實際上沒什麼用處。為了讓它變得更加有用，需要完善它從而能夠描述一個更加具體類型的車輛。
 
 <a name="subclassing"></a>
-## 子类生成
+## 子類生成
 
-*子类生成*指的是在一个已有类的基础上创建一个新的类。子类继承超类的特性，并且可以进一步完善。你还可以为子类添加新的特性。
+*子類生成*指的是在一個已有類的基礎上創建一個新的類。子類繼承超類的特性，並且可以進一步完善。你還可以為子類添加新的特性。
 
-为了指明某个类的超类，将超类名写在子类名的后面，用冒号分隔：
+為了指明某個類的超類，將超類名寫在子類名的後面，用冒號分隔：
 
 ```swift
 class SomeClass: SomeSuperclass {
-    // 这里是子类的定义
+    // 這裡是子類的定義
 }
 ```
 
-下一个例子，定义一个叫`Bicycle`的子类，继承成父类`Vehicle`：
+下一個例子，定義一個叫`Bicycle`的子類，繼承成父類`Vehicle`：
 
 ```swift
 class Bicycle: Vehicle {
@@ -85,18 +85,18 @@ class Bicycle: Vehicle {
 }
 ```
 
-新的`Bicycle`类自动获得`Vehicle`类的所有特性，比如`currentSpeed`和`description`属性，还有它的`makeNoise()`方法。
+新的`Bicycle`類自動獲得`Vehicle`類的所有特性，比如`currentSpeed`和`description`屬性，還有它的`makeNoise()`方法。
 
-除了它所继承的特性，`Bicycle`类还定义了一个默认值为`false`的存储型属性`hasBasket`（属性推断为`Bool`）。
+除了它所繼承的特性，`Bicycle`類還定義了一個默認值為`false`的存儲型屬性`hasBasket`（屬性推斷為`Bool`）。
 
-默认情况下，你创建任何新的`Bicycle`实例将不会有一个篮子（即`hasBasket`属性默认为`false`），创建该实例之后，你可以为特定的`Bicycle`实例设置`hasBasket`属性为`ture`：
+默認情況下，你創建任何新的`Bicycle`實例將不會有一個籃子（即`hasBasket`屬性默認為`false`），創建該實例之後，你可以為特定的`Bicycle`實例設置`hasBasket`屬性為`ture`：
 
 ```swift
 let bicycle = Bicycle()
 bicycle.hasBasket = true
 ```
 
-你还可以修改`Bicycle`实例所继承的`currentSpeed`属性，和查询实例所继承的`description`属性：
+你還可以修改`Bicycle`實例所繼承的`currentSpeed`屬性，和查詢實例所繼承的`description`屬性：
 
 ```swift
 bicycle.currentSpeed = 15.0
@@ -104,7 +104,7 @@ print("Bicycle: \(bicycle.description)")
 // 打印 "Bicycle: traveling at 15.0 miles per hour"
 ```
 
-子类还可以继续被其它类继承，下面的示例为`Bicycle`创建了一个名为`Tandem`（双人自行车）的子类：
+子類還可以繼續被其它類繼承，下面的示例為`Bicycle`創建了一個名為`Tandem`（雙人自行車）的子類：
 
 ```swift
 class Tandem: Bicycle {
@@ -112,9 +112,9 @@ class Tandem: Bicycle {
 }
 ```
 
-`Tandem`从`Bicycle`继承了所有的属性与方法，这又使它同时继承了`Vehicle`的所有属性与方法。`Tandem`也增加了一个新的叫做`currentNumberOfPassengers`的存储型属性，默认值为`0`。
+`Tandem`從`Bicycle`繼承了所有的屬性與方法，這又使它同時繼承了`Vehicle`的所有屬性與方法。`Tandem`也增加了一個新的叫做`currentNumberOfPassengers`的存儲型屬性，默認值為`0`。
 
-如果你创建了一个`Tandem`的实例，你可以使用它所有的新属性和继承的属性，还能查询从`Vehicle`继承来的只读属性`description`：
+如果你創建了一個`Tandem`的實例，你可以使用它所有的新屬性和繼承的屬性，還能查詢從`Vehicle`繼承來的只讀屬性`description`：
 
 ```swift
 let tandem = Tandem()
@@ -126,29 +126,29 @@ print("Tandem: \(tandem.description)")
 ```
 
 <a name="overriding"></a>
-## 重写
+## 重寫
 
-子类可以为继承来的实例方法，类方法，实例属性，或下标提供自己定制的实现。我们把这种行为叫*重写*。
+子類可以為繼承來的實例方法，類方法，實例屬性，或下標提供自己定制的實現。我們把這種行為叫*重寫*。
 
-如果要重写某个特性，你需要在重写定义的前面加上`override`关键字。这么做，你就表明了你是想提供一个重写版本，而非错误地提供了一个相同的定义。意外的重写行为可能会导致不可预知的错误，任何缺少`override`关键字的重写都会在编译时被诊断为错误。
+如果要重寫某個特性，你需要在重寫定義的前面加上`override`關鍵字。這麼做，你就表明了你是想提供一個重寫版本，而非錯誤地提供了一個相同的定義。意外的重寫行為可能會導致不可預知的錯誤，任何缺少`override`關鍵字的重寫都會在編譯時被診斷為錯誤。
 
-`override`关键字会提醒 Swift 编译器去检查该类的超类（或其中一个父类）是否有匹配重写版本的声明。这个检查可以确保你的重写定义是正确的。
+`override`關鍵字會提醒 Swift 編譯器去檢查該類的超類（或其中一個父類）是否有匹配重寫版本的聲明。這個檢查可以確保你的重寫定義是正確的。
 
-### 访问超类的方法，属性及下标
+### 訪問超類的方法，屬性及下標
 
-当你在子类中重写超类的方法，属性或下标时，有时在你的重写版本中使用已经存在的超类实现会大有裨益。比如，你可以完善已有实现的行为，或在一个继承来的变量中存储一个修改过的值。
+當你在子類中重寫超類的方法，屬性或下標時，有時在你的重寫版本中使用已經存在的超類實現會大有裨益。比如，你可以完善已有實現的行為，或在一個繼承來的變量中存儲一個修改過的值。
 
-在合适的地方，你可以通过使用`super`前缀来访问超类版本的方法，属性或下标：
+在合適的地方，你可以通過使用`super`前綴來訪問超類版本的方法，屬性或下標：
 
-* 在方法`someMethod()`的重写实现中，可以通过`super.someMethod()`来调用超类版本的`someMethod()`方法。
-* 在属性`someProperty`的 getter 或 setter 的重写实现中，可以通过`super.someProperty`来访问超类版本的`someProperty`属性。
-* 在下标的重写实现中，可以通过`super[someIndex]`来访问超类版本中的相同下标。
+* 在方法`someMethod()`的重寫實現中，可以通過`super.someMethod()`來調用超類版本的`someMethod()`方法。
+* 在屬性`someProperty`的 getter 或 setter 的重寫實現中，可以通過`super.someProperty`來訪問超類版本的`someProperty`屬性。
+* 在下標的重寫實現中，可以通過`super[someIndex]`來訪問超類版本中的相同下標。
 
-### 重写方法
+### 重寫方法
 
-在子类中，你可以重写继承来的实例方法或类方法，提供一个定制或替代的方法实现。
+在子類中，你可以重寫繼承來的實例方法或類方法，提供一個定制或替代的方法實現。
 
-下面的例子定义了`Vehicle`的一个新的子类，叫`Train`，它重写了从`Vehicle`类继承来的`makeNoise()`方法：
+下面的例子定義了`Vehicle`的一個新的子類，叫`Train`，它重寫了從`Vehicle`類繼承來的`makeNoise()`方法：
 
 ```swift
 class Train: Vehicle {
@@ -158,7 +158,7 @@ class Train: Vehicle {
 }
 ```
 
-如果你创建一个`Train`的新实例，并调用了它的`makeNoise()`方法，你就会发现`Train`版本的方法被调用：
+如果你創建一個`Train`的新實例，並調用了它的`makeNoise()`方法，你就會發現`Train`版本的方法被調用：
 
 ```swift
 let train = Train()
@@ -166,20 +166,20 @@ train.makeNoise()
 // 打印 "Choo Choo"
 ```
 
-### 重写属性
+### 重寫屬性
 
-你可以重写继承来的实例属性或类型属性，提供自己定制的 getter 和 setter，或添加属性观察器使重写的属性可以观察属性值什么时候发生改变。
+你可以重寫繼承來的實例屬性或類型屬性，提供自己定制的 getter 和 setter，或添加屬性觀察器使重寫的屬性可以觀察屬性值什麼時候發生改變。
 
-#### 重写属性的 Getters 和 Setters
+#### 重寫屬性的 Getters 和 Setters
 
-你可以提供定制的 getter（或 setter）来重写任意继承来的属性，无论继承来的属性是存储型的还是计算型的属性。子类并不知道继承来的属性是存储型的还是计算型的，它只知道继承来的属性会有一个名字和类型。你在重写一个属性时，必需将它的名字和类型都写出来。这样才能使编译器去检查你重写的属性是与超类中同名同类型的属性相匹配的。
+你可以提供定制的 getter（或 setter）來重寫任意繼承來的屬性，無論繼承來的屬性是存儲型的還是計算型的屬性。子類並不知道繼承來的屬性是存儲型的還是計算型的，它只知道繼承來的屬性會有一個名字和類型。你在重寫一個屬性時，必需將它的名字和類型都寫出來。這樣才能使編譯器去檢查你重寫的屬性是與超類中同名同類型的屬性相匹配的。
 
-你可以将一个继承来的只读属性重写为一个读写属性，只需要在重写版本的属性里提供 getter 和 setter 即可。但是，你不可以将一个继承来的读写属性重写为一个只读属性。
+你可以將一個繼承來的只讀屬性重寫為一個讀寫屬性，只需要在重寫版本的屬性裡提供 getter 和 setter 即可。但是，你不可以將一個繼承來的讀寫屬性重寫為一個只讀屬性。
 
 > 注意  
-如果你在重写属性中提供了 setter，那么你也一定要提供 getter。如果你不想在重写版本中的 getter 里修改继承来的属性值，你可以直接通过`super.someProperty`来返回继承来的值，其中`someProperty`是你要重写的属性的名字。
+如果你在重寫屬性中提供了 setter，那麼你也一定要提供 getter。如果你不想在重寫版本中的 getter 裡修改繼承來的屬性值，你可以直接通過`super.someProperty`來返回繼承來的值，其中`someProperty`是你要重寫的屬性的名字。
 
-以下的例子定义了一个新类，叫`Car`，它是`Vehicle`的子类。这个类引入了一个新的存储型属性叫做`gear`，默认值为整数`1`。`Car`类重写了继承自`Vehicle`的`description`属性，提供包含当前档位的自定义描述：
+以下的例子定義了一個新類，叫`Car`，它是`Vehicle`的子類。這個類引入了一個新的存儲型屬性叫做`gear`，默認值為整數`1`。`Car`類重寫了繼承自`Vehicle`的`description`屬性，提供包含當前檔位的自定義描述：
 
 ```swift
 class Car: Vehicle {
@@ -190,9 +190,9 @@ class Car: Vehicle {
 }
 ```
 
-重写的`description`属性首先要调用`super.description`返回`Vehicle`类的`description`属性。之后，`Car`类版本的`description`在末尾增加了一些额外的文本来提供关于当前档位的信息。
+重寫的`description`屬性首先要調用`super.description`返回`Vehicle`類的`description`屬性。之後，`Car`類版本的`description`在末尾增加了一些額外的文本來提供關於當前檔位的信息。
 
-如果你创建了`Car`的实例并且设置了它的`gear`和`currentSpeed`属性，你可以看到它的`description`返回了`Car`中的自定义描述：
+如果你創建了`Car`的實例並且設置了它的`gear`和`currentSpeed`屬性，你可以看到它的`description`返回了`Car`中的自定義描述：
 
 ```swift
 let car = Car()
@@ -203,15 +203,15 @@ print("Car: \(car.description)")
 ```
 
 <a name="overriding_property_observers"></a>
-#### 重写属性观察器
+#### 重寫屬性觀察器
 
-你可以通过重写属性为一个继承来的属性添加属性观察器。这样一来，当继承来的属性值发生改变时，你就会被通知到，无论那个属性原本是如何实现的。关于属性观察器的更多内容，请看[属性观察器](../chapter2/10_Properties.html#property_observers)。
+你可以通過重寫屬性為一個繼承來的屬性添加屬性觀察器。這樣一來，當繼承來的屬性值發生改變時，你就會被通知到，無論那個屬性原本是如何實現的。關於屬性觀察器的更多內容，請看[屬性觀察器](../chapter2/10_Properties.html#property_observers)。
 
 > 注意  
-你不可以为继承来的常量存储型属性或继承来的只读计算型属性添加属性观察器。这些属性的值是不可以被设置的，所以，为它们提供`willSet`或`didSet`实现是不恰当。  
-此外还要注意，你不可以同时提供重写的 setter 和重写的属性观察器。如果你想观察属性值的变化，并且你已经为那个属性提供了定制的 setter，那么你在 setter 中就可以观察到任何值变化了。
+你不可以為繼承來的常量存儲型屬性或繼承來的只讀計算型屬性添加屬性觀察器。這些屬性的值是不可以被設置的，所以，為它們提供`willSet`或`didSet`實現是不恰當。  
+此外還要注意，你不可以同時提供重寫的 setter 和重寫的屬性觀察器。如果你想觀察屬性值的變化，並且你已經為那個屬性提供了定制的 setter，那麼你在 setter 中就可以觀察到任何值變化了。
 
-下面的例子定义了一个新类叫`AutomaticCar`，它是`Car`的子类。`AutomaticCar`表示自动挡汽车，它可以根据当前的速度自动选择合适的挡位:
+下面的例子定義了一個新類叫`AutomaticCar`，它是`Car`的子類。`AutomaticCar`表示自動擋汽車，它可以根據當前的速度自動選擇合適的擋位:
 
 ```swift
 class AutomaticCar: Car {
@@ -223,7 +223,7 @@ class AutomaticCar: Car {
 }
 ```
 
-当你设置`AutomaticCar`的`currentSpeed`属性，属性的`didSet`观察器就会自动地设置`gear`属性，为新的速度选择一个合适的挡位。具体来说就是，属性观察器将新的速度值除以`10`，然后向下取得最接近的整数值，最后加`1`来得到档位`gear`的值。例如，速度为`35.0`时，挡位为`4`：
+當你設置`AutomaticCar`的`currentSpeed`屬性，屬性的`didSet`觀察器就會自動地設置`gear`屬性，為新的速度選擇一個合適的擋位。具體來說就是，屬性觀察器將新的速度值除以`10`，然後向下取得最接近的整數值，最後加`1`來得到檔位`gear`的值。例如，速度為`35.0`時，擋位為`4`：
 
 ```swift
 let automatic = AutomaticCar()
@@ -233,10 +233,10 @@ print("AutomaticCar: \(automatic.description)")
 ```
 
 <a name="preventing_overrides"></a>
-## 防止重写
+## 防止重寫
 
-你可以通过把方法，属性或下标标记为*`final`*来防止它们被重写，只需要在声明关键字前加上`final`修饰符即可（例如：`final var`，`final func`，`final class func`，以及`final subscript`）。
+你可以通過把方法，屬性或下標標記為*`final`*來防止它們被重寫，只需要在聲明關鍵字前加上`final`修飾符即可（例如：`final var`，`final func`，`final class func`，以及`final subscript`）。
 
-如果你重写了带有`final`标记的方法，属性或下标，在编译时会报错。在类扩展中的方法，属性或下标也可以在扩展的定义里标记为 final 的。
+如果你重寫了帶有`final`標記的方法，屬性或下標，在編譯時會報錯。在類擴展中的方法，屬性或下標也可以在擴展的定義裡標記為 final 的。
 
-你可以通过在关键字`class`前添加`final`修饰符（`final class`）来将整个类标记为 final 的。这样的类是不可被继承的，试图继承这样的类会导致编译报错。
+你可以通過在關鍵字`class`前添加`final`修飾符（`final class`）來將整個類標記為 final 的。這樣的類是不可被繼承的，試圖繼承這樣的類會導致編譯報錯。

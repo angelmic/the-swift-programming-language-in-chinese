@@ -1,26 +1,26 @@
-# 造个类型不是梦-白话Swift类型创建
+# 造個類型不是夢-白話Swift類型創建
 -----------------
 
-> 翻译：[老码团队翻译组-Tyrion](http://weibo.com/u/5241713117)
-> 校对：[老码团队翻译组-Oberyn](http://weibo.com/u/5241713117)
+> 翻譯：[老碼團隊翻譯組-Tyrion](http://weibo.com/u/5241713117)
+> 校對：[老碼團隊翻譯組-Oberyn](http://weibo.com/u/5241713117)
 
-本页包含内容：
+本頁包含內容：
 
-- [自定义原型](#prototype)
-- [实现默认值](#imp-default)
-- [支持基本布尔型初始化](#init-by-bool)
-- [支持Bool类型判断](#condition-by-bool)
-- [支持兼容各们各派的类型](#support-all-type)
-- [完善OCBool的布尔基因体系](#make-up-type)
+- [自定義原型](#prototype)
+- [實現默認值](#imp-default)
+- [支持基本布爾型初始化](#init-by-bool)
+- [支持Bool類型判斷](#condition-by-bool)
+- [支持兼容各們各派的類型](#support-all-type)
+- [完善OCBool的布爾基因體系](#make-up-type)
 
-小伙伴们，Swift中的Bool类型有着非常重要的语法功能，并支撑起了整个Swift体系中的逻辑判断体系，经过老码的研究和学习， Bool类型本身其实是对基础Boolean类型封装，小伙伴们可能咬着手指头问老码，怎么一会Bool类型，一会Boolean类型，其区别在于，前者是基于枚举的组合类型，而后者则是基本类型，只有两种true和false。
+小伙伴們，Swift中的Bool類型有著非常重要的語法功能，並支撐起了整個Swift體系中的邏輯判斷體系，經過老碼的研究和學習， Bool類型本身其實是對基礎Boolean類型封裝，小伙伴們可能咬著手指頭問老碼，怎麼一會Bool類型，一會Boolean類型，其區別在於，前者是基於枚舉的組合類型，而後者則是基本類型，只有兩種true和false。
 
 <a name="prefix_expressions"></a>
-####自定义原型
-接下老码根据Bool的思想来创建一个OCBool类型，来让小伙伴们了解一下Swift中到底是怎么玩儿的。
-来我们先看一下OCBool的定义。
+####自定義原型
+接下老碼根據Bool的思想來創建一個OCBool類型，來讓小伙伴們了解一下Swift中到底是怎麼玩兒的。
+來我們先看一下OCBool的定義。
 
-#####代码示例如下：
+#####代碼示例如下：
 ```swift
 enum OCBool{
 case ocTrue
@@ -30,12 +30,12 @@ case ocFalse
 
 #####注意：
 
-- 代码中第2行和第3行，可以合并到一行写，如苹果官方Blog所写的一样
-- 代码中命名需要注意：OCBool是类型名，所以首字母必须大写，而case中的ocTrue和ocFalse是小类型则需要首字母小写。
+- 代碼中第2行和第3行，可以合並到一行寫，如蘋果官方Blog所寫的一樣
+- 代碼中命名需要注意：OCBool是類型名，所以首字母必須大寫，而case中的ocTrue和ocFalse是小類型則需要首字母小寫。
 
 <a name="imp-default"></a>
-####实现默认值
-行，我们给了一个漂亮的定义，不过按照传统语言的经验，Bool值默认情况下是假， 所以我们的OCBool也应该如此，我们使用类型扩展技术增加这个默认特性：
+####實現默認值
+行，我們給了一個漂亮的定義，不過按照傳統語言的經驗，Bool值默認情況下是假， 所以我們的OCBool也應該如此，我們使用類型擴展技術增加這個默認特性：
 ```swift
 extension OCBool{
      init(){
@@ -45,30 +45,30 @@ extension OCBool{
 ```
 
 #####注意：
-- 代码中第1行：extension关键字，非常强大，小伙伴们可以通过此创造出许多好玩的东西，建议各位去Github上看一个名为“Swiftz”的项目，它将扩展用到了极致。
-- 代码中第3行：self = .ocFalse语法，刚入门的小伙伴们很迷糊，为什么会有奇怪的点语法，因为大牛Chris在Swift中增加了类型智能推断功能，在苹果Blog中，提到了“Context”概念，就是这个意思，因为这行语句是在枚举OCBool中的，其上下文就是OCBool的定义体，编译器当然知道.ocFalse就是OCBool.ocFalse了，所以这里直接点语法，非常整齐。
-现在我们可以使用如下方法使用这个Bool类型。
+- 代碼中第1行：extension關鍵字，非常強大，小伙伴們可以通過此創造出許多好玩的東西，建議各位去Github上看一個名為「Swiftz」的項目，它將擴展用到了極致。
+- 代碼中第3行：self = .ocFalse語法，剛入門的小伙伴們很迷糊，為什麼會有奇怪的點語法，因為大牛Chris在Swift中增加了類型智能推斷功能，在蘋果Blog中，提到了「Context」概念，就是這個意思，因為這行語句是在枚舉OCBool中的，其上下文就是OCBool的定義體，編譯器當然知道.ocFalse就是OCBool.ocFalse了，所以這裡直接點語法，非常整齊。
+現在我們可以使用如下方法使用這個Bool類型。
 
-#####代码示例如下：
+#####代碼示例如下：
 ```swift
 var result:OCBool = OCBool()
 var result1:OCBool = .ocTrue
 ```
 
 <a name="init-by-bool"></a>
-####支持基本布尔型初始化
-正如上述代码所述，我们只能通过类型或者枚举项目赋值，这是组合类型的用法，但是编码的日子里，我们总是希望和true，false直接打交道，也就是说，我们希望这么做，
-代码示例如下：
+####支持基本布爾型初始化
+正如上述代碼所述，我們只能通過類型或者枚舉項目賦值，這是組合類型的用法，但是編碼的日子裡，我們總是希望和true，false直接打交道，也就是說，我們希望這麼做，
+代碼示例如下：
 ```swift
 var isSuccess:OCBool = true
 ```
 
-如果小伙伴们直接这么用，则会出现如下错误：
+如果小伙伴們直接這麼用，則會出現如下錯誤：
 ```
 /Users/tyrion-OldCoder/Documents/Learning/BoolType/BoolType/main.swift:30:24: Type 'OCBool' does not conform to protocol 'BooleanLiteralConvertible'
 ```
-编译器咆哮的原因是，我们的类型没有遵从“布尔字面量转换协议”，接下来修正这个问题，
-#####代码示例如下：
+編譯器咆哮的原因是，我們的類型沒有遵從「布爾字面量轉換協議」，接下來修正這個問題，
+#####代碼示例如下：
 
 ```swift
 import Foundation
@@ -91,8 +91,8 @@ var isSuccess:OCBool = true
 ```
 
 #####注意：
-- 代码中的第11行是重点，我的类型OCBool支持了BooleanLiteralConvertible协议，这个协到底是干什么的呢，小伙伴们在Xcode代码编辑器，按住Command键，然后点击第11行中的BooleanLiteralConvertible协议名，则会进入它的定义，
-#####其定义如下：
+- 代碼中的第11行是重點，我的類型OCBool支持了BooleanLiteralConvertible協議，這個協到底是幹什麼的呢，小伙伴們在Xcode代碼編輯器，按住Command鍵，然後點擊第11行中的BooleanLiteralConvertible協議名，則會進入它的定義，
+#####其定義如下：
 ```swift
 protocol BooleanLiteralConvertible {
     typealias BooleanLiteralType
@@ -100,27 +100,27 @@ protocol BooleanLiteralConvertible {
 }
 ```
 
-- 这个定义中有个类方法convertFromBooleanLiteral，它的参数为BooleanLiteralType类型，也就是我传入的Bool类型， 且返回值为实现这个协议的类型本身，在我们的OCBool类型中，其返回值就是OCBool本身。经过这个定义，我们可以直接对OCBool类型直接进行布尔字面量初始化了。
+- 這個定義中有個類方法convertFromBooleanLiteral，它的參數為BooleanLiteralType類型，也就是我傳入的Bool類型， 且返回值為實現這個協議的類型本身，在我們的OCBool類型中，其返回值就是OCBool本身。經過這個定義，我們可以直接對OCBool類型直接進行布爾字面量初始化了。
 
 <a name="condition-by-bool"></a>
-####支持Bool类型判断
-小伙伴们不安分， 肯定想着我怎么用它实现逻辑判断，所以如果你这么写，
-#####代码示例如下：
+####支持Bool類型判斷
+小伙伴們不安分， 肯定想著我怎麼用它實現邏輯判斷，所以如果你這麼寫，
+#####代碼示例如下：
 ```swift
 var isSuccess:OCBool = true
 
 if isSuccess {
-    println( "老码请你吃火锅！")
+    println( "老碼請你吃火鍋！")
 }
 ```
 
-你永远吃不到老码的火锅，因为这里编译器会咆哮：
+你永遠吃不到老碼的火鍋，因為這裡編譯器會咆哮：
 ```
 /Users/tyrion-OldCoder/Documents/Learning/BoolType/BoolType/main.swift:27:4: Type 'OCBool' does not conform to protocol 'LogicValue'
 ```
-OCBool现在只能用bool类型初始化，而不能直接返回bool型，小火把们还记得在《老码说编程之白话Swift江湖》中，老码多次提到，妈妈再也不担心我们 if a = 1{}的写法了， 因为等号不支持值返回了， 所以在if判断是后面的条件必须有返回值，OCBool没有，所以编译器哭了。我们解决这个问题。
+OCBool現在只能用bool類型初始化，而不能直接返回bool型，小火把們還記得在《老碼說編程之白話Swift江湖》中，老碼多次提到，媽媽再也不擔心我們 if a = 1{}的寫法了， 因為等號不支持值返回了， 所以在if判斷是後面的條件必須有返回值，OCBool沒有，所以編譯器哭了。我們解決這個問題。
 
-#####代码示例如下：
+#####代碼示例如下：
 ```swift
 import Foundation
 
@@ -156,26 +156,26 @@ extension OCBool: LogicValue{
 var isSuccess:OCBool = true
 
 if isSuccess {
-    println( "老码请你吃火锅！")
+    println( "老碼請你吃火鍋！")
 }
 ```
 
-####运行结果如下：
+####運行結果如下：
 ```
 Hello, World!
-老码请你吃火锅！
+老碼請你吃火鍋！
 Program ended with exit code: 0
 ```
 #####注意：
-- 如果小伙伴们现在用的是Beta版的Xcode，注意苹果官方Blog中，在代码第17行如果在Xcode Beta4下是错误的，这里的协议是，LogicValue而不是BooleanVue，所以记得看错误提示才是好习惯。
-- 注意代码第34行，完美支持if判断，且输出结果为“老码请你吃火锅”，老码也是说说而已，请不要当真。
+- 如果小伙伴們現在用的是Beta版的Xcode，注意蘋果官方Blog中，在代碼第17行如果在Xcode Beta4下是錯誤的，這裡的協議是，LogicValue而不是BooleanVue，所以記得看錯誤提示才是好習慣。
+- 注意代碼第34行，完美支持if判斷，且輸出結果為「老碼請你吃火鍋」，老碼也是說說而已，請不要當真。
 
 <a name="support-all-type"></a>
 
-####支持兼容各们各派的类型
-小伙伴们，江湖风险，门派众多，老码有自己的OCBool类型，可能嵩山少林有自己的SSBool类型，甚至连郭美美都可能有自己的MMBool类型，所以OCBool必须能够识别这些类型，这些各门各派的类型，只要支持LogicValue协议，就应该可以被识别，看老码怎么做，
+####支持兼容各們各派的類型
+小伙伴們，江湖風險，門派眾多，老碼有自己的OCBool類型，可能嵩山少林有自己的SSBool類型，甚至連郭美美都可能有自己的MMBool類型，所以OCBool必須能夠識別這些類型，這些各門各派的類型，只要支持LogicValue協議，就應該可以被識別，看老碼怎麼做，
 
-#####代码示例如下：
+#####代碼示例如下：
 ```swift
 extension OCBool{
     init( _ v: LogicValue )
@@ -195,30 +195,30 @@ var ocResult:OCBool = OCBool(mmResult)
 
 
 if ocResult {
-    println( "老码没钱，郭美美请你吃火锅！")
+    println( "老碼沒錢，郭美美請你吃火鍋！")
 }
 ```
 
-#####代码运行结果如下：
+#####代碼運行結果如下：
 ```
 Hello, World!
-老码没钱，郭美美请你吃火锅！
+老碼沒錢，郭美美請你吃火鍋！
 Program ended with exit code: 0
 ```
-漂亮！我们的OCBool类型现在支持了所有的逻辑变量初始化。
+漂亮！我們的OCBool類型現在支持了所有的邏輯變量初始化。
 
 #####注意：
-- 代码中第2行：“_”下横杠的用法，这是一个功能强大的小强，在此的目的是屏蔽外部参数名，所以小伙伴们可以直接：var ocResult:OCBool = OCBool(mmResult)而不是：var ocResult:OCBool = OCBool(v: mmResult)，小伙伴们惊呆了！这个init函数中本来就没有外部参数名啊，还记得老码在书里说过没，Swift的初始化函数会默认使用内部参数名，作为外部参数名。
+- 代碼中第2行：「_」下橫杠的用法，這是一個功能強大的小強，在此的目的是屏蔽外部參數名，所以小伙伴們可以直接：var ocResult:OCBool = OCBool(mmResult)而不是：var ocResult:OCBool = OCBool(v: mmResult)，小伙伴們驚待了！這個init函數中本來就沒有外部參數名啊，還記得老碼在書裡說過沒，Swift的初始化函數會默認使用內部參數名，作為外部參數名。
 
 <a name="make-up-type"></a>
-####完善OCBool的布尔基因体系：
-小伙伴们，bool类型的价值就是在于各种判断，诸如==，!=, &，|,^,!，以及各种组合逻辑运算，我们OCBool也要具备这些功能，否则就会基因缺陷，且看老码如何实现：
+####完善OCBool的布爾基因體系：
+小伙伴們，bool類型的價值就是在於各種判斷，諸如==，!=, &，|,^,!，以及各種組合邏輯運算，我們OCBool也要具備這些功能，否則就會基因缺陷，且看老碼如何實現：
 
 ```swift
 extension OCBool: Equatable{
 }
 
-//支持等值判断运算符
+//支持等值判斷運算符
 func ==( left: OCBool, right: OCBool )->Bool{
     switch (left, right){
     case (.ocTrue, .ocTrue):
@@ -227,7 +227,7 @@ func ==( left: OCBool, right: OCBool )->Bool{
         return false
     }
 }
-//支持位与运算符
+//支持位與運算符
 func &( left:OCBool, right: OCBool)->OCBool{
 
     if left{
@@ -237,7 +237,7 @@ func &( left:OCBool, right: OCBool)->OCBool{
         return false
     }
 }
-//支持位或运算符
+//支持位或運算符
 func |( left:OCBool, right: OCBool)->OCBool{
 
     if left{
@@ -248,15 +248,15 @@ func |( left:OCBool, right: OCBool)->OCBool{
     }
 }
 
-//支持位异或运算符
+//支持位異或運算符
 func ^( left:OCBool, right: OCBool)->OCBool{
     return OCBool( left != right )
 }
-//支持求反运算符
+//支持求反運算符
 @prefix func !( a:OCBool )-> OCBool{
     return a ^ true
 }
-//支持组合求与运算符
+//支持組合求與運算符
 func &= (inout left:OCBool, right:OCBool ){
     left = left & right
 }
@@ -273,15 +273,15 @@ isHasWife ^ isHasLover
 isHasWife = !isHasLover
 
 if (isHasMoney | isHasHealty) & isHasHealty{
-    println( "人生赢家，就像老码一样！")
+    println( "人生贏家，就像老碼一樣！")
 }else
 {
-    println("人生最苦的事事，人死了钱没花了，人生最苦的事是，人活着，钱没了！")
+    println("人生最苦的事事，人死了錢沒花了，人生最苦的事是，人活著，錢沒了！")
 }
 ```
 
-好了，到这里就到这里了，窗外的雷声叫醒了老码，现在应该去吃饭了，以上老码给大家展示了如果制造一个自己的类型，记得老码的示例是在Xcode6 Beta4下测试的，至于Beta5的改变还没有涉及，小伙伴们要好生练习，以后各种自定类型都是基于这个思想。还有这个章节不是老码的原创，老码认真的阅读了苹果的官方博客，且自己的练习总结，如果小伙伴们费了吃奶的劲还是看不懂，请找度娘谷歌，还是看不懂请到老码官方微博：http://weibo.com/u/5241713117咆哮。
+好了，到這裡就到這裡了，窗外的雷聲叫醒了老碼，現在應該去吃飯了，以上老碼給大家展示了如果制造一個自己的類型，記得老碼的示例是在Xcode6 Beta4下測試的，至於Beta5的改變還沒有涉及，小伙伴們要好生練習，以後各種自定類型都是基於這個思想。還有這個章節不是老碼的原創，老碼認真的閱讀了蘋果的官方博客，且自己的練習總結，如果小伙伴們費了吃奶的勁還是看不懂，請找度娘谷歌，還是看不懂請到老碼官方微博：http://weibo.com/u/5241713117咆哮。
 
 
 
-本文由翻译自Apple Swift Blog ：https://developer.apple.com/swift/blog/?id=8
+本文由翻譯自Apple Swift Blog ：https://developer.apple.com/swift/blog/?id=8
